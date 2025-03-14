@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class AuthenticatedSessionController extends Controller
+class AuthenticatedSessionController extends Controller 
 {
     /**
      * Display the login view.
@@ -28,13 +28,24 @@ class AuthenticatedSessionController extends Controller
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
+{
+    $request->authenticate();
 
-        $request->session()->regenerate();
+    $user = Auth::user();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+    // Verificamos si el usuario ha verificado el correo
+    if (!$user->hasVerifiedEmail()) {
+        Auth::logout();
+        return back()->withErrors([
+            'email' => 'You need to verify your email before logging in.',
+        ]);
     }
+
+    $request->session()->regenerate();
+
+    return redirect()->intended(route('dashboard', absolute: false));
+}
+
 
     /**
      * Destroy an authenticated session.
