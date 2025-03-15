@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->integer('preguntas');
             $table->string('asignatura');
+            $table->string('imagenCorrecta');
+            $table->string('imagenAComparar');
             $table->unsignedBigInteger('idUsuario');
             $table->timestamps();
 
