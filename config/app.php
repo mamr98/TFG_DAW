@@ -1,5 +1,15 @@
 <?php
 
+// use Intervention\Image\Image;
+
+// $image = Image::make($urlImagen); // Donde $urlImagen es la URL de Cloudinary
+
+//ejemplo:
+/* $examen = Examen::find($idExamen);
+$imagenCorrecta = Image::make($examen->imagenCorrecta);
+$imagenAComparar = Image::make($examen->imagenAComparar); */
+
+
 return [
 
     /*
@@ -122,5 +132,10 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    // 'aliases' => [
+    //     'Image' => Intervention\Image\Facades\Image::class,
+    // ],
+
 
 ];
