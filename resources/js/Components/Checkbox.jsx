@@ -10,3 +10,6 @@ export default function Checkbox({ className = '', ...props }) {
         />
     );
 }
+
+
+/* Esto es el checkbox a la hora de hacer el Login */
