@@ -23,13 +23,23 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/subir-imagen', function () {
+    return Inertia::render('SubirImagenPage');
+})->middleware(['auth', 'verified'])->name('subir-imagen');
+
+Route::get('/notas', function () {
+    return Inertia::render('NotasPage');
+})->middleware(['auth', 'verified'])->name('notas');
+
 
 Route::middleware('auth', 'verified')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::post('/subir-imagen', [ExamenController::class, 'subirImagen'])->name('subirImagen');
-    Route::post('/comparar-imagenes', [ComparacionController::class, 'comparar'])->name('comparar.imagenes');
+
+    /* Estas rutas no funciona pq los controladores aún hay que hacerlos */
+    /* Route::post('/subir-imagen', [ExamenController::class, 'subirImagen'])->name('subirImagen');
+    Route::post('/comparar-imagenes', [ComparacionController::class, 'comparar'])->name('comparar.imagenes'); */
 });
 
 // Rutas para la verificación de email

@@ -14,6 +14,7 @@ export default function AuthenticatedLayout({ header, children }) {
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
+                {/* Esto es el navbar para PC */}
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
@@ -29,6 +30,18 @@ export default function AuthenticatedLayout({ header, children }) {
                                     active={route().current('dashboard')}
                                 >
                                     Dashboard
+                                </NavLink>
+                                <NavLink
+                                    href={route('subir-imagen')}
+                                    active={route().current('subir-imagen')}
+                                >
+                                    Subir Imagen
+                                </NavLink>
+                                <NavLink
+                                    href={route('notas')}
+                                    active={route().current('notas')}
+                                >
+                                    Notas
                                 </NavLink>
                             </div>
                         </div>
@@ -121,6 +134,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
                 </div>
 
+                {/* Esto es el navbar para móviles */}
                 <div
                     className={
                         (showingNavigationDropdown ? 'block' : 'hidden') +
@@ -133,6 +147,18 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('dashboard')}
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('subir-imagen')}
+                            active={route().current('subir-imagen')}
+                        >
+                            Subir Imagen
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('notas')}
+                            active={route().current('notas')}
+                        >
+                            Notas
                         </ResponsiveNavLink>
                     </div>
 
