@@ -20,21 +20,25 @@ class ProfesorSeeder extends Seeder
                 'name' => 'Miguel Milena',
                 'email' => 'miguel.milena@ejemplo.com',
                 'password' => '12341234',
+                'estado' => 'confirmado',
             ],
             [
                 'name' => 'David Pelaez',
                 'email' => 'david.pelaez@ejemplo.com',
                 'password' => '12341234',
+                'estado' => 'confirmado',
             ],
             [
                 'name' => 'Marcos Garcia',
                 'email' => 'marcos.garcia@ejemplo.com',
                 'password' => '12341234',
+                'estado' => 'confirmado',
             ],
             [
                 'name' => 'Pablo Torre',
                 'email' => 'pablo.torre@ejemplo.com',
                 'password' => '12341234',
+                'estado' => 'no_confirmado',
             ],
         ];
 
@@ -45,6 +49,7 @@ class ProfesorSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => Hash::make($profesor['password']),
                 'role' => 'profesor',
+                'estado' => $profesor['estado'],
                 'remember_token' => Str::random(10),
             ]);
         }

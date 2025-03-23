@@ -43,6 +43,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Notas
                                 </NavLink>
+                                <NavLink
+                                    href={route('gestionusuarios')}
+                                    active={route().current('gestionusuarios')}
+                                >
+                                    Gestión Usuarios
+                                </NavLink>
                             </div>
                         </div>
 
@@ -159,6 +165,12 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('notas')}
                         >
                             Notas
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('gestionusuarios')}
+                            active={route().current('gestionusuarios')}
+                        >
+                            Gestión Usuarios
                         </ResponsiveNavLink>
                     </div>
 

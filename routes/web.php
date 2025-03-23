@@ -31,6 +31,10 @@ Route::get('/notas', function () {
     return Inertia::render('NotasPage');
 })->middleware(['auth', 'verified'])->name('notas');
 
+Route::get('/gestionusuarios', function () {
+    return Inertia::render('CreacionUsuarioPage');
+})->middleware(['auth', 'verified'])->name('gestionusuarios');
+
 
 Route::middleware('auth', 'verified')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
