@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ExamenController;
 use App\Http\Controllers\ComparacionController;
-
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -41,6 +41,23 @@ Route::middleware('auth', 'verified')->group(function () {
     /* Route::post('/subir-imagen', [ExamenController::class, 'subirImagen'])->name('subirImagen');
     Route::post('/comparar-imagenes', [ComparacionController::class, 'comparar'])->name('comparar.imagenes'); */
 });
+
+
+/* Controlador UserContoller */
+Route::middleware('auth', 'verified')->group(function () {
+    /* Mostrar la lista de los usuarios */
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    /* Crear y Guardar un nuevo usuario */
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    /* Mostrar los detalles de un usuario */
+    Route::get('/user', [UserController::class, 'show'])->name('users.show');
+    /* Actualizar un usuario */
+    Route::put('/users', [UserController::class, 'update'])->name('users.update');
+    /* Eliminar un usuario */
+    Route::delete('/users', [UserController::class, 'delete'])->name('users.delete');
+});
+
+
 
 // Rutas para la verificación de email
 Route::get('/email/verify', function () {
