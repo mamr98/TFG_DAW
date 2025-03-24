@@ -16,7 +16,7 @@ class ProfesorSeeder extends Seeder
     public function run(): void
     {
         $profesores = [
-            [
+            /* [
                 'name' => 'Miguel Milena',
                 'email' => 'miguel.milena@ejemplo.com',
                 'password' => '12341234',
@@ -39,7 +39,7 @@ class ProfesorSeeder extends Seeder
                 'email' => 'pablo.torre@ejemplo.com',
                 'password' => '12341234',
                 'estado' => 'no_confirmado',
-            ],
+            ], */
         ];
 
         foreach ($profesores as $profesor) {
