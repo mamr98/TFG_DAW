@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-/* import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button"; */
+/* import { Card, CardContent } from "@/components/ui/card";*/
+import { Button } from "@/components/ui/button"; 
 
 export default function ImageComparison() {
   const [image, setImage] = useState(null);
