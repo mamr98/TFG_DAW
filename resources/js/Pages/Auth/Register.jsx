@@ -13,8 +13,6 @@ export default function Register() {
         password_confirmation: '',
     });
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
 
     const submit = (e) => {
         e.preventDefault();
