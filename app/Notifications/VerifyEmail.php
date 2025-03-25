@@ -34,23 +34,28 @@ class VerifyEmail extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
+    /* public function toMail(object $notifiable): MailMessage
     {
-       /*  return (new MailMessage)
+        return (new MailMessage)
             ->line('The introduction to the notification.')
             ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!'); */
-             // Genera una URL firmada con expiración (ej: 24 horas)
-    $signedUrl = URL::temporarySignedRoute(
-        'ruta.verificacion', // Nombre de la ruta (debes definirlo)
-        Carbon::now()->addHours(24), // Tiempo de expiración
-        ['id' => $notifiable->getKey()] // Parámetros de la URL
-    );
+            ->line('Thank you for using our application!');
+    } */
 
-    return (new MailMessage)
-        ->line('The introduction to the notification.')
-        ->action('Notification Action', $signedUrl) // Usa la URL firmada
-        ->line('Thank you for using our application!');
+    public function toMail(object $notifiable): MailMessage
+    {
+        // Generar el enlace de verificación firmado con una expiración de 120 minutos
+        $url = URL::temporarySignedRoute(
+            'verification.verify', // Nombre de la ruta de verificación
+            Carbon::now()->addMinutes(120), // Tiempo de expiración (120 minutos)
+            ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->email)] // Pasar ID y hash
+        );
+
+        return (new MailMessage)
+            ->line('Please click the button below to verify your email address.')
+            ->action('Verify Email Address', $url) // Botón con el enlace de verificación
+            ->line('If you did not create an account, no further action is required.')
+            ->line('Thank you for using our application!');
     }
 
     /**
