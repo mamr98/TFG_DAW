@@ -112,4 +112,8 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    'verification' => [
+        'expire' => 1440, // 24 horas (en lugar de 60 minutos por defecto)
+    ],
+
 ];
