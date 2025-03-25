@@ -21,21 +21,4 @@ class EmailVerificationNotificationController extends Controller
 
         return back()->with('status', 'verification-link-sent');
     }
-
-    public function __invoke(Request $request)
-{
-    if (!$request->user()) {
-        // Si no hay usuario autenticado (común en Railway)
-        $user = User::find($request->route('id'));
-        auth()->login($user); // Autentica al usuario manualmente
-    }
-
-    $request->user()->forceFill([
-        'email_verified_at' => now()
-    ])->save();
-
-    return redirect()->to(
-        config('app.frontend_url').'/dashboard?verified=1'
-    );
-}
 }
