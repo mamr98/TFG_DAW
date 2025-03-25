@@ -3,9 +3,11 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
 class VerifyEmail extends Notification
 {
@@ -34,10 +36,21 @@ class VerifyEmail extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
+       /*  return (new MailMessage)
             ->line('The introduction to the notification.')
             ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->line('Thank you for using our application!'); */
+             // Genera una URL firmada con expiración (ej: 24 horas)
+    $signedUrl = URL::temporarySignedRoute(
+        'ruta.verificacion', // Nombre de la ruta (debes definirlo)
+        Carbon::now()->addHours(24), // Tiempo de expiración
+        ['id' => $notifiable->getKey()] // Parámetros de la URL
+    );
+
+    return (new MailMessage)
+        ->line('The introduction to the notification.')
+        ->action('Notification Action', $signedUrl) // Usa la URL firmada
+        ->line('Thank you for using our application!');
     }
 
     /**
