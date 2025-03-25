@@ -156,7 +156,7 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN'),
+    'domain' => env('SESSION_DOMAIN', 'tfgdaw-production.up.railway.app'),
 
     /*
     |--------------------------------------------------------------------------
@@ -169,9 +169,9 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN', 'tfgdaw-production.up.railway.app'),
     'secure' => true, // Forza HTTPS
     'same_site' => 'lax',
+    'http_only' => true,
 
     /*
     |--------------------------------------------------------------------------
