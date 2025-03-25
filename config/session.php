@@ -171,7 +171,7 @@ return [
 
     'secure' => true, // Forza HTTPS
     'same_site' => 'lax',
-    'http_only' => true,
+    /* 'http_only' => true, */
 
     /*
     |--------------------------------------------------------------------------
