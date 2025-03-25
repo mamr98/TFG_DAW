@@ -1,0 +1,2 @@
+Fecha: <?php echo date('Y-m-d H:i:s'); ?>
+Token: <?php echo md5(rand()); ?>
