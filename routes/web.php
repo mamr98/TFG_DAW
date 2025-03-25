@@ -40,25 +40,9 @@ Route::get('/email/verify', function () {
     return Inertia::render('Auth/VerifyEmail');
 })->middleware('auth')->name('verification.notice');
 
-/* Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
     return redirect('/dashboard');
-})->middleware(['auth', 'signed'])->name('verification.verify'); */
-
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    // Verificar si el email ya está verificado
-    if ($request->user()->hasVerifiedEmail()) {
-        return redirect()->route('dashboard')->with('message', 'El email ya estaba verificado');
-    }
-
-    // Marcar como verificado
-    $request->fulfill();
-
-    // Redirigir con mensaje
-    return redirect()->route('dashboard')->with([
-        'message' => '¡Email verificado correctamente!',
-        'verified' => true
-    ]);
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
