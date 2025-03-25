@@ -156,7 +156,7 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN', '.tfg-daw-milena-backend.onrender.com'),
+    'domain' => env('SESSION_DOMAIN', 'tfg-daw-two.vercel.app'),
 
     /*
     |--------------------------------------------------------------------------
