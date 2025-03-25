@@ -11,6 +11,7 @@ $imagenAComparar = Image::make($examen->imagenAComparar); */
 
 
 return [
+    'frontend_url' => env('FRONTEND_URL', 'https://tfgdaw-production.up.railway.app'),
 
     /*
     |--------------------------------------------------------------------------

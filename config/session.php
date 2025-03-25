@@ -169,9 +169,9 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE', true),
+    'domain' => env('SESSION_DOMAIN', 'tfgdaw-production.up.railway.app'),
+    'secure' => true, // Forza HTTPS
     'same_site' => 'lax',
-    'http_only' => true,
 
     /*
     |--------------------------------------------------------------------------
