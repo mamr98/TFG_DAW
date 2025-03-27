@@ -53,9 +53,9 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the exams created by the user.
      */
-    public function examen()
+    public function examenes()
     {
-        return $this->hasMany(Examen::class, 'idUsuario', 'id');
+        return $this->hasMany(Examen::class, 'idUsuario');
     }
 
     /**
