@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id'); // Relación con el alumno
             $table->integer('fila'); // Número de fila (ej: 1, 2, 3...)
             $table->string('columna', 1); // Letra marcada por el alumno (A, B, C, D)
-            $table->float('nota', 3, 1); // Nota calculada (ej: 7.5)
             $table->string('imagenAComparar')->nullable(); // Ruta de la imagen subida por el alumno (opcional)
             $table->timestamps();
         
