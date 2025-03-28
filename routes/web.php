@@ -11,6 +11,10 @@ use App\Http\Controllers\ComparacionController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
+Route::fallback(function(){
+    return Inertia::render('Errors/404');
+});
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -62,8 +66,12 @@ Route::middleware('auth', 'verified')->group(function () {
     /* Estas rutas no funciona pq los controladores aún hay que hacerlos */
     /* Route::post('/subir-imagen', [ExamenController::class, 'subirImagen'])->name('subirImagen');
     Route::post('/comparar-imagenes', [ComparacionController::class, 'comparar'])->name('comparar.imagenes'); */
+
 });
 
+/*
+                USUARIOS
+*/
 
 /* Controlador UserContoller */
 Route::middleware('auth', 'verified')->group(function () {
@@ -77,6 +85,51 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::put('/users', [UserController::class, 'update'])->name('users.update');
     /* Eliminar un usuario */
     Route::delete('/users', [UserController::class, 'delete'])->name('users.delete');
+});
+
+/*
+                IMAGENES
+*/
+
+    /* POR COMPROBAR (USO DE LA API DE OPENAI PARA IMAGEN) */
+// routes/web.php
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Panel principal del profesor
+    Route::get('/profesor', function () {
+        return inertia('Profesor/Panel', [
+            'examenes' => auth()->user()->examenes()
+                            ->select('examen.*') // Específica la tabla
+                            ->withCount(['respuestasMaestras as respuestas_count'])
+                            ->orderBy('fecha_subida', 'desc')
+                            ->get()
+        ]);
+    })->name('profesor.dashboard');
+
+    // Rutas para exámenes (las que ya tenías)
+    Route::get('/profesor/examen', function () {
+        return inertia('Profesor/SubirExamenMaestro');
+    })->name('profesor.examen');
+
+    Route::get('/profesor/examen/{examen}', function (Examen $examen) {
+    return inertia('Profesor/DetalleExamen', [
+        'examen' => $examen->load('respuestasMaestras')
+    ]);
+})->name('profesor.examen.show');
+
+    Route::post('/profesor/examen/subir', [ExamenController::class, 'subirExamenMaestro'])
+        ->name('profesor.examen.subir');
+    });
+
+// Rutas para el alumno
+Route::prefix('alumno/examen')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', function () {
+        return inertia('Alumno/SubirExamenAlumno', [
+            'examenes' => \App\Models\Examen::all(),
+        ]);
+    })->name('alumno.examen');
+
+    Route::post('/subir', [ExamenController::class, 'subirExamenAlumno'])
+        ->name('alumno.examen.subir');
 });
 
 

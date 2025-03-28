@@ -20,10 +20,15 @@ class Examen extends Model
     ];
 
     public function user(){
-        return $this->belongsTo(User::class,'idUsuario','id');
+        return $this->belongsTo(User::class, 'idUsuario');
     }
 
     public function nota(){
         return $this->hasOne(Nota::class,'idExamen','id');
+    }
+
+    public function respuestasMaestras()
+    {
+        return $this->hasMany(RespuestaMaestra::class, 'examen_id', 'id');
     }
 }

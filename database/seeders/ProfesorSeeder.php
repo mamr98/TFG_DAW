@@ -16,12 +16,12 @@ class ProfesorSeeder extends Seeder
     public function run(): void
     {
         $profesores = [
-            /* [
+             [
                 'name' => 'Miguel Milena',
                 'email' => 'miguel.milena@ejemplo.com',
                 'password' => '12341234',
                 'estado' => 'confirmado',
-            ],
+            ],/*
             [
                 'name' => 'David Pelaez',
                 'email' => 'david.pelaez@ejemplo.com',

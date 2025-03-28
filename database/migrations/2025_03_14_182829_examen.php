@@ -13,14 +13,16 @@ return new class extends Migration
     {
         Schema::create('examen', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre');
             $table->integer('preguntas');
             $table->string('asignatura');
-            $table->string('imagenCorrecta');
-            $table->string('imagenAComparar');
+            $table->string('imagenCorrecta')->nullable();
+            //$table->string('imagenAComparar');
             $table->unsignedBigInteger('idUsuario');
+            $table->dateTime('fecha_subida');
             $table->timestamps();
 
-            $table->foreign('idUsuario')->references('id')->on('users');
+            $table->foreign('idUsuario')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
