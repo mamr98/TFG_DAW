@@ -10,7 +10,7 @@ export default function Navbar() {
     return (
         <>
             {/* Navbar */}
-            <nav className="bg-white shadow-sm w-full z-10 mt-4 pb-4">
+            <nav className="bg-gray-800 shadow-sm w-full z-10 pt-4 pb-4">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex items-center">
@@ -29,14 +29,14 @@ export default function Navbar() {
                                 {normalizedPath === "/login" ? (
                                     <Link
                                         href={route("register")}
-                                        className="rounded-md px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 transition duration-300"
+                                        className="rounded-md mx-4 px-4 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300 sm:mx-0"
                                     >
                                         Registrarse
                                     </Link>
                                 ) : normalizedPath === "/register" ? (
                                     <Link
                                         href={route("login")}
-                                        className="rounded-md px-4 py-2 text-gray-700 font-medium hover:bg-gray-100 transition duration-300"
+                                        className="rounded-md mx-4 px-4 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300 sm:mx-0"
                                     >
                                         Iniciar sesión
                                     </Link>

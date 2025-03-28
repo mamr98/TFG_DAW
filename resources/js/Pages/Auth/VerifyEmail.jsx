@@ -1,3 +1,5 @@
+import Footer from '@/Components/hooks/Footer';
+import Navbar from '@/Components/hooks/Navbar';
 import PrimaryButton from '@/Components/PrimaryButton';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -11,6 +13,8 @@ export default function VerifyEmail({ status }) {
     };
 
     return (
+        <>
+        <Navbar/>
         <GuestLayout>
             <Head title="Email Verification" />
 
@@ -41,5 +45,7 @@ export default function VerifyEmail({ status }) {
                 </div>
             </form>
         </GuestLayout>
+        <Footer/>
+        </>
     );
 }

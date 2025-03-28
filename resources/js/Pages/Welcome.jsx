@@ -14,7 +14,7 @@ export default function Welcome({ auth }) {
             <Head title="Welcome" />
             <div className="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
                 {/* Navbar */}
-                <nav className="bg-white shadow-sm w-full z-10 mt-4 pb-4">
+                <nav className="bg-gray-800 shadow-sm w-full z-10 pt-4 pb-4">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex justify-between h-16">
                             <div className="flex items-center">
@@ -32,7 +32,7 @@ export default function Welcome({ auth }) {
                                 {auth.user ? (
                                     <Link
                                         href={route("dashboard")}
-                                        className="rounded-md px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 transition duration-300"
+                                        className="rounded-md px-4 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300"
                                     >
                                         Dashboard
                                     </Link>
@@ -40,13 +40,13 @@ export default function Welcome({ auth }) {
                                     <div className="flex space-x-4">
                                         <Link
                                             href={route("login")}
-                                            className="rounded-md px-4 py-2 text-gray-700 font-medium hover:bg-gray-100 transition duration-300"
+                                            className="rounded-md px-4 py-2 text-white font-medium hover:bg-gray-100 transition duration-300"
                                         >
                                             Iniciar sesión
                                         </Link>
                                         <Link
                                             href={route("register")}
-                                            className="rounded-md px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 transition duration-300"
+                                            className="rounded-md px-4 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300"
                                         >
                                             Registrarse
                                         </Link>

@@ -1,3 +1,4 @@
+import Navbar from '@/Components/hooks/Navbar';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -22,6 +23,8 @@ export default function ResetPassword({ token, email }) {
     };
 
     return (
+        <>
+        <Navbar/>
         <GuestLayout>
             <Head title="Reset Password" />
 
@@ -90,5 +93,7 @@ export default function ResetPassword({ token, email }) {
                 </div>
             </form>
         </GuestLayout>
+        <Footer/>
+        </>
     );
 }
