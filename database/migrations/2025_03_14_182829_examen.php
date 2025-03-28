@@ -17,13 +17,13 @@ return new class extends Migration
             $table->integer('preguntas');
             //$table->string('imagenAComparar');
             $table->unsignedBigInteger('idUsuario');
-            $table->unsignedBigInteger('id_imagenAComprar');
+            $table->unsignedBigInteger('id_imagenAComparar');
             $table->unsignedBigInteger('id_imagenCorrecta');
             $table->dateTime('fecha_subida');
             $table->timestamps();
 
             $table->foreign('idUsuario')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('id_imagenAComprar')->references('id')->on('respuestas_alumnos')->onDelete('cascade');
+            $table->foreign('id_imagenAComparar')->references('id')->on('respuestas_alumnos')->onDelete('cascade');
             $table->foreign('id_imagenCorrecta')->references('id')->on('respuestas_maestras')->onDelete('cascade');
         });
     }

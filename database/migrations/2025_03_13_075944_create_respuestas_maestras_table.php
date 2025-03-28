@@ -14,7 +14,6 @@ return new class extends Migration
         // database/migrations/xxxx_create_respuestas_maestras_table.php
         Schema::create('respuestas_maestras', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idExamen'); // Relación con el examen
             $table->unsignedBigInteger('idUsuario'); // Relación con el usuario
             $table->integer('fila'); // Número de fila (ej: 1, 2, 3...)
             $table->string('columna', 1); // Letra de columna (A, B, C, D)
@@ -22,12 +21,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Clave foránea
-            $table->foreign('examen_id')
-                ->references('id')
-                ->on('examen')
-                ->onDelete('cascade'); // Si se borra el examen, se borran sus respuestas
-
-            $table->foreign('user_id')
+            $table->foreign('idUsuario')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');// Si se borra el examen, se borran sus respuestas

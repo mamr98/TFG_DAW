@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models;
 use App\Models\Nota;
 use App\Models\User;
+use App\Models\RespuestaAlumno;
+use App\Models\RespuestaMaestra;
 use Illuminate\Database\Eloquent\Model;
 
 class Examen extends Model
@@ -15,7 +17,7 @@ class Examen extends Model
         'asignatura',
         'preguntas',
         'idUsuario',
-        'id_imagenAComprar',
+        'id_imagenAComparar',
         'id_imagenCorrecta',
         
     ];
@@ -27,6 +29,16 @@ class Examen extends Model
     public function nota(){
         return $this->hasOne(Nota::class,'idExamen','id');
     }
+     public function respuestasAlumno()
+    {
+        return $this->belongsTo(RespuestaAlumno::class, 'id_imagenAComparar');
+    }
+
+    public function respuestasMaestra(){
+        return $this->belongsTo(RespuestaMaestra::class, 'id_imagenCorrecta');
+    }
+
+   
 
     public function respuestasMaestras()
     {

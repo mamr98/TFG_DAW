@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('respuestas_alumnos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idExamen'); // Relación con el examen
             $table->unsignedBigInteger('idUsuario'); // Relación con el alumno
             $table->integer('fila'); // Número de fila (ej: 1, 2, 3...)
             $table->string('columna', 1); // Letra marcada por el alumno (A, B, C, D)
@@ -21,12 +20,8 @@ return new class extends Migration
             $table->timestamps();
         
             // Claves foráneas
-            $table->foreign('examen_id')
-                  ->references('id')
-                  ->on('examen')
-                  ->onDelete('cascade');
-        
-            $table->foreign('user_id')
+           
+            $table->foreign('idUsuario')
                   ->references('id')
                   ->on('users')
                   ->onDelete('cascade');
