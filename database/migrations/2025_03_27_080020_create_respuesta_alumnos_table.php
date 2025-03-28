@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('respuestas_alumnos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('examen_id'); // Relación con el examen
-            $table->unsignedBigInteger('user_id'); // Relación con el alumno
+            $table->unsignedBigInteger('idExamen'); // Relación con el examen
+            $table->unsignedBigInteger('idUsuario'); // Relación con el alumno
             $table->integer('fila'); // Número de fila (ej: 1, 2, 3...)
             $table->string('columna', 1); // Letra marcada por el alumno (A, B, C, D)
             $table->string('imagenAComparar')->nullable(); // Ruta de la imagen subida por el alumno (opcional)

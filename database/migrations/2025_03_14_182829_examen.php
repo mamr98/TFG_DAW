@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('examen', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->integer('preguntas');
             $table->string('asignatura');
-            $table->string('imagenCorrecta')->nullable();
+            $table->integer('preguntas');
             //$table->string('imagenAComparar');
             $table->unsignedBigInteger('idUsuario');
             $table->unsignedBigInteger('id_imagenAComprar');
