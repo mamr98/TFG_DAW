@@ -17,9 +17,9 @@ class ProfesorSeeder extends Seeder
     {
         $profesores = [
              [
-                'name' => 'Miguel Milena',
+                'nombre' => 'Miguel Milena',
                 'email' => 'miguel.milena@ejemplo.com',
-                'password' => '12341234',
+                'contraseña' => '12341234',
                 'estado' => 'confirmado',
             ],/*
             [
@@ -44,11 +44,11 @@ class ProfesorSeeder extends Seeder
 
         foreach ($profesores as $profesor) {
             User::create([
-                'name' => $profesor['name'],
+                'nombre' => $profesor['nombre'],
                 'email' => $profesor['email'],
-                'email_verified_at' => now(),
-                'password' => Hash::make($profesor['password']),
-                'role' => 'profesor',
+                'verificacion_email' => now(),
+                'contraseña' => Hash::make($profesor['contraseña']),
+                'rol' => 'profesor',
                 'estado' => $profesor['estado'],
                 'remember_token' => Str::random(10),
             ]);

@@ -30,6 +30,11 @@ class Examen extends Model
 
     public function respuestasMaestras()
     {
-        return $this->hasMany(RespuestaMaestra::class, 'examen_id', 'id');
+        return $this->hasMany(RespuestaMaestra::class, 'idExamen', 'id');
+    }
+
+    public function respuestasAlumnos()
+    {
+        return $this->hasMany(RespuestaAlumno::class, 'idExamen', 'id');
     }
 }
