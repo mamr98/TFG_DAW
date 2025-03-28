@@ -25,6 +25,11 @@ return new class extends Migration
                 ->references('id')
                 ->on('examen')
                 ->onDelete('cascade'); // Si se borra el examen, se borran sus respuestas
+
+                $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 
