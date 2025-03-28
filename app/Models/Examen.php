@@ -14,9 +14,10 @@ class Examen extends Model
     protected $fillable = [
         'asignatura',
         'preguntas',
-        'imagenCorrecta',
-        'imagenAComparar',
         'idUsuario',
+        'id_imagenAComprar',
+        'id_imagenCorrecta',
+        
     ];
 
     public function user(){
