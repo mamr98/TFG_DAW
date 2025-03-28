@@ -11,6 +11,10 @@ use App\Http\Controllers\ComparacionController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
+Route::fallback(function(){
+    return Inertia::render('Errors/404');
+});
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
