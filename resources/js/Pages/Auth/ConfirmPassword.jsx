@@ -1,3 +1,5 @@
+import Footer from '@/Components/hooks/Footer';
+import Navbar from '@/Components/hooks/Navbar';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -19,6 +21,8 @@ export default function ConfirmPassword() {
     };
 
     return (
+        <>
+        <Navbar/>
         <GuestLayout>
             <Head title="Confirm Password" />
 
@@ -51,5 +55,7 @@ export default function ConfirmPassword() {
                 </div>
             </form>
         </GuestLayout>
+        <Footer/>
+        </>
     );
 }

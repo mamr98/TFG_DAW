@@ -10,7 +10,7 @@ export default function Navbar() {
     return (
         <>
             {/* Navbar */}
-            <nav className="bg-gray-800 shadow-sm w-full z-10 pt-4 pb-4">
+            <nav className="bg-gray-800 shadow-sm w-full z-10 pt-4 pb-3">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex items-center">
@@ -19,7 +19,7 @@ export default function Navbar() {
                                 className="flex-shrink-0 flex items-center"
                             >
                                 <ApplicationLogo className="h-8 w-auto text-blue-600" />
-                                <span className="ml-2 text-xl font-bold text-gray-800">
+                                <span className="ml-2 text-xl font-bold text-gray-800 dark:text-white">
                                     QuickMark
                                 </span>
                             </Link>

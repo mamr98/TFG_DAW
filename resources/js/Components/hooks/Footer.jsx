@@ -2,18 +2,12 @@ export default function Footer() {
     return(
         <>
         {/* Footer */}
-        <footer className="bg-[#001f3f] text-white py-4">
+        <footer className="bg-gray-800 text-white py-4">
                     <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
                         {/* Primera columna: Enlaces */}
-                        <div className="flex flex-col items-center sm:items-start justify-center text-left sm:pl-24">
+                        <div className="flex flex-col items-center md:items-start justify-center text-left md:pl-24">
                             <a href="#" className="hover:text-gray-300">
-                                Sobre nosotros
-                            </a>
-                            <a href="#" className="hover:text-gray-300">
-                                Política de privacidad
-                            </a>
-                            <a href="#" className="hover:text-gray-300">
-                                Términos y condiciones
+                                Politica de privacidad
                             </a>
                         </div>
 
