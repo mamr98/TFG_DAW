@@ -40,7 +40,7 @@ export default function Welcome({ auth }) {
                                     className="flex-shrink-0 flex items-center"
                                 >
                                     <ApplicationLogo className="h-8 w-auto text-blue-600" />
-                                    <span className="ml-2 text-xl font-bold text-gray-800 dark:text-white">
+                                    <span className="ml-2 text-xl font-bold text-white">
                                         QuickMark
                                     </span>
                                 </Link>
