@@ -131,6 +131,22 @@ class ExamenController extends Controller
     }
 
     public function generarCodigoExamen(){
-        
+        do {
+            $code = $this->ExamCode(); // Genera el código
+        } while (Examen::where('codigo', $code)->exists()); // Verifica que sea unico
+
+        return $code;
+    }
+
+    private function ExamCode(){
+        $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $numbers = '0123456789';
+
+        // Generando el codigo
+        $part1 = substr(str_shuffle($letters), 0, 3);
+        $part2 = substr(str_shuffle($numbers), 0, 3);
+        $part3 = substr(str_shuffle($letters), 0, 3);
+
+        return "{$part1}-{$part2}-{$part3}";
     }
 }
