@@ -1,4 +1,6 @@
 import Checkbox from '@/Components/Checkbox';
+import Footer from '@/Components/hooks/Footer';
+import Navbar from '@/Components/hooks/Navbar';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -22,6 +24,8 @@ export default function Login({ status, canResetPassword }) {
     };
 
     return (
+        <>
+        <Navbar/>
         <GuestLayout>
             <Head title="Log in" />
 
@@ -103,5 +107,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             </form>
         </GuestLayout>
+        <Footer/>
+        </>
     );
 }

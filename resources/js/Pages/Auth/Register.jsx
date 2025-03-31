@@ -1,3 +1,5 @@
+import Footer from '@/Components/hooks/Footer';
+import Navbar from '@/Components/hooks/Navbar';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -25,6 +27,8 @@ export default function Register() {
     };
 
     return (
+        <>
+        <Navbar/>
         <GuestLayout>
             <Head title="Register" />
 
@@ -119,5 +123,7 @@ export default function Register() {
                 </div>
             </form>
         </GuestLayout>
+        <Footer/>
+        </>
     );
 }

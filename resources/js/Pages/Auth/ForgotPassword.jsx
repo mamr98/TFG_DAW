@@ -1,3 +1,5 @@
+import Footer from '@/Components/hooks/Footer';
+import Navbar from '@/Components/hooks/Navbar';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
@@ -16,6 +18,8 @@ export default function ForgotPassword({ status }) {
     };
 
     return (
+        <>
+        <Navbar/>
         <GuestLayout>
             <Head title="Forgot Password" />
 
@@ -51,5 +55,7 @@ export default function ForgotPassword({ status }) {
                 </div>
             </form>
         </GuestLayout>
+        <Footer/>
+        </>
     );
 }
