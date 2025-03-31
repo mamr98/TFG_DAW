@@ -34,7 +34,7 @@ class Examen extends Model
         return $this->belongsTo(RespuestaAlumno::class, 'id_imagenAComparar');
     }
 
-    public function respuestasMaestra(){
+    public function respuestasMaestras(){
         return $this->belongsTo(RespuestaMaestra::class, 'id_imagenCorrecta');
     }
 }
