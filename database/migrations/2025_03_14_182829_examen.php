@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_imagenAComparar');
             $table->unsignedBigInteger('id_imagenCorrecta');
             $table->dateTime('fecha_subida');
-            $atble->string('codigo');
+            $table->string('codigo');
             $table->timestamps();
 
             $table->foreign('idUsuario')->references('id')->on('users')->onDelete('cascade');

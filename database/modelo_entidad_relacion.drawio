@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="fs26s8ENTE_4_NqMiJsl" name="Page-1">
-        <mxGraphModel dx="1014" dy="1663" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="843" dy="1506" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -634,6 +634,24 @@
                 </mxCell>
                 <mxCell id="471" value="&lt;font style=&quot;font-size: 7px;&quot;&gt;ID&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
                     <mxGeometry x="1570" y="603" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="472" value="" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="990" y="438" width="10" height="10" as="geometry"/>
+                </mxCell>
+                <mxCell id="474" value="" style="edgeStyle=segmentEdgeStyle;endArrow=none;html=1;curved=0;rounded=0;endSize=8;startSize=8;sourcePerimeterSpacing=0;targetPerimeterSpacing=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;endFill=0;" edge="1" parent="1">
+                    <mxGeometry width="100" relative="1" as="geometry">
+                        <mxPoint x="875" y="503" as="sourcePoint"/>
+                        <mxPoint x="1000" y="450" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="875" y="480"/>
+                            <mxPoint x="990" y="480"/>
+                            <mxPoint x="990" y="448"/>
+                            <mxPoint x="1000" y="448"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="475" value="codigo" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=-90;" vertex="1" parent="1">
+                    <mxGeometry x="965" y="388" width="60" height="30" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
