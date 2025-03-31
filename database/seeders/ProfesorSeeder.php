@@ -16,30 +16,20 @@ class ProfesorSeeder extends Seeder
     public function run(): void
     {
         $profesores = [
-             [
+             /* [
                 'name' => 'Miguel Milena',
                 'email' => 'miguel.milena@ejemplo.com',
                 'password' => '12341234',
                 'estado' => 'confirmado',
-            ],/*
-            [
+                'role' => 'profesor'
+             ],
+             [
                 'name' => 'David Pelaez',
                 'email' => 'david.pelaez@ejemplo.com',
                 'password' => '12341234',
                 'estado' => 'confirmado',
-            ],
-            [
-                'name' => 'Marcos Garcia',
-                'email' => 'marcos.garcia@ejemplo.com',
-                'password' => '12341234',
-                'estado' => 'confirmado',
-            ],
-            [
-                'name' => 'Pablo Torre',
-                'email' => 'pablo.torre@ejemplo.com',
-                'password' => '12341234',
-                'estado' => 'no_confirmado',
-            ], */
+                'role' => 'profesor'
+             ] */
         ];
 
         foreach ($profesores as $profesor) {

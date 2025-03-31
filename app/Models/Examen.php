@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models;
 use App\Models\Nota;
 use App\Models\User;
+use App\Models\RespuestaAlumno;
+use App\Models\RespuestaMaestra;
 use Illuminate\Database\Eloquent\Model;
 
 class Examen extends Model
@@ -14,9 +16,10 @@ class Examen extends Model
     protected $fillable = [
         'asignatura',
         'preguntas',
-        'imagenCorrecta',
-        'imagenAComparar',
         'idUsuario',
+        'id_imagenAComparar',
+        'id_imagenCorrecta',
+        'codigo'
     ];
 
     public function user(){
@@ -26,9 +29,12 @@ class Examen extends Model
     public function nota(){
         return $this->hasOne(Nota::class,'idExamen','id');
     }
-
-    public function respuestasMaestras()
+     public function respuestasAlumno()
     {
-        return $this->hasMany(RespuestaMaestra::class, 'examen_id', 'id');
+        return $this->belongsTo(RespuestaAlumno::class, 'id_imagenAComparar');
+    }
+
+    public function respuestasMaestras(){
+        return $this->belongsTo(RespuestaMaestra::class, 'id_imagenCorrecta');
     }
 }
