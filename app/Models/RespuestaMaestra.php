@@ -8,9 +8,14 @@ class RespuestaMaestra extends Model
 {
     protected $table = 'respuestas_maestras';
 
-    protected $fillable = ['idUsuario', 'fila', 'columna', 'imagenCorrecta'];
+    protected $fillable = [
+        'idUsuario',
+        'fila',
+        'columna',
+        'imagenCorrecta'
+    ];
 
-    public function examen()
+    public function user()
 {
     return $this->belongsTo(User::class, 'idUsuario', 'id');
 }

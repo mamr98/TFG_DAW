@@ -19,7 +19,7 @@ class Examen extends Model
         'idUsuario',
         'id_imagenAComparar',
         'id_imagenCorrecta',
-        
+        'codigo'
     ];
 
     public function user(){

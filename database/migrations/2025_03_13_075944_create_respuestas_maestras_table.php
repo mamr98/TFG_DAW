@@ -21,10 +21,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Clave foránea
-            $table->foreign('idUsuario')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');// Si se borra el examen, se borran sus respuestas
+            $table->foreign('idUsuario')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

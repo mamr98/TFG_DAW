@@ -18,13 +18,9 @@ return new class extends Migration
             $table->string('columna', 1); // Letra marcada por el alumno (A, B, C, D)
             $table->string('imagenAComparar')->nullable(); // Ruta de la imagen subida por el alumno (opcional)
             $table->timestamps();
-        
+
             // Claves foráneas
-           
-            $table->foreign('idUsuario')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('cascade');
+            $table->foreign('idUsuario')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
