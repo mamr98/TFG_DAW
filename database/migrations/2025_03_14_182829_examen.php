@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('asignatura');
             $table->integer('preguntas');
-            //$table->string('imagenAComparar');
             $table->unsignedBigInteger('idUsuario');
             $table->unsignedBigInteger('id_imagenAComparar');
             $table->unsignedBigInteger('id_imagenCorrecta');
             $table->dateTime('fecha_subida');
+            $atble->string('codigo');
             $table->timestamps();
 
             $table->foreign('idUsuario')->references('id')->on('users')->onDelete('cascade');
