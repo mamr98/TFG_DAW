@@ -37,16 +37,4 @@ class Examen extends Model
     public function respuestasMaestra(){
         return $this->belongsTo(RespuestaMaestra::class, 'id_imagenCorrecta');
     }
-
-   
-
-    public function respuestasMaestras()
-    {
-        return $this->hasMany(RespuestaMaestra::class, 'idExamen', 'id');
-    }
-
-    public function respuestasAlumnos()
-    {
-        return $this->hasMany(RespuestaAlumno::class, 'idExamen', 'id');
-    }
 }
