@@ -20,99 +20,103 @@ export default function Welcome({ auth }) {
 
         // Ejecutar al montar y al cambiar el tamaño
         handleResize();
-        window.addEventListener('resize', handleResize);
-        
-        return () => window.removeEventListener('resize', handleResize);
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
+
+    const baseUrl = window.location.origin + (window.location.pathname.includes('TFG_DAW') ? '/TFG_DAW/public' : '');
     return (
         <>
             <Head title="Welcome" />
             <div className="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
                 {/* Navbar */}
                 <nav className="bg-gray-800 shadow-sm w-full z-10 pt-4 pb-4">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between h-16">
-                    <div className="flex items-center">
-                        <Link
-                            href="/"
-                            className="flex-shrink-0 flex items-center"
-                        >
-                            <ApplicationLogo className="h-8 w-auto text-blue-600" />
-                            <span className="ml-2 text-xl font-bold text-gray-800 dark:text-white">
-                                QuickMark
-                            </span>
-                        </Link>
-                    </div>
-                    <div className="-mr-2 flex items-center">
-                        {auth.user ? (
-                            <Link
-                                href={route("dashboard")}
-                                className="rounded-md px-4 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300"
-                            >
-                                Dashboard
-                            </Link>
-                        ) : (
-                            <>
-                                {/* Versión desktop*/}
-                                <div className="hidden sm:flex space-x-4">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="flex justify-between h-16">
+                            <div className="flex items-center">
+                                <Link
+                                    href={`${baseUrl}/`}
+                                    className="flex-shrink-0 flex items-center"
+                                >
+                                    <ApplicationLogo className="h-8 w-auto text-blue-600" />
+                                    <span className="ml-2 text-xl font-bold text-gray-800 dark:text-white">
+                                        QuickMark
+                                    </span>
+                                </Link>
+                            </div>
+                            <div className="-mr-2 flex items-center">
+                                {auth.user ? (
+                                    <Link
+                                        href={route("dashboard")}
+                                        className="rounded-md px-4 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300"
+                                    >
+                                        Dashboard
+                                    </Link>
+                                ) : (
+                                    <>
+                                        {/* Versión desktop*/}
+                                        <div className="hidden sm:flex space-x-4">
+                                            <Link
+                                                href={route("login")}
+                                                className="rounded-md px-3 py-2 text-white font-medium hover:bg-gray-700 transition duration-300"
+                                            >
+                                                Iniciar sesión
+                                            </Link>
+                                            <Link
+                                                href={route("register")}
+                                                className="rounded-md px-3 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300"
+                                            >
+                                                Registrarse
+                                            </Link>
+                                        </div>
+
+                                        {/* Versión móvil - botón hamburguesa */}
+                                        {isMobile && (
+                                            <div className="sm:hidden">
+                                                <button
+                                                    onClick={() =>
+                                                        setIsOpen(!isOpen)
+                                                    }
+                                                    className="inline-flex items-center justify-center px-4 p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none"
+                                                    aria-expanded="false"
+                                                >
+                                                    {isOpen ? (
+                                                        <i className="fas fa-times text-xl"></i>
+                                                    ) : (
+                                                        <i className="fas fa-bars text-xl"></i>
+                                                    )}
+                                                </button>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Menú desplegable para móviles */}
+                        {isMobile && isOpen && !auth.user && (
+                            <div className="sm:hidden pb-4">
+                                <div className="flex flex-col space-y-2 px-2 pt-2">
                                     <Link
                                         href={route("login")}
-                                        className="rounded-md px-3 py-2 text-white font-medium hover:bg-gray-700 transition duration-300"
+                                        className="block rounded-md px-3 py-2 text-white font-medium hover:bg-gray-700 transition duration-300 text-center"
+                                        onClick={() => setIsOpen(false)}
                                     >
                                         Iniciar sesión
                                     </Link>
                                     <Link
                                         href={route("register")}
-                                        className="rounded-md px-3 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300"
+                                        className="block rounded-md px-3 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300 text-center"
+                                        onClick={() => setIsOpen(false)}
                                     >
                                         Registrarse
                                     </Link>
                                 </div>
-
-                                {/* Versión móvil - botón hamburguesa */}
-                                {isMobile && (
-                                    <div className="sm:hidden">
-                                        <button
-                                            onClick={() => setIsOpen(!isOpen)}
-                                            className="inline-flex items-center justify-center px-4 p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none"
-                                            aria-expanded="false"
-                                        >
-                                            {isOpen ? (
-                                                <i className="fas fa-times text-xl"></i> 
-                                            ) : (
-                                                <i className="fas fa-bars text-xl"></i> 
-                                            )}
-                                        </button>
-                                    </div>
-                                )}
-                            </>
+                            </div>
                         )}
                     </div>
-                </div>
-
-                {/* Menú desplegable para móviles */}
-                {isMobile && isOpen && !auth.user && (
-                    <div className="sm:hidden pb-4">
-                        <div className="flex flex-col space-y-2 px-2 pt-2">
-                            <Link
-                                href={route("login")}
-                                className="block rounded-md px-3 py-2 text-white font-medium hover:bg-gray-700 transition duration-300 text-center"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                Iniciar sesión
-                            </Link>
-                            <Link
-                                href={route("register")}
-                                className="block rounded-md px-3 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300 text-center"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                Registrarse
-                            </Link>
-                        </div>
-                    </div>
-                )}
-            </div>
-        </nav>
+                </nav>
 
                 {/* Header */}
                 <header
@@ -292,7 +296,7 @@ export default function Welcome({ auth }) {
                     </div>
                 </section>
 
-                <Footer/>
+                <Footer />
             </div>
         </>
     );

@@ -6,7 +6,7 @@ export default function Navbar() {
     const normalizedPath = isDevelopment 
     ? url.replace('/TFG_DAW/public', '') 
     : url;
-    console.log("La url es:" + url);
+    const baseUrl = window.location.origin + (window.location.pathname.includes('TFG_DAW') ? '/TFG_DAW/public' : '');
     return (
         <>
             {/* Navbar */}
@@ -15,7 +15,7 @@ export default function Navbar() {
                     <div className="flex justify-between h-16">
                         <div className="flex items-center">
                             <Link
-                                href="/"
+                                href={`${baseUrl}/`}
                                 className="flex-shrink-0 flex items-center"
                             >
                                 <ApplicationLogo className="h-8 w-auto text-blue-600" />
