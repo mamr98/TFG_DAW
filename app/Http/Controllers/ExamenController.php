@@ -129,4 +129,8 @@ class ExamenController extends Controller
         return redirect()->route('alumno.examen')
         ->with('nota', $nota); // Pasar la nota a la vista
     }
+
+    public function generarCodigoExamen(){
+        
+    }
 }
