@@ -6,7 +6,7 @@ const NotFound = () => {
     return (
         <>
         <Navbar/>
-        <div className="min-h-[70vh] flex flex-col items-center justify-center sm:min-h-[79.8vh] bg-gray-900 p-4 text-center">
+        <div className="min-h-[70vh] flex flex-col items-center justify-center sm:min-h-[calc(100vh-148px)] bg-gray-900 p-4 text-center">
             <h1 className="text-7xl font-bold text-red-500">404</h1>
             <p className="text-4xl text-gray-100 mt-4 font-bold">Error 404! Not Found</p>
             <br />
