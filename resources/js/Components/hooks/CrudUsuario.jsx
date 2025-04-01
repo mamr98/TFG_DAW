@@ -1,21 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import PrimaryButton from "../PrimaryButton";
 
 function CrudUsuario() {
-
-
     return (
-        <div className="flex flex-col items-center justify-center p-6 bg-[#003049] shadow-md rounded-lg">
-            <h3 className="text-lg font-semibold text-white mb-4">CRUD Usuarios</h3>
+        <div className="flex p-6 bg-[#003049] shadow-md rounded-lg">
+            {/* Columna izquierda - Alumnos */}
+            <div className="w-1/2 pr-2 border-r border-gray-600 flex justify-center">
+                <div className="flex flex-col items-center w-full max-w-xs"> {/* max-w-xs limita el ancho del contenido */}
+                    <h3 className="text-lg font-semibold text-white mb-4">CRUD Alumnos</h3>
 
-            {/* Botón de crear */}
-            <PrimaryButton children={"Crear Usuario"} className="mt-4" />
+                    <PrimaryButton children={"Crear Alumnos"} className="mt-4 w-full flex justify-center items-center" />
+                    <PrimaryButton children={"Actualizar Alumnos"} className="mt-4 w-full flex justify-center items-center" />
+                    <PrimaryButton children={"Borrar Alumnos"} className="mt-4 w-full flex justify-center items-center" />
+                </div>
+            </div>
 
-            {/* Botón de actualizar */}
-            <PrimaryButton children={"Actualizar Usuario"} className="mt-4" />
+            {/* Columna derecha - Profesores */}
+            <div className="w-1/2 pl-2 flex justify-center">
+                <div className="flex flex-col items-center w-full max-w-xs">
+                    <h3 className="text-lg font-semibold text-white mb-4">CRUD Profesores</h3>
 
-            {/* Botón de borrar */}
-            <PrimaryButton children={"Borrar Usuario"} className="mt-4" />
+                    <PrimaryButton children={"Crear Profesores"} className="mt-4 w-full flex justify-center items-center" />
+                    <PrimaryButton children={"Actualizar Profesores"} className="mt-4 w-full flex justify-center items-center" />
+                    <PrimaryButton children={"Borrar Profesores"} className="mt-4 w-full flex justify-center items-center" />
+                </div>
+            </div>
         </div>
     );
 }

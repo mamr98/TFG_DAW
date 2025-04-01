@@ -24,26 +24,15 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+/* AUTHENTICATED LATOUT */
+Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage');})->middleware(['auth', 'verified'])->name('subir-imagen');
+Route::get('/notas', function () {return Inertia::render('NotasPage');})->middleware(['auth', 'verified'])->name('notas');
+Route::get('/gestionusuarios', function () {return Inertia::render('CreacionUsuarioPage');})->middleware(['auth', 'verified'])->name('gestionusuarios');
+Route::get('/panelprofesor', function(){return Inertia::render('Panel');})->middleware(['auth', 'verified'])->name('panelprofesor');
 
-Route::get('/subir-imagen', function () {
-    return Inertia::render('SubirImagenPage');
-})->middleware(['auth', 'verified'])->name('subir-imagen');
-
-Route::get('/notas', function () {
-    return Inertia::render('NotasPage');
-})->middleware(['auth', 'verified'])->name('notas');
-
-Route::get('/gestionusuarios', function () {
-    return Inertia::render('CreacionUsuarioPage');
-})->middleware(['auth', 'verified'])->name('gestionusuarios');
-
-// Rutas para la verificación de email
-Route::get('/email/verify', function () {
-    return Inertia::render('Auth/VerifyEmail');
-})->middleware('auth')->name('verification.notice');
+/* VERIFICACION EMAIL */
+Route::get('/email/verify', function () {return Inertia::render('Auth/VerifyEmail');})->middleware('auth')->name('verification.notice');
 
 // Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
 //     $request->fulfill();
@@ -92,33 +81,6 @@ Route::middleware('auth', 'verified')->group(function () {
 */
 
     /* POR COMPROBAR (USO DE LA API DE OPENAI PARA IMAGEN) */
-// routes/web.php
-Route::middleware(['auth', 'verified'])->group(function () {
-    // Panel principal del profesor
-    Route::get('/profesor', function () {
-        return inertia('Profesor/Panel', [
-            'examenes' => auth()->user()->examenes()
-                            ->select('examen.*') // Específica la tabla
-                            ->withCount(['respuestasMaestras as respuestas_count'])
-                            ->orderBy('fecha_subida', 'desc')
-                            ->get()
-        ]);
-    })->name('profesor.dashboard');
-
-    // Rutas para exámenes (las que ya tenías)
-    Route::get('/profesor/examen', function () {
-        return inertia('Profesor/SubirExamenMaestro');
-    })->name('profesor.examen');
-
-    Route::get('/profesor/examen/{examen}', function (Examen $examen) {
-    return inertia('Profesor/DetalleExamen', [
-        'examen' => $examen->load('respuestasMaestras')
-    ]);
-})->name('profesor.examen.show');
-
-    Route::post('/profesor/examen/subir', [ExamenController::class, 'subirExamenMaestro'])
-        ->name('profesor.examen.subir');
-    });
 
 // Rutas para el alumno
 Route::prefix('alumno/examen')->middleware(['auth', 'verified'])->group(function () {
