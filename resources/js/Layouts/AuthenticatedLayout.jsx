@@ -182,6 +182,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             href={route('panelprofesor')}
                             active={route().current('panelprofesor')}
                         >
+                            Panel Profesor
                         </ResponsiveNavLink>
                     </div>
 

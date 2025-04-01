@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { router } from '@inertiajs/react'
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function PanelProfesor() {
     const { examenes, flash } = usePage().props;
@@ -45,24 +46,21 @@ export default function PanelProfesor() {
     return (
 
         <AuthenticatedLayout
-                    header={
-                        <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                            Panel Profesor
-                        </h2>
-                    }
-                >
+            header={
+                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+                    Panel Profesor
+                </h2>
+            }
+        >
                     <Head title="Panel Profesor" />
         <div className="max-w-4xl mx-auto p-6">
 
             {/* Botón de acción */}
-            <div className="mb-6">
-                <button
-                    onClick={handleNuevoExamen}
-                    className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                >
-                    Subir nuevo examen
-                </button>
-            </div>
+            <PrimaryButton
+                children={"Subir Nuevo Examen"}
+                className="mt-4 w-full flex justify-center items-center"
+                onClick={handleNuevoExamen}
+            />
 
             {/* Contenido condicional */}
             {examenes ? (
