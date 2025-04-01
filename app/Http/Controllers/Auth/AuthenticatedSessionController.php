@@ -29,21 +29,26 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
 {
-    $request->authenticate();
+    $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
 
-    $user = Auth::user();
-
-    // Verificamos si el usuario ha verificado el correo
-    if (!$user->hasVerifiedEmail()) {
-        Auth::logout();
-        return back()->withErrors([
-            'email' => 'You need to verify your email before logging in.',
-        ]);
+    // Intentar autenticar como alumno
+    if (Auth::guard('alumno')->attempt($credentials)) {
+        $request->session()->regenerate();
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 
-    $request->session()->regenerate();
+    // Intentar autenticar como profesor
+    if (Auth::guard('profesor')->attempt($credentials)) {
+        $request->session()->regenerate();
+        return redirect()->intended(route('dashboard', absolute: false));
+    }
 
-    return redirect()->intended(route('dashboard', absolute: false));
+    return back()->withErrors([
+        'email' => 'Las credenciales proporcionadas no coinciden con nuestros registros.',
+    ]);
 }
 
 
