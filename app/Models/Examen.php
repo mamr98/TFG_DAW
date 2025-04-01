@@ -16,14 +16,14 @@ class Examen extends Model
     protected $fillable = [
         'asignatura',
         'preguntas',
-        'idUsuario',
+        'id_alumno',
         'id_imagenAComparar',
         'id_imagenCorrecta',
         'codigo'
     ];
 
     public function user(){
-        return $this->belongsTo(User::class, 'idUsuario');
+        return $this->belongsTo(Alumno::class, 'id_alumno');
     }
 
     public function nota(){
@@ -36,5 +36,10 @@ class Examen extends Model
 
     public function respuestasMaestras(){
         return $this->belongsTo(RespuestaMaestra::class, 'id_imagenCorrecta');
+    }
+
+    public function examenes_clase()
+    {
+        return $this->hasMany(Examen_Clase::class, 'id_examen', 'id');
     }
 }

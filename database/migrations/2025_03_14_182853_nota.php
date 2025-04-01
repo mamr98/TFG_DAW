@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('comentario');
             $table->string('nota');
-            $table->unsignedBigInteger('idUsuario');
+            $table->unsignedBigInteger('id_alumno');
             $table->unsignedBigInteger('idExamen');
             $table->timestamps();
 
-            $table->foreign('idUsuario')->references('id')->on('users');
+            $table->foreign('id_alumno')->references('id')->on('alumno');
             $table->foreign('idExamen')->references('id')->on('examen');
         });
     }

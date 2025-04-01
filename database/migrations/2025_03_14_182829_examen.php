@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('asignatura');
             $table->integer('preguntas');
-            $table->unsignedBigInteger('idUsuario');
+            $table->unsignedBigInteger('id_alumno');
             $table->unsignedBigInteger('id_imagenAComparar');
             $table->unsignedBigInteger('id_imagenCorrecta');
             $table->dateTime('fecha_subida');
             $table->string('codigo');
             $table->timestamps();
 
-            $table->foreign('idUsuario')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('id_alumno')->references('id')->on('alumno')->onDelete('cascade');
             $table->foreign('id_imagenAComparar')->references('id')->on('respuestas_alumnos')->onDelete('cascade');
             $table->foreign('id_imagenCorrecta')->references('id')->on('respuestas_maestras')->onDelete('cascade');
         });

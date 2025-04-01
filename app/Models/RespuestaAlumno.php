@@ -9,13 +9,13 @@ class RespuestaAlumno extends Model
     protected $table = "respuestas_alumnos";
 
     protected $fillable = [
-        'idUsuario',
+        'id_alumno',
         'fila',
         'imagenAComparar',
         'columna',
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class,'idUsuario','id');
+    public function alumno(){
+        return $this->belongsTo(Alumno::class,'id_alumno');
     }
 }

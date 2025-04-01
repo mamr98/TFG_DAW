@@ -13,7 +13,7 @@ class Nota extends Model
     protected $fillable = [
         'comentario',
         'nota',
-        'idUsuario',
+        'id_alumno',
         'idExamen',
     ];
 
