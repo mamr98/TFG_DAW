@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Alumno;
 
 class UserController extends Controller
 {
@@ -13,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = Alumno::all();
         return response()->json($users);
     }
 
@@ -30,7 +31,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::create($request->all());
+        $user = Alumno::create($request->all());
         return response()->json($user, 201);
     }
 
@@ -39,7 +40,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::findOrFail($id);
+        $user = Alumno::findOrFail($id);
         return response()->json($user);
     }
 
@@ -56,7 +57,7 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = User::findOrFail($id);
+        $user = Alumno::findOrFail($id);
         $user->update($request->all());
         return response()->json($user);
     }
@@ -66,7 +67,7 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        User::destroy($id);
+        Alumno::destroy($id);
         return response()->json(null, 204);
     }
 }
