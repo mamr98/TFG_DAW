@@ -49,6 +49,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Gestión Usuarios
                                 </NavLink>
+                                <NavLink
+                                    href={route('panelprofesor')}
+                                    active={route().current('panelprofesor')}
+                                >
+                                    Panel Profesor
+                                </NavLink>
                             </div>
                         </div>
 
@@ -171,6 +177,11 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('gestionusuarios')}
                         >
                             Gestión Usuarios
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('panelprofesor')}
+                            active={route().current('panelprofesor')}
+                        >
                         </ResponsiveNavLink>
                     </div>
 

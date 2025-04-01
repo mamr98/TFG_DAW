@@ -2,6 +2,8 @@ import { Link, usePage } from '@inertiajs/react';
 import Swal from 'sweetalert2';
 import { useEffect } from 'react';
 import { router } from '@inertiajs/react'
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head } from "@inertiajs/react";
 
 export default function PanelProfesor() {
     const { examenes, flash } = usePage().props;
@@ -41,8 +43,16 @@ export default function PanelProfesor() {
 
 
     return (
+
+        <AuthenticatedLayout
+                    header={
+                        <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+                            Panel Profesor
+                        </h2>
+                    }
+                >
+                    <Head title="Panel Profesor" />
         <div className="max-w-4xl mx-auto p-6">
-            <h1 className="text-2xl font-bold mb-6">Panel del Profesor</h1>
 
             {/* Botón de acción */}
             <div className="mb-6">
@@ -85,5 +95,6 @@ export default function PanelProfesor() {
                 </div>
             )}
         </div>
+        </AuthenticatedLayout>
     );
 }
