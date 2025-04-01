@@ -51,7 +51,7 @@ export default function Welcome({ auth }) {
                                         href={route("dashboard")}
                                         className="rounded-md px-4 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300"
                                     >
-                                        Dashboard
+                                        Acceder App
                                     </Link>
                                 ) : (
                                     <>
