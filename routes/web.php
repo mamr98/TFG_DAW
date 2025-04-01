@@ -24,7 +24,7 @@ Route::get('/', function () {
     ]);
 });
 
-/* AUTHENTICATED LATOUT */
+/* AUTHENTICATED LAYOUT */
 Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage');})->middleware(['auth', 'verified'])->name('subir-imagen');
 Route::get('/notas', function () {return Inertia::render('NotasPage');})->middleware(['auth', 'verified'])->name('notas');
