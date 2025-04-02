@@ -51,9 +51,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     // Constantes para los roles
-    const ALUMNO = 0;
-    const PROFESOR = 1;
-    const ADMINISTRADOR = 2;
+    const ALUMNO = 1;
+    const PROFESOR = 2;
+    const ADMIN = 3;
 
     // Relacion con clases (alumno)
     public function relacion_clase_alumno()
