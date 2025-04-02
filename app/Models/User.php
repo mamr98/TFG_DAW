@@ -50,19 +50,72 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    /**
-     * Get the exams created by the user.
-     */
-    public function examenes()
+    // Constantes para los roles
+    const ALUMNO = 1;
+    const PROFESOR = 2;
+    const ADMIN = 3;
+
+    // Relacion con clases (alumno)
+    public function relacion_clase_alumno()
     {
-        return $this->hasMany(Examen::class, 'idUsuario');
+        return $this->belongsToMany(Clase::class, 'clase_alumno');
     }
 
-    /**
-     * Get the notes/grades for the user.
-     */
-    public function nota()
+    // Relacion con profesor (profesor)
+    public function relacion_clase_profesor()
     {
-        return $this->hasMany(Nota::class, 'idUsuario', 'id');
+        return $this->belongsToMany(Clase::class, 'clase_profesor');
+    }
+
+    // 1. Exámenes asignados como alumno (ya lo tenías)
+    public function examenesAsignados()
+    {
+        return $this->belongsToMany(Examen::class, 'examen_alumno')
+                   ->withPivot(['fecha_subida', 'fichero_alumno', 'json_alumno', 'nota'])
+                   ->withTimestamps();
+    }
+
+    // 2. Exámenes creados como profesor (NUEVA)
+    public function examenesCreados()
+    {
+        return $this->hasMany(Examen::class, 'profesor_id');
+    }
+
+    // 3. Exámenes calificados (a través de ExamenAlumno) (NUEVA)
+    public function examenesCalificados()
+    {
+        return $this->hasManyThrough(
+            ExamenAlumno::class,
+            Examen::class,
+            'profesor_id', // FK en tabla examenes
+            'examen_id',   // FK en tabla examen_alumno
+            'id',         // PK en users
+            'id'          // PK en examenes
+        );
+    }
+
+    // MÉTODOS ADICIONALES PARA ROLES:
+
+    public function esAdministrador()
+    {
+        return $this->rol === self::ADMIN;
+    }
+
+    public function esProfesor()
+    {
+        return $this->rol === self::PROFESOR;
+    }
+
+    public function esAlumno()
+    {
+        return $this->rol === self::ALUMNO;
+    }
+
+    // Método para obtener todos los exámenes relacionados con el usuario
+    public function todosLosExamenes()
+    {
+        return $this->esProfesor() 
+            ? $this->examenesCreados()
+            : $this->examenesAsignados();
     }
 }
