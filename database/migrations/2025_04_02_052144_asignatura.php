@@ -11,16 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('nota', function (Blueprint $table) {
+        Schema::create('asignatura', function (Blueprint $table) {
             $table->id();
-            $table->string('comentario');
-            $table->string('nota');
-            $table->unsignedBigInteger('idUsuario');
-            $table->unsignedBigInteger('idExamen');
+            $table->string('nombre');
             $table->timestamps();
-
-            $table->foreign('idUsuario')->references('id')->on('users');
-            $table->foreign('idExamen')->references('id')->on('examen');
         });
     }
 
@@ -29,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('asignatura');
     }
 };
