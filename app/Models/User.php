@@ -24,7 +24,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'rol',
         'estado',
     ];
 
@@ -50,11 +49,6 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
-
-    // Constantes para los roles
-    const ALUMNO = 1;
-    const PROFESOR = 2;
-    const ADMIN = 3;
 
     // Relacion con clases (alumno)
     public function relacion_clase_alumno()
@@ -93,23 +87,6 @@ class User extends Authenticatable implements MustVerifyEmail
             'id',         // PK en users
             'id'          // PK en examenes
         );
-    }
-
-    // MÉTODOS ADICIONALES PARA ROLES:
-
-    public function esAdministrador()
-    {
-        return $this->rol === self::ADMIN;
-    }
-
-    public function esProfesor()
-    {
-        return $this->rol === self::PROFESOR;
-    }
-
-    public function esAlumno()
-    {
-        return $this->rol === self::ALUMNO;
     }
 
     // Método para obtener todos los exámenes relacionados con el usuario
