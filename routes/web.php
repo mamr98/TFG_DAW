@@ -69,31 +69,14 @@ Route::middleware('auth', 'verified')->group(function () {
     /* Crear y Guardar un nuevo usuario */
     Route::post('/users', [UserController::class, 'store'])->name('users.store');
     /* Mostrar los detalles de un usuario */
-    Route::get('/user', [UserController::class, 'show'])->name('users.show');
+    Route::get('/users', [UserController::class, 'show'])->name('users.show');
     /* Actualizar un usuario */
     Route::put('/users', [UserController::class, 'update'])->name('users.update');
     /* Eliminar un usuario */
     Route::delete('/users', [UserController::class, 'delete'])->name('users.delete');
 });
-
-/*
-                IMAGENES
-*/
-
-    /* POR COMPROBAR (USO DE LA API DE OPENAI PARA IMAGEN) */
-
-// Rutas para el alumno
-Route::prefix('alumno/examen')->middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', function () {
-        return inertia('Alumno/SubirExamenAlumno', [
-            'examenes' => \App\Models\Examen::all(),
-        ]);
-    })->name('alumno.examen');
-
-    Route::post('/subir', [ExamenController::class, 'subirExamenAlumno'])
-        ->name('alumno.examen.subir');
-});
-
+Route::get('/usuario', [UserController::class, 'index'])->name('users.index');
+Route::post('/usuario', [UserController::class, 'create'])->name('users.create');
 
 
 

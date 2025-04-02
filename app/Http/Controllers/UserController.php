@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -20,9 +22,20 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $user = new User();
+        $user -> name = $request ->input('name');
+        $user -> email = $request ->input('email');
+        $user->password = Hash::make($request->input('password'));
+        $user -> estado = $request ->input('password');
+        $role = Role::where('name', 'alumno')->first();
+
+        if ($role) {
+            $user->roles()->sync([$role->id]); // Asigna el rol correctamente
+        } 
+        $user->save();
+        return response()->json($user, 201);
     }
 
     /**
@@ -30,8 +43,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::create($request->all());
-        return response()->json($user, 201);
+        
     }
 
     /**
