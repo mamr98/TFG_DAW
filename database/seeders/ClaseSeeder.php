@@ -28,7 +28,7 @@ class ClaseSeeder extends Seeder
             Clase::create(['nombre' => $nombreClase]);
         }
 
-        // Obtener todos los profesores disponibles
+        /* // Obtener todos los profesores disponibles
         $profesores = User::where('rol', User::PROFESOR)->get();
         $totalProfesores = $profesores->count();
 
@@ -55,6 +55,6 @@ class ClaseSeeder extends Seeder
                     'updated_at' => now()
                 ]);
             }
-        }
+        } */
     }
 }
