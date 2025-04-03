@@ -170,7 +170,7 @@ return [
     */
 
     'secure' => env('SESSION_SECURE_COOKIE', true),
-    'same_site' => 'lax',
+    'same_site' => 'none',
     'http_only' => true,
 
     /*
