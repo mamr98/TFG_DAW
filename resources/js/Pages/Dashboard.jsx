@@ -1,8 +1,11 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import StatsDashboard from "@/Components/hooks/StatsDashboard";
+import Can from "../Components/hooks/Can";
+import { useAuth } from "../Context/AuthContext";
 
 export default function Dashboard({ stats }) {
+    const { user } = useAuth(); // Accede al usuario
     return (
         <AuthenticatedLayout
             header={
@@ -25,6 +28,9 @@ export default function Dashboard({ stats }) {
                                     <h3 className="text-lg font-semibold text-indigo-800">Próximos Exámenes</h3>
                                     {/* Lista de exámenes próximos */}
                                 </div>
+                                <Can permission="gestionusuarios">
+                                        <p className="text-green-800">Este es un reporte visible solo para quienes tienen permiso.</p>
+                                    </Can>
                                 <div className="bg-green-50 p-6 rounded-lg">
                                     <h3 className="text-lg font-semibold text-green-800">Logros Recientes</h3>
                                     {/* Lista de logros */}
