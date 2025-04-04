@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ComparacionController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\Admin\UserContoller;
 
 Route::fallback(function(){
     return Inertia::render('Errors/404');
@@ -79,5 +80,10 @@ Route::get('/usuario', [UserController::class, 'index'])->name('users.index');
 Route::post('/usuario', [UserController::class, 'create'])->name('users.create');
 
 
+/*
+    RUTAS PARA LOS CONTROLADORES DE ADMIN
+*/
+
+Route::get('/dashboard', function () {return Inertia::render('Admin/Dashboard');})->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__.'/auth.php';
