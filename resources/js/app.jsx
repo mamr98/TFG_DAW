@@ -12,7 +12,9 @@ createInertiaApp({
     resolve: (name) => resolvePageComponent(
         [
             `./Pages/${name}.jsx`,
-            `./Pages/Profesor/${name}.jsx`
+            `./Pages/Profesor/${name}.jsx`,
+            `./Pages/Admin/${name}.jsx`,
+            `./Pages/Alumno/${name}.jsx`,
         ],
         import.meta.glob('./Pages/**/*.jsx')
     ),
