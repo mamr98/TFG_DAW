@@ -59,13 +59,21 @@ Route::middleware('auth', 'verified')->group(function () {
 });
 
 //rutas para admin
-/* middleware('auth', 'verified', "role:admin")->group(function () {
-
-}); */
+Route::middleware('auth', 'verified', "role:admin")->group(function () {
+    Route::get('/admin', [UserController::class, 'index'])->name('admin.index');
+    Route::get('/admin', [UserController::class, 'edit'])->name('admin.edit');
+    Route::post('/admin', [UserController::class, 'createAdmin'])->name('admin.create');
+    Route::patch('/admin', [UserController::class, 'update'])->name('profile.update');
+    Route::delete('/admin', [UserController::class, 'destroy'])->name('admin.destroy');
+});
 
 //rutas para profesor
-/* middleware('auth', 'verified', "role:profesor")->group(function () {
-
-}); */
+Route::middleware('auth', 'verified', "role:profesor")->group(function () {
+    Route::get('/profesor', [UserController::class, 'index'])->name('profesor.index');
+    Route::get('/profesor', [UserController::class, 'edit'])->name('profesor.edit');
+    Route::post('/profesor', [UserController::class, 'createProfesor'])->name('profesor.create');
+    Route::patch('/profesor', [UserController::class, 'update'])->name('profesor.update');
+    Route::delete('/profesor', [UserController::class, 'destroy'])->name('profesor.destroy');
+});
 
 require __DIR__.'/auth.php';
