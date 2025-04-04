@@ -31,9 +31,9 @@ export default function Dashboard({ stats }) {
                                 <Can permission="gestionusuarios">
                                         <p className="text-green-800">Has entrado con un usuario que tiene el rol Admin</p>
                                     </Can>
-                                <Can permission="panelalumno">
+                                <Can permission="sinpermiso">
                                         <p className="text-green-800">Has entrado con un usuario que tiene el rol Alumno.</p>
-                                    </Can>
+                                </Can>
                                 <div className="bg-green-50 p-6 rounded-lg">
                                     <h3 className="text-lg font-semibold text-green-800">Logros Recientes</h3>
                                     {/* Lista de logros */}

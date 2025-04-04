@@ -50,12 +50,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Gestión Usuarios
                                 </NavLink>
+                                <Can permission='sinpermiso'>
                                 <NavLink
                                     href={route('panelprofesor')}
                                     active={route().current('panelprofesor')}
                                 >
                                     Panel Profesor
                                 </NavLink>
+                                </Can>
                             </div>
                         </div>
 
@@ -179,12 +181,14 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Gestión Usuarios
                         </ResponsiveNavLink>
+                        <Can permission='sinpermiso'>
                         <ResponsiveNavLink
                             href={route('panelprofesor')}
                             active={route().current('panelprofesor')}
                         >
                             Panel Profesor
                         </ResponsiveNavLink>
+                        </Can>
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
