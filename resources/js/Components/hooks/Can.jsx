@@ -1,16 +1,8 @@
-import { useAuth } from "../../Context/AuthContext";
+import { usePage } from '@inertiajs/react';
 
-const Can = ({ permission, children }) => {
-    const { user } = useAuth(); // Obtén el usuario del contexto
+export default function Can({ permission, children }) {
+    const { auth } = usePage().props;
+    const hasPermission = auth.user?.permissions?.includes(permission);
 
-    if (!user || !user.permissions) return null; // Si no hay usuario o permisos, no mostramos nada
-
-    // Verificar si el usuario tiene el permiso requerido
-    if (user.permissions.includes(permission)) {
-        return children;
-    }
-
-    return null;
-};
-
-export default Can;
+    return hasPermission ? children : null;
+}

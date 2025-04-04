@@ -29,7 +29,10 @@ export default function Dashboard({ stats }) {
                                     {/* Lista de exámenes próximos */}
                                 </div>
                                 <Can permission="gestionusuarios">
-                                        <p className="text-green-800">Este es un reporte visible solo para quienes tienen permiso.</p>
+                                        <p className="text-green-800">Has entrado con un usuario que tiene el rol Admin</p>
+                                    </Can>
+                                <Can permission="panelalumno">
+                                        <p className="text-green-800">Has entrado con un usuario que tiene el rol Alumno.</p>
                                     </Can>
                                 <div className="bg-green-50 p-6 rounded-lg">
                                     <h3 className="text-lg font-semibold text-green-800">Logros Recientes</h3>

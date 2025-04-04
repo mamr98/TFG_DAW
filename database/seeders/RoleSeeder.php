@@ -31,5 +31,7 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'panelprofesor.create'])->syncRoles([$role, $role2]);
         Permission::create(['name' => 'panelprofesor.update'])->syncRoles([$role, $role2]);
         Permission::create(['name' => 'panelprofesor.delete'])->syncRoles([$role, $role2]);
+
+        Permission::create(['name' => 'panelalumno'])->syncRoles([$role3]);
     }
 }
