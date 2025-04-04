@@ -59,34 +59,4 @@ Route::middleware('auth', 'verified')->group(function () {
 
 });
 
-/*
-                USUARIOS
-*/
-Route::get('/csrf-token', function () {
-    return response()->json(['csrf_token' => csrf_token()]);
-});
-
-/* Controlador UserContoller */
-Route::middleware('auth', 'verified')->group(function () {
-    /* Mostrar la lista de los usuarios */
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    /* Crear y Guardar un nuevo usuario */
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-    /* Mostrar los detalles de un usuario */
-    Route::get('/users', [UserController::class, 'show'])->name('users.show');
-    /* Actualizar un usuario */
-    Route::put('/users', [UserController::class, 'update'])->name('users.update');
-    /* Eliminar un usuario */
-    Route::delete('/users', [UserController::class, 'delete'])->name('users.delete');
-});
-Route::get('/usuario', [UserController::class, 'index'])->name('users.index');
-Route::post('/usuario', [UserController::class, 'create'])->name('users.create');
-
-
-/*
-    RUTAS PARA LOS CONTROLADORES DE ADMIN
-*/
-
-Route::get('/dashboard', function () {return Inertia::render('Admin/Dashboard');})->middleware(['auth', 'verified'])->name('dashboard');
-
 require __DIR__.'/auth.php';
