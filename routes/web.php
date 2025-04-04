@@ -30,7 +30,7 @@ Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->mi
 Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage');})->middleware(['auth', 'verified'])->name('subir-imagen');
 Route::get('/notas', function () {return Inertia::render('NotasPage');})->middleware(['auth', 'verified'])->name('notas');
 Route::get('/gestionusuarios', function () {return Inertia::render('CreacionUsuarioPage');})->middleware(['auth', 'verified'])->name('gestionusuarios');
-Route::get('/panelprofesor', function(){return Inertia::render('Panel');})->middleware(['auth', 'verified'])->name('panelprofesor');
+Route::get('/panelprofesor', function(){return Inertia::render('Panel');})->middleware(['auth', 'verified', "role:admin|profesor"])->name('panelprofesor');
 
 /* VERIFICACION EMAIL */
 Route::get('/email/verify', function () {return Inertia::render('Auth/VerifyEmail');})->middleware('auth')->name('verification.notice');
@@ -58,5 +58,15 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::post('/comparar-imagenes', [ComparacionController::class, 'comparar'])->name('comparar.imagenes'); */
 
 });
+
+//rutas para admin
+/* middleware('auth', 'verified', "role:admin")->group(function () {
+
+}); */
+
+//rutas para profesor
+/* middleware('auth', 'verified', "role:profesor")->group(function () {
+
+}); */
 
 require __DIR__.'/auth.php';

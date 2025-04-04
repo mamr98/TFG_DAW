@@ -28,15 +28,18 @@ export default function Dashboard({ stats }) {
                                     <h3 className="text-lg font-semibold text-indigo-800">Próximos Exámenes</h3>
                                     {/* Lista de exámenes próximos */}
                                 </div>
-                                <Can permission="gestionusuarios">
-                                        <p className="text-green-800">Has entrado con un usuario que tiene el rol Admin</p>
-                                    </Can>
-                                <Can permission="sinpermiso">
-                                        <p className="text-green-800">Has entrado con un usuario que tiene el rol Alumno.</p>
-                                </Can>
                                 <div className="bg-green-50 p-6 rounded-lg">
                                     <h3 className="text-lg font-semibold text-green-800">Logros Recientes</h3>
                                     {/* Lista de logros */}
+                                    <Can permission="permisoadmin">
+                                        <p className="text-green-800">Has entrado con un usuario que tiene el rol Admin</p>
+                                    </Can>
+                                    <Can permission="permisoprofesor">
+                                        <p className="text-green-800">Has entrado con un usuario que tiene el rol Profesor</p>
+                                    </Can>
+                                    <Can permission="sinpermiso">
+                                        <p className="text-green-800">Has entrado con un usuario que tiene el rol Alumno.</p>
+                                    </Can>
                                 </div>
                             </div>
                         </div>

@@ -22,7 +22,7 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'permisoadmin'])->syncRoles([$role]); //solo lo pueda ver los admins
 
         /* PERMISO PARA PROFESORES */
-        Permission::create(['name' => 'permisoprofesor'])->syncRoles([$role]); //solo para que lo puedan ver los profesores
+        Permission::create(['name' => 'permisoprofesor'])->syncRoles([$role2]); //solo para que lo puedan ver los profesores
 
         Permission::create(['name' => 'sinpermiso'])->syncRoles([$role3]);
     }
