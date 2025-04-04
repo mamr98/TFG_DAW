@@ -22,7 +22,7 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function createAlumno(Request $request)
     {
         $user = new User();
         $user -> name = $request ->input('name');
@@ -30,6 +30,38 @@ class UserController extends Controller
         $user->password = Hash::make($request->input('password'));
         $user -> estado = $request ->input('estado');
         $role = Role::where('name', 'alumno')->first();
+
+        if ($role) {
+            $user->roles()->sync([$role->id]); // Asigna el rol correctamente
+        } 
+        $user->save();
+        return response()->json($user, 201);
+    }
+
+    public function createProfesor(Request $request)
+    {
+        $user = new User();
+        $user -> name = $request ->input('name');
+        $user -> email = $request ->input('email');
+        $user->password = Hash::make($request->input('password'));
+        $user -> estado = $request ->input('estado');
+        $role = Role::where('name', 'profesor')->first();
+
+        if ($role) {
+            $user->roles()->sync([$role->id]); // Asigna el rol correctamente
+        } 
+        $user->save();
+        return response()->json($user, 201);
+    }
+
+    public function createAdmin(Request $request)
+    {
+        $user = new User();
+        $user -> name = $request ->input('name');
+        $user -> email = $request ->input('email');
+        $user->password = Hash::make($request->input('password'));
+        $user -> estado = $request ->input('estado');
+        $role = Role::where('name', 'admin')->first();
 
         if ($role) {
             $user->roles()->sync([$role->id]); // Asigna el rol correctamente
