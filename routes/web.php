@@ -60,11 +60,27 @@ Route::middleware('auth', 'verified')->group(function () {
 
 //rutas para admin
 Route::middleware('auth', 'verified', "role:admin")->group(function () {
+
+    //CRUD Admin
     Route::get('/admin', [UserController::class, 'index'])->name('admin.index');
     Route::get('/admin', [UserController::class, 'edit'])->name('admin.edit');
     Route::post('/admin', [UserController::class, 'createAdmin'])->name('admin.create');
     Route::patch('/admin', [UserController::class, 'update'])->name('profile.update');
     Route::delete('/admin', [UserController::class, 'destroy'])->name('admin.destroy');
+
+    //CRUD Profesor
+    Route::get('/admin/profesor', [UserController::class, 'index'])->name('admin.indexProfesor');
+    Route::get('/admin/profesor', [UserController::class, 'edit'])->name('admin.editProfesor');
+    Route::post('/admin/profesor', [UserController::class, 'createProfesor'])->name('admin.createProfesor');
+    Route::patch('/admin/profesor', [UserController::class, 'update'])->name('profile.updateProfesor');
+    Route::delete('/admin/profesor', [UserController::class, 'destroy'])->name('admin.destroyProfesor');
+
+    //CRUD Alumno
+    Route::get('/admin/alumno', [UserController::class, 'index'])->name('admin.indexAlumno');
+    Route::get('/admin/alumno', [UserController::class, 'edit'])->name('admin.editAlumno');
+    Route::post('/admin/alumno', [UserController::class, 'createAlumno'])->name('admin.createAlumno');
+    Route::patch('/admin/alumno', [UserController::class, 'update'])->name('profile.updateAlumno');
+    Route::delete('/admin/alumno', [UserController::class, 'destroy'])->name('admin.destroyAlumno');
 });
 
 //rutas para profesor
@@ -72,8 +88,8 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
     Route::get('/profesor', [UserController::class, 'index'])->name('profesor.index');
     Route::get('/profesor', [UserController::class, 'edit'])->name('profesor.edit');
     Route::post('/profesor', [UserController::class, 'createProfesor'])->name('profesor.create');
-    Route::patch('/profesor', [UserController::class, 'update'])->name('profesor.update');
-    Route::delete('/profesor', [UserController::class, 'destroy'])->name('profesor.destroy');
+    Route::post('/profesor/alumno', [UserController::class, 'createAlumno'])->name('profesor.createAlumno');
+   
 });
 
 require __DIR__.'/auth.php';
