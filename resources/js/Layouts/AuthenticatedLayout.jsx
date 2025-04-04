@@ -50,7 +50,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Gestión Usuarios
                                 </NavLink>
-                                <Can permission='sinpermiso'>
+                                <Can permissions={["permisoadmin", "permisoprofesor"]}>
                                 <NavLink
                                     href={route('panelprofesor')}
                                     active={route().current('panelprofesor')}
@@ -181,7 +181,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Gestión Usuarios
                         </ResponsiveNavLink>
-                        <Can permission='sinpermiso'>
+                        <Can permissions={["permisoadmin", "permisoprofesor"]}>
                         <ResponsiveNavLink
                             href={route('panelprofesor')}
                             active={route().current('panelprofesor')}
