@@ -28,7 +28,7 @@ class UserController extends Controller
         $user -> name = $request ->input('name');
         $user -> email = $request ->input('email');
         $user->password = Hash::make($request->input('password'));
-        $user -> estado = $request ->input('password');
+        $user -> estado = $request ->input('estado');
         $role = Role::where('name', 'alumno')->first();
 
         if ($role) {

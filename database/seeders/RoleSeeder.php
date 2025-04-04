@@ -19,7 +19,7 @@ class RoleSeeder extends Seeder
         $role3 = Role::create(['name' => 'alumno']);
 
         /* PERMISO PARA ADMINISTRADORES */
-        Permission::create(['name' => 'gestionusuarios'])->syncRoles([$role, $role2]); //solo lo pueda ver los admins
+        Permission::create(['name' => 'gestionusuarios'])->syncRoles([$role]); //solo lo pueda ver los admins
 
         Permission::create(['name' => 'gestionusuarios.create'])->syncRoles([$role, $role2]);
         Permission::create(['name' => 'gestionusuarios.update'])->syncRoles([$role, $role2]);
@@ -31,5 +31,7 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'panelprofesor.create'])->syncRoles([$role, $role2]);
         Permission::create(['name' => 'panelprofesor.update'])->syncRoles([$role, $role2]);
         Permission::create(['name' => 'panelprofesor.delete'])->syncRoles([$role, $role2]);
+
+        Permission::create(['name' => 'panelalumno'])->syncRoles([$role3]);
     }
 }
