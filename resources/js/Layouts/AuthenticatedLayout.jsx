@@ -4,6 +4,7 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import Can from "../Components/hooks/Can";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
@@ -49,12 +50,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Gestión Usuarios
                                 </NavLink>
+                                <Can permissions={["permisoadmin", "permisoprofesor"]}>
                                 <NavLink
                                     href={route('panelprofesor')}
                                     active={route().current('panelprofesor')}
                                 >
                                     Panel Profesor
                                 </NavLink>
+                                </Can>
                             </div>
                         </div>
 
@@ -146,7 +149,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
                 </div>
 
-                {/* Esto es el navbar para móviles */}
+                {/* Esto es el navbar para moviles */}
                 <div
                     className={
                         (showingNavigationDropdown ? 'block' : 'hidden') +
@@ -178,12 +181,14 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Gestión Usuarios
                         </ResponsiveNavLink>
+                        <Can permissions={["permisoadmin", "permisoprofesor"]}>
                         <ResponsiveNavLink
                             href={route('panelprofesor')}
                             active={route().current('panelprofesor')}
                         >
                             Panel Profesor
                         </ResponsiveNavLink>
+                        </Can>
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">

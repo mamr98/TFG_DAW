@@ -24,12 +24,12 @@ Route::get('/', function () {
     ]);
 });
 
-/* AUTHENTICATED LATOUT */
+/* AUTHENTICATED LAYOUT */
 Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage');})->middleware(['auth', 'verified'])->name('subir-imagen');
 Route::get('/notas', function () {return Inertia::render('NotasPage');})->middleware(['auth', 'verified'])->name('notas');
 Route::get('/gestionusuarios', function () {return Inertia::render('CreacionUsuarioPage');})->middleware(['auth', 'verified'])->name('gestionusuarios');
-Route::get('/panelprofesor', function(){return Inertia::render('Panel');})->middleware(['auth', 'verified'])->name('panelprofesor');
+Route::get('/panelprofesor', function(){return Inertia::render('Panel');})->middleware(['auth', 'verified', "role:admin|profesor"])->name('panelprofesor');
 
 /* VERIFICACION EMAIL */
 Route::get('/email/verify', function () {return Inertia::render('Auth/VerifyEmail');})->middleware('auth')->name('verification.notice');
@@ -58,43 +58,14 @@ Route::middleware('auth', 'verified')->group(function () {
 
 });
 
-/*
-                USUARIOS
-*/
+//rutas para admin
+/* middleware('auth', 'verified', "role:admin")->group(function () {
 
-/* Controlador UserContoller */
-Route::middleware('auth', 'verified')->group(function () {
-    /* Mostrar la lista de los usuarios */
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    /* Crear y Guardar un nuevo usuario */
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-    /* Mostrar los detalles de un usuario */
-    Route::get('/user', [UserController::class, 'show'])->name('users.show');
-    /* Actualizar un usuario */
-    Route::put('/users', [UserController::class, 'update'])->name('users.update');
-    /* Eliminar un usuario */
-    Route::delete('/users', [UserController::class, 'delete'])->name('users.delete');
-});
+}); */
 
-/*
-                IMAGENES
-*/
+//rutas para profesor
+/* middleware('auth', 'verified', "role:profesor")->group(function () {
 
-    /* POR COMPROBAR (USO DE LA API DE OPENAI PARA IMAGEN) */
-
-// Rutas para el alumno
-Route::prefix('alumno/examen')->middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', function () {
-        return inertia('Alumno/SubirExamenAlumno', [
-            'examenes' => \App\Models\Examen::all(),
-        ]);
-    })->name('alumno.examen');
-
-    Route::post('/subir', [ExamenController::class, 'subirExamenAlumno'])
-        ->name('alumno.examen.subir');
-});
-
-
-
+}); */
 
 require __DIR__.'/auth.php';
