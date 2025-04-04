@@ -1,13 +1,11 @@
+// resources/js/Context/AuthContext.jsx
 import { createContext, useContext } from "react";
-import { usePage } from "@inertiajs/react"; // Importar el hook de Inertia
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-    const { auth } = usePage(); // Usamos usePage dentro de un componente Inertia.
-
+export const AuthProvider = ({ children, user }) => {
     return (
-        <AuthContext.Provider value={{ user: auth?.user }}>
+        <AuthContext.Provider value={{ user }}>
             {children}
         </AuthContext.Provider>
     );
