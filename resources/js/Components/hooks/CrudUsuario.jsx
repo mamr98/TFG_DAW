@@ -20,10 +20,10 @@ function CrudUsuario() {
         const { value: formValues } = await Swal.fire({
             title: `Crear nuevo ${tipoUsuario}`,
             html:
-                `<input id="swal-nombre" class="swal2-input" placeholder="Nombre">` +
-                `<input id="swal-email" type="email" class="swal2-input" placeholder="Email">` +
-                `<input id="swal-password" type="password" class="swal2-input" placeholder="Contraseña">` +
-                `<select id="swal-estado" class="swal2-input">
+                `<input id="swal-nombre" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Nombre">` +
+                `<input id="swal-email" type="email" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Email">` +
+                `<input id="swal-password" type="password" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Contraseña">` +
+                `<select id="swal-estado" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white">
                     <option value="" disabled selected>Estado</option>
                     <option value="true">Activo</option>
                     <option value="false">Inactivo</option>
@@ -32,19 +32,33 @@ function CrudUsuario() {
             showCancelButton: true,
             confirmButtonText: 'Crear',
             cancelButtonText: 'Cancelar',
-            confirmButtonColor: '#2563eb',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: '#2563eb', // blue-600
+            cancelButtonColor: '#dc2626', // red-600
+            customClass: {
+                container: 'font-sans',
+                popup: 'rounded-xl shadow-xl border-0 max-w-md mx-auto w-full sm:w-11/12 md:w-2/3 lg:w-1/2',
+                header: 'border-b pb-3',
+                title: 'text-xl font-semibold text-gray-800',
+                closeButton: 'focus:outline-none focus:ring-2 focus:ring-blue-500',
+                content: 'pt-4 px-6',
+                confirmButton: 'bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-white px-5 py-2.5 transition-all duration-200 ease-in-out transform hover:-translate-y-0.5',
+                cancelButton: 'bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-white px-5 py-2.5 transition-all duration-200 ease-in-out transform hover:-translate-y-0.5',
+                actions: 'gap-3 sm:flex-row flex-col w-full sm:w-auto',
+                footer: 'mt-4 text-sm text-gray-500',
+                validationMessage: 'my-2 text-sm text-red-600 bg-red-100 p-2 rounded-lg'
+            },
+            buttonsStyling: false,
             preConfirm: () => {
                 const nombre = document.getElementById('swal-nombre').value;
                 const email = document.getElementById('swal-email').value;
                 const password = document.getElementById('swal-password').value;
                 const estado = document.getElementById('swal-estado').value;
-
+        
                 if (!nombre || !email || !password || estado === "") {
                     Swal.showValidationMessage('Todos los campos son obligatorios');
                     return;
                 }
-
+        
                 return {
                     nombre,
                     email,
@@ -123,10 +137,10 @@ function CrudUsuario() {
             const { value: formValues } = await Swal.fire({
                 title: `Actualizar ${tipoUsuario}`,
                 html:
-                    `<input id="swal-nombre" class="swal2-input" placeholder="Nombre" value="${usuarioActual.name || ''}">` +
-                    `<input id="swal-email" type="email" class="swal2-input" placeholder="Email" value="${usuarioActual.email || ''}">` +
-                    `<input id="swal-password" type="password" class="swal2-input" placeholder="Contraseña (dejar en blanco para no cambiar)">` +
-                    `<select id="swal-estado" class="swal2-input">
+                    `<input id="swal-nombre" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Nombre" value="${usuarioActual.name || ''}">` +
+                    `<input id="swal-email" type="email" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Email" value="${usuarioActual.email || ''}">` +
+                    `<input id="swal-password" type="password" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Contraseña (dejar en blanco para no cambiar)">` +
+                    `<select id="swal-estado" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white">
                         <option value="" disabled>Estado</option>
                         <option value="true" ${usuarioActual.estado ? 'selected' : ''}>Activo</option>
                         <option value="false" ${!usuarioActual.estado ? 'selected' : ''}>Inactivo</option>
@@ -135,19 +149,32 @@ function CrudUsuario() {
                 showCancelButton: true,
                 confirmButtonText: 'Actualizar',
                 cancelButtonText: 'Cancelar',
-                confirmButtonColor: '#2563eb',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: '#2563eb', // blue-600
+                cancelButtonColor: '#dc2626', // red-600
+                customClass: {
+                    container: 'font-sans',
+                    popup: 'rounded-xl shadow-xl border-0 max-w-md mx-auto w-full sm:w-11/12 md:w-2/3 lg:w-1/2',
+                    header: 'border-b pb-3',
+                    title: 'text-xl font-semibold text-gray-800',
+                    closeButton: 'focus:outline-none focus:ring-2 focus:ring-blue-500',
+                    content: 'pt-4 px-6',
+                    confirmButton: 'bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-white px-5 py-2.5 transition-all duration-200 ease-in-out transform hover:-translate-y-0.5',
+                    cancelButton: 'bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-white px-5 py-2.5 transition-all duration-200 ease-in-out transform hover:-translate-y-0.5',
+                    actions: 'gap-3 sm:flex-row flex-col w-full sm:w-auto',
+                    footer: 'mt-4 text-sm text-gray-500'
+                },
+                buttonsStyling: false,
                 preConfirm: () => {
                     const nombre = document.getElementById('swal-nombre').value;
                     const email = document.getElementById('swal-email').value;
                     const password = document.getElementById('swal-password').value;
                     const estado = document.getElementById('swal-estado').value;
-
+            
                     if (!nombre || !email || estado === "") {
                         Swal.showValidationMessage('Nombre, email y estado son obligatorios');
                         return;
                     }
-
+            
                     return {
                         nombre,
                         email,
@@ -232,14 +259,14 @@ function CrudUsuario() {
     return (
         <div className="flex flex-col gap-8 p-6 bg-[#003049] rounded-lg shadow-xl">
             {/* Sección de Botones CRUD */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-600 pb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-8 mt-8">
                 {/* Sección Alumnos */}
                 <div className="space-y-4 text-center">
                     <h3 className="text-xl font-bold text-white">Alumnos</h3>
-                    <PrimaryButton onClick={() => { setBuscadorTipoUsuario("alumno"); setMostrarBuscador(true); }}>
+                    <PrimaryButton onClick={() => { setBuscadorTipoUsuario("alumno"); setMostrarBuscador(true); }} className="text-center w-full px-6 py-3 text-base">
                         Buscar Alumnos
                     </PrimaryButton>
-                    <PrimaryButton onClick={() => crear("alumno")}>
+                    <PrimaryButton onClick={() => crear("alumno")}className="text-center w-full px-6 py-3 text-base">
                         Crear Alumno
                     </PrimaryButton>
                 </div>
@@ -247,10 +274,10 @@ function CrudUsuario() {
                 {/* Sección Profesores */}
                 <div className="space-y-4 text-center">
                     <h3 className="text-xl font-bold text-white">Profesores</h3>
-                    <PrimaryButton onClick={() => { setBuscadorTipoUsuario("profesor"); setMostrarBuscador(true); }}>
+                    <PrimaryButton onClick={() => { setBuscadorTipoUsuario("profesor"); setMostrarBuscador(true); }} className="text-center w-full px-6 py-3 text-base">
                         Buscar Profesores
                     </PrimaryButton>
-                    <PrimaryButton onClick={() => crear("profesor")}>
+                    <PrimaryButton onClick={() => crear("profesor")} className="text-center w-full px-6 py-3 text-base">
                         Crear Profesor
                     </PrimaryButton>
                 </div>
@@ -258,10 +285,10 @@ function CrudUsuario() {
                 {/* Sección Administradores */}
                 <div className="space-y-4 text-center">
                     <h3 className="text-xl font-bold text-white">Administradores</h3>
-                    <PrimaryButton onClick={() => { setBuscadorTipoUsuario("admin"); setMostrarBuscador(true); }}>
+                    <PrimaryButton onClick={() => { setBuscadorTipoUsuario("admin"); setMostrarBuscador(true); }} className="text-center w-full px-6 py-3 text-base">
                         Buscar Admins
                     </PrimaryButton>
-                    <PrimaryButton onClick={() => crear("admin")}>
+                    <PrimaryButton onClick={() => crear("admin")} className="text-center w-full px-6 py-3 text-base">
                         Crear Admin
                     </PrimaryButton>
                 </div>
