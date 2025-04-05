@@ -30,33 +30,42 @@ export default function AuthenticatedLayout({ header, children }) {
                                     href={route('dashboard')}
                                     active={route().current('dashboard')}
                                 >
-                                    Dashboard
+                                    {/* Todos */}
+                                    Inicio
                                 </NavLink>
-                                <NavLink
-                                    href={route('subir-imagen')}
-                                    active={route().current('subir-imagen')}
-                                >
-                                    Subir Imagen
-                                </NavLink>
+                                <Can permissions={["permisoadmin", "sinpermiso"]}>
+                                    <NavLink
+                                        href={route('subir-imagen')}
+                                        active={route().current('subir-imagen')}
+                                    >
+                                        {/* Admin y alumnos */}
+                                        Subir Examen
+                                    </NavLink>
+                                </Can>
+                                <Can permissions={["permisoadmin", "permisoprofesor"]}>
+                                    <NavLink
+                                        href={route('panelprofesor')}
+                                        active={route().current('panelprofesor')}
+                                    >
+                                        {/* Admin y profesor */}
+                                        Crear examen
+                                    </NavLink>
+                                </Can>
                                 <NavLink
                                     href={route('notas')}
                                     active={route().current('notas')}
                                 >
+                                    {/* Todos y dentro un can para alternar la información*/}
                                     Notas
                                 </NavLink>
-                                <NavLink
-                                    href={route('gestionusuarios')}
-                                    active={route().current('gestionusuarios')}
-                                >
-                                    Gestión Usuarios
-                                </NavLink>
                                 <Can permissions={["permisoadmin", "permisoprofesor"]}>
-                                <NavLink
-                                    href={route('panelprofesor')}
-                                    active={route().current('panelprofesor')}
-                                >
-                                    Panel Profesor
-                                </NavLink>
+                                    <NavLink
+                                        href={route('gestionusuarios')}
+                                        active={route().current('gestionusuarios')}
+                                    >
+                                        {/* Admin y profesor y un can para alternar la información  */}
+                                        Gestión Usuarios
+                                    </NavLink>
                                 </Can>
                             </div>
                         </div>
@@ -163,31 +172,35 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Dashboard
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('subir-imagen')}
-                            active={route().current('subir-imagen')}
-                        >
-                            Subir Imagen
-                        </ResponsiveNavLink>
+                        <Can permissions={["permisoadmin", "sinpermiso"]}>
+                            <ResponsiveNavLink
+                                href={route('subir-imagen')}
+                                active={route().current('subir-imagen')}
+                            >
+                                Subir Imagen
+                            </ResponsiveNavLink>
+                        </Can>
+                        <Can permissions={["permisoadmin", "permisoprofesor"]}>
+                            <ResponsiveNavLink
+                                href={route('panelprofesor')}
+                                active={route().current('panelprofesor')}
+                            >
+                                Crear examen
+                            </ResponsiveNavLink>
+                        </Can>
                         <ResponsiveNavLink
                             href={route('notas')}
                             active={route().current('notas')}
                         >
                             Notas
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('gestionusuarios')}
-                            active={route().current('gestionusuarios')}
-                        >
-                            Gestión Usuarios
-                        </ResponsiveNavLink>
                         <Can permissions={["permisoadmin", "permisoprofesor"]}>
-                        <ResponsiveNavLink
-                            href={route('panelprofesor')}
-                            active={route().current('panelprofesor')}
-                        >
-                            Panel Profesor
-                        </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                href={route('gestionusuarios')}
+                                active={route().current('gestionusuarios')}
+                            >
+                                Gestión Usuarios
+                            </ResponsiveNavLink>
                         </Can>
                     </div>
 

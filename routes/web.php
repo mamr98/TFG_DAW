@@ -12,10 +12,6 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Admin\UserContoller;
 
-Route::fallback(function(){
-    return Inertia::render('Errors/404');
-});
-
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -26,7 +22,7 @@ Route::get('/', function () {
 });
 
 /* AUTHENTICATED LAYOUT */
-Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/inicio', function () {return Inertia::render('Dashboard', ['toast' => request()->input('toast')]);})->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage');})->middleware(['auth', 'verified'])->name('subir-imagen');
 Route::get('/notas', function () {return Inertia::render('NotasPage');})->middleware(['auth', 'verified'])->name('notas');
 Route::get('/gestionusuarios', function () {return Inertia::render('CreacionUsuarioPage');})->middleware(['auth', 'verified'])->name('gestionusuarios');
@@ -91,6 +87,11 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
     Route::post('/profesor', [UserController::class, 'createProfesor'])->name('profesor.create');
     Route::post('/profesor/alumno', [UserController::class, 'createAlumno'])->name('profesor.createAlumno');
    
+});
+
+//Tiene que estar al final
+Route::fallback(function(){
+    return Inertia::render('Errors/404');
 });
 
 require __DIR__.'/auth.php';
