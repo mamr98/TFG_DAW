@@ -25,6 +25,7 @@ class UserController extends Controller
      */
     public function createAlumno(Request $request)
     {
+        
         $user = new User();
         $user -> name = $request ->input('name');
         $user -> email = $request ->input('email');
