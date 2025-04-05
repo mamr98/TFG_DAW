@@ -153,9 +153,11 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         if ($user->estado == true) {
             $user->estado= false;
+            $user->email_verified_at=null;
         }
         else{
             $user->estado= true;
+            $user->email_verified_at=now();
         }
         $user->save();
         

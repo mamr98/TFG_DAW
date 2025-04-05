@@ -75,7 +75,7 @@ Route::middleware('auth', 'verified', "role:admin")->group(function () {
     Route::get('/admin/profesor', [UserController::class, 'index'])->name('admin.indexProfesor');
     Route::post('/admin/profesor', [UserController::class, 'createProfesor'])->name('admin.createProfesor');
     Route::put('/admin/profesor/{id}', [UserController::class, 'update'])->name('admin.updateProfesor');
-    Route::put('admin/profesor/estado/{id}', [UserController::class, 'estado'])->name('admin.destroyProfesor');
+    Route::put('admin/profesor/estado/{id}', [UserController::class, 'estado'])->name('admin.estadoProfesor');
     Route::get('profesor/buscador/{nombre}', [UserController::class, 'buscarProfesor'])->name('admin.buscadorProfesor');
     Route::get('profesor/{id}', [UserController::class, 'show'])->name('profesor.show');
 
@@ -84,7 +84,7 @@ Route::middleware('auth', 'verified', "role:admin")->group(function () {
     Route::get('/admin/alumno', [UserController::class, 'index'])->name('admin.indexAlumno');
     Route::post('/admin/alumno', [UserController::class, 'createAlumno'])->name('admin.createAlumno');
     Route::put('/admin/alumno/{id}', [UserController::class, 'update'])->name('admin.updateAlumno');
-    Route::put('admin/alumno/estado/{id}', [UserController::class, 'estado'])->name('admin.destroyAlumno');
+    Route::put('admin/alumno/estado/{id}', [UserController::class, 'estado'])->name('admin.estadoAlumno');
     Route::get('alumno/buscador/{nombre}', [UserController::class, 'buscarAlumno'])->name('admin.buscadorAlumno');
     Route::get('alumno/{id}', [UserController::class, 'show'])->name('alumno.show');
 
