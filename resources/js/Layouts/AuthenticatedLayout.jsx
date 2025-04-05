@@ -58,7 +58,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     {/* Todos y dentro un can para alternar la información*/}
                                     Notas
                                 </NavLink>
-                                <Can permissions={["permisoadmin", "permisoprofesor"]}>
+                                <Can permissions={["permisoadmin"]}>
                                     <NavLink
                                         href={route('gestionusuarios')}
                                         active={route().current('gestionusuarios')}
@@ -194,7 +194,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Notas
                         </ResponsiveNavLink>
-                        <Can permissions={["permisoadmin", "permisoprofesor"]}>
+                        <Can permissions={["permisoadmin"]}>
                             <ResponsiveNavLink
                                 href={route('gestionusuarios')}
                                 active={route().current('gestionusuarios')}
