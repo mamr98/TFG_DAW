@@ -28,7 +28,7 @@ export default function Welcome({ auth }) {
     const baseUrl = window.location.origin + (window.location.pathname.includes('TFG_DAW') ? '/TFG_DAW/public' : '');
     return (
         <>
-            <Head title="Welcome" />
+            <Head title="Bienvenido" />
             <div className="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
                 {/* Navbar */}
                 <nav className="bg-gray-800 shadow-sm w-full z-10 pt-4 pb-4">

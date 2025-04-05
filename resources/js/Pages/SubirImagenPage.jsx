@@ -8,11 +8,11 @@ export default function SubirImagenPage() {
         <AuthenticatedLayout
                     header={
                         <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                            Subir Imagen
+                            Subir Examen
                         </h2>
                     }
                 >
-                    <Head title="Subir Imagen" />
+                    <Head title="Subir Examen" />
         
                     <div className="py-12">
                         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">

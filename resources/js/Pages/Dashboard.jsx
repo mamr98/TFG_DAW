@@ -15,7 +15,7 @@ export default function Dashboard({ stats }) {
                 </h2>
             }
         >
-            <Head title="Dashboard" />
+            <Head title="Inicio" />
             <ToastNotifier />
 
             <div className="py-12">
