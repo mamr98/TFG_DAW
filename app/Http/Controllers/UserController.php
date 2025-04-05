@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Clase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
@@ -24,8 +25,9 @@ class UserController extends Controller
      * Show the form for creating a new resource.
      */
     public function createAlumno(Request $request)
-    {
-        
+{
+
+        // Crear el usuario
         $user = new User();
         $user -> name = $request ->input('name');
         $user -> email = $request ->input('email');
@@ -34,8 +36,27 @@ class UserController extends Controller
         $user -> estado = $request ->input('estado');
         $user->assignRole(3); // Asigna el rol correctamente
         $user->save();
-        return response()->json($user, 201);
-    }
+
+        // Obtener una clase aleatoria
+        $claseAleatoria = Clase::inRandomOrder()->first();
+
+        if (!$claseAleatoria) {
+            throw new \Exception('No hay clases disponibles para asignar');
+        }
+
+                // Asignar el alumno a la clase
+        DB::table('clase_alumno')->insert([
+            'alumno_id' => $user->id,
+            'clase_id' => $claseAleatoria->id,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        return response()->json([
+            'user' => $user,
+            'clase_asignada' => $claseAleatoria->nombre
+        ], 201);
+}
 
     public function createProfesor(Request $request)
     {
@@ -48,7 +69,25 @@ class UserController extends Controller
         $role = Role::where('name', 'profesor')->first();
         $user->assignRole(2); // Asigna el rol correctamente
         $user->save();
-        return response()->json($user, 201);
+
+        $claseAleatoria = Clase::inRandomOrder()->first();
+
+        if (!$claseAleatoria) {
+            throw new \Exception('No hay clases disponibles para asignar');
+        }
+
+                // Asignar el alumno a la clase
+        DB::table('clase_profesor')->insert([
+            'profesor_id' => $user->id,
+            'clase_id' => $claseAleatoria->id,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        return response()->json([
+            'user' => $user,
+            'clase_asignada' => $claseAleatoria->nombre
+        ], 201);
     }
 
     public function createAdmin(Request $request)

@@ -88,22 +88,7 @@ Route::middleware('auth', 'verified', "role:admin")->group(function () {
 
 //rutas para profesor
 Route::middleware('auth', 'verified', "role:profesor")->group(function () {
-   //CRUD Profesor
-   Route::get('/profesor', [UserController::class, 'index'])->name('profesor.indexProfesor');
-   Route::post('/profesor', [UserController::class, 'createProfesor'])->name('profesor.createProfesor');
-   Route::put('/profesor', [UserController::class, 'update'])->name('profesor.updateProfesor');
-   Route::delete('/profesor', [UserController::class, 'destroy'])->name('profesor.destroyProfesor');
-   Route::get('/profesor/buscador/{email}', [UserController::class, 'buscarProfesor'])->name('admin.buscadorProfesor');
 
-   
-   //CRUD Alumno
-   Route::get('/profesor/alumno', [UserController::class, 'index'])->name('profesor.indexAlumno');
-   Route::post('/profesor/alumno', [UserController::class, 'createAlumno'])->name('profesor.createAlumno');
-   Route::put('/profesor/alumno', [UserController::class, 'update'])->name('profesor.updateAlumno');
-   Route::delete('/profesor/alumno', [UserController::class, 'destroy'])->name('profesor.destroyAlumno');
-   Route::get('/alumno/buscador/{email}', [UserController::class, 'buscarAlumno'])->name('admin.buscadorAlumno');
-
-   
 });
 
 //Tiene que estar al final
