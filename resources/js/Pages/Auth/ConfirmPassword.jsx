@@ -24,7 +24,7 @@ export default function ConfirmPassword() {
         <>
         <Navbar/>
         <GuestLayout>
-            <Head title="Confirm Password" />
+            <Head title="Confirmar Contraseña" />
 
             <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                 This is a secure area of the application. Please confirm your
@@ -33,7 +33,7 @@ export default function ConfirmPassword() {
 
             <form onSubmit={submit}>
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value="Contraseña" />
 
                     <TextInput
                         id="password"
@@ -68,7 +68,7 @@ export default function ConfirmPassword() {
                     Volver
                     </a>
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Confirm
+                        Confirmar
                     </PrimaryButton>
                 </div>
             </form>
