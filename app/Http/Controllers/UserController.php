@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function createAlumno(Request $request)
     {
-        
+
         $user = new User();
         $user -> name = $request ->input('name');
         $user -> email = $request ->input('email');
@@ -35,6 +35,8 @@ class UserController extends Controller
         $user->assignRole(3); // Asigna el rol correctamente
         $user->save();
         return response()->json($user, 201);
+
+        
     }
 
     public function createProfesor(Request $request)
