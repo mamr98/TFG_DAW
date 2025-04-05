@@ -84,11 +84,16 @@ Route::middleware('auth', 'verified', "role:admin")->group(function () {
     Route::get('alumno/buscador/{nombre}', [UserController::class, 'buscarAlumno'])->name('admin.buscadorAlumno');
     Route::get('alumno/{id}', [UserController::class, 'show'])->name('alumno.show');
 
+    Route::get('/asignaturas', [ExamenController::class, 'recogerAsignaturas'])->name('asignaturas');
+    Route::get('/clases', [ExamenController::class, 'recogerClases'])->name('clases_profesor');
+
+
 });
 
 //rutas para profesor
 Route::middleware('auth', 'verified', "role:profesor")->group(function () {
-
+    Route::get('/asignaturas', [ExamenController::class, 'recogerAsignaturas'])->name('asignaturas');
+    Route::get('/clases', [ExamenController::class, 'recogerClases'])->name('clases');
 });
 
 //Tiene que estar al final

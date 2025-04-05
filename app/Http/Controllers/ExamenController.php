@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CloudinaryService;
+use App\Models\Clase;
 use App\Models\Examen;
+use App\Models\Asignatura;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Services\CloudinaryService;
 
 // HAY QUE MODIFICAR COSAS
 // En teoría este controlador es solo para subir las Imágenes
@@ -138,15 +141,18 @@ class ExamenController extends Controller
         return $code;
     }
 
-    private function ExamCode(){
-        $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $numbers = '0123456789';
-
-        // Generando el codigo
-        $part1 = substr(str_shuffle($letters), 0, 3);
-        $part2 = substr(str_shuffle($numbers), 0, 3);
-        $part3 = substr(str_shuffle($letters), 0, 3);
-
-        return "{$part1}-{$part2}-{$part3}";
+    public function recogerAsignaturas(){
+        $asignaturas = Asignatura::all();
+        return response()->json($asignaturas);
+    }
+    
+    public function recogerClases(){
+    $profesorId = auth()->id(); // o el ID del profesor
+    $clases = DB::table('clase_profesor')
+        ->where('profesor_id', $profesorId)
+        ->join('clase', 'clase_profesor.clase_id', '=', 'clase.id')
+        ->select('clase.*')
+        ->get();
+    return response()->json($clases);
     }
 }

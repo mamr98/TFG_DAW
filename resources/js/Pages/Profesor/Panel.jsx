@@ -59,7 +59,7 @@ export default function PanelProfesor() {
                             onClick={handleNuevoExamen}
                             className="mt-4 w-full flex justify-center items-center"
                         >
-                            Subir Nuevo Examen
+                            Crear Examen
                         </PrimaryButton>
 
                         {/* Listado de exámenes */}

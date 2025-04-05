@@ -1,15 +1,47 @@
 import { useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function ModalFormulario({ onClose }) {
     const { data, setData, post, processing, errors } = useForm({
         nombre: '',
-        asignatura: '',
-        preguntas: '',
+        fecha_inicio: '',
+        fecha_fin: '',
+        asignatura_id: '',
+        clase_id: '',
         archivo: null
     });
 
     const [preview, setPreview] = useState(null);
+    const [asignaturas, setAsignaturas] = useState([]);
+    const [clases, setClases] = useState([]);
+    const [loading, setLoading] = useState({
+        asignaturas: true,
+        clases: true
+    });
+
+    // Cargar asignaturas y clases al abrir el modal
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Cargar asignaturas
+                const asignaturasResponse = await fetch('asignaturas');
+                const asignaturasData = await asignaturasResponse.json();
+                setAsignaturas(asignaturasData);
+                setLoading(prev => ({...prev, asignaturas: false}));
+
+                // Cargar clases
+                const clasesResponse = await fetch('clases');
+                const clasesData = await clasesResponse.json();
+                setClases(clasesData);
+                setLoading(prev => ({...prev, clases: false}));
+            } catch (error) {
+                console.error('Error al cargar datos:', error);
+                setLoading({asignaturas: false, clases: false});
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -53,35 +85,78 @@ export default function ModalFormulario({ onClose }) {
                         {errors.nombre && <p className="text-red-500 text-sm mt-1">{errors.nombre}</p>}
                     </div>
 
-                    {/* Campo Asignatura */}
+                    {/* Campo Fecha Inicio */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Fecha y Hora de Inicio *
+                        </label>
+                        <input
+                            type="datetime-local"
+                            value={data.fecha_inicio}
+                            onChange={(e) => setData('fecha_inicio', e.target.value)}
+                            className={`w-full px-4 py-2 border rounded-md ${errors.fecha_inicio ? 'border-red-500' : 'focus:ring-blue-500 focus:border-blue-500'}`}
+                            required
+                        />
+                        {errors.fecha_inicio && <p className="text-red-500 text-sm mt-1">{errors.fecha_inicio}</p>}
+                    </div>
+
+                    {/* Campo Fecha Fin */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Fecha y Hora de Finalización *
+                        </label>
+                        <input
+                            type="datetime-local"
+                            value={data.fecha_fin}
+                            onChange={(e) => setData('fecha_fin', e.target.value)}
+                            className={`w-full px-4 py-2 border rounded-md ${errors.fecha_fin ? 'border-red-500' : 'focus:ring-blue-500 focus:border-blue-500'}`}
+                            required
+                        />
+                        {errors.fecha_fin && <p className="text-red-500 text-sm mt-1">{errors.fecha_fin}</p>}
+                    </div>
+
+                    {/* Select Asignatura */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                             Asignatura *
                         </label>
-                        <input
-                            type="text"
-                            value={data.asignatura}
-                            onChange={(e) => setData('asignatura', e.target.value)}
-                            className={`w-full px-4 py-2 border rounded-md ${errors.asignatura ? 'border-red-500' : 'focus:ring-blue-500 focus:border-blue-500'}`}
+                        <select
+                            value={data.asignatura_id}
+                            onChange={(e) => setData('asignatura_id', e.target.value)}
+                            className={`w-full px-4 py-2 border rounded-md ${errors.asignatura_id ? 'border-red-500' : 'focus:ring-blue-500 focus:border-blue-500'}`}
                             required
-                        />
-                        {errors.asignatura && <p className="text-red-500 text-sm mt-1">{errors.asignatura}</p>}
+                            disabled={loading.asignaturas}
+                        >
+                            <option value="">{loading.asignaturas ? 'Cargando asignaturas...' : 'Seleccione una asignatura'}</option>
+                            {asignaturas.map((asignatura) => (
+                                <option key={asignatura.id} value={asignatura.id}>
+                                    {asignatura.nombre}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.asignatura_id && <p className="text-red-500 text-sm mt-1">{errors.asignatura_id}</p>}
                     </div>
 
-                    {/* Campo Número de Preguntas */}
+                    {/* Select Clase */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Número de Preguntas *
+                            Clase *
                         </label>
-                        <input
-                            type="number"
-                            value={data.preguntas}
-                            onChange={(e) => setData('preguntas', e.target.value)}
-                            className={`w-full px-4 py-2 border rounded-md ${errors.preguntas ? 'border-red-500' : 'focus:ring-blue-500 focus:border-blue-500'}`}
-                            min="1"
+                        <select
+                            value={data.clase_id}
+                            onChange={(e) => setData('clase_id', e.target.value)}
+                            className={`w-full px-4 py-2 border rounded-md ${errors.clase_id ? 'border-red-500' : 'focus:ring-blue-500 focus:border-blue-500'}`}
                             required
-                        />
-                        {errors.preguntas && <p className="text-red-500 text-sm mt-1">{errors.preguntas}</p>}
+                            disabled={loading.clases}
+                        >
+                            <option value="">{loading.clases ? 'Cargando clases...' : 'Seleccione una clase'}</option>
+                            {clases.map((clase) => (
+                                <option key={clase.id} value={clase.id}>
+                                    {clase.nombre}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.clase_id && <p className="text-red-500 text-sm mt-1">{errors.clase_id}</p>}
                     </div>
 
                     {/* Campo Archivo PDF */}
@@ -126,7 +201,7 @@ export default function ModalFormulario({ onClose }) {
                     <button
                         type="submit"
                         className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:opacity-50"
-                        disabled={processing}
+                        disabled={processing || loading.asignaturas || loading.clases}
                     >
                         {processing ? 'Guardando...' : 'Guardar Examen'}
                     </button>
