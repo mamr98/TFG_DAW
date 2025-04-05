@@ -97,7 +97,6 @@ function CrudUsuario() {
             Swal.fire({
                 icon: 'success',
                 title: `${tipoUsuario} creado exitosamente`,
-                text: `ID: ${data.id || "N/A"}`,
                 confirmButtonColor: '#2563eb',
             });
         } catch (error) {
