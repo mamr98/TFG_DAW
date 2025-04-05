@@ -83,12 +83,12 @@ export default function Login({ status, canResetPassword }) {
                             href={route('password.request')}
                             className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
                         >
-                            ¿Olvidaste tu contraseña?
+                            ¿Olvidó la contraseña?
                         </Link>
                     )}
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
+                    <PrimaryButton className="ms-4 shrink-0" disabled={processing}>
+                        Iniciar Sesión
                     </PrimaryButton>
                 </div>
             </form>

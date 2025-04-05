@@ -45,11 +45,11 @@ export default function PanelProfesor() {
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Panel del Profesor
+                    Crear Examen
                 </h2>
             }
         >
-            <Head title="Panel Profesor" />
+            <Head title="Crear Examen" />
             <div className="max-w-4xl mx-auto p-6">
                 {showForm ? (
                     <ModalFormulario onClose={() => setShowForm(false)} />
