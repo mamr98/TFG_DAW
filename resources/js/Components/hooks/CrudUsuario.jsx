@@ -103,7 +103,7 @@ function CrudUsuario() {
         }
     };
 
-    const actualizar = async (tipoUsuario, id) => {
+    const modificar = async (tipoUsuario, id) => {
         if (!token) {
             console.error("Token CSRF no encontrado");
             return;
@@ -112,7 +112,7 @@ function CrudUsuario() {
         const ruta = tipoUsuario === "admin" ? `admin` : `admin/${tipoUsuario}`;
 
         try {
-            const resObtener = await fetch(`${ruta}/${id}`, {
+            const resObtener = await fetch(tipoUsuario+'/'+id, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -304,7 +304,7 @@ function CrudUsuario() {
                                     </div>
                                     <div className="p-4 bg-gray-50 dark:bg-gray-600 flex justify-end space-x-2">
                                         <button
-                                            onClick={() => handleAccion('modificar', buscadorTipoUsuario, usuario.id)}
+                                            onClick={() => modificar(buscadorTipoUsuario, usuario.id)}
                                             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                                         >
                                             Editar
@@ -336,8 +336,6 @@ function CrudUsuario() {
             )}
         </div>
     );
-
-    // Las funciones crear, actualizar y borrar permanecen iguales que en tu código original
 }
 
 export default CrudUsuario;

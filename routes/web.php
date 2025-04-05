@@ -65,25 +65,28 @@ Route::middleware('auth', 'verified', "role:admin")->group(function () {
     //CRUD Admin
     Route::get('/admin', [UserController::class, 'index'])->name('admin.index');
     Route::post('/admin', [UserController::class, 'createAdmin'])->name('admin.create');
-    Route::patch('/admin', [UserController::class, 'update'])->name('admin.update');
+    Route::put('/admin/{id}', [UserController::class, 'update'])->name('admin.update');
     Route::delete('/admin', [UserController::class, 'destroy'])->name('admin.destroy');
     Route::get('admin/buscador/{nombre}', [UserController::class, 'buscarAdmin'])->name('admin.buscador');
+    Route::get('admin/{id}', [UserController::class, 'show'])->name('admin.show');
 
 
     //CRUD Profesor
     Route::get('/admin/profesor', [UserController::class, 'index'])->name('admin.indexProfesor');
     Route::post('/admin/profesor', [UserController::class, 'createProfesor'])->name('admin.createProfesor');
-    Route::patch('/admin/profesor', [UserController::class, 'update'])->name('admin.updateProfesor');
+    Route::put('/admin/profesor/{id}', [UserController::class, 'update'])->name('admin.updateProfesor');
     Route::delete('/admin/profesor', [UserController::class, 'destroy'])->name('admin.destroyProfesor');
     Route::get('profesor/buscador/{nombre}', [UserController::class, 'buscarProfesor'])->name('admin.buscadorProfesor');
+    Route::get('profesor/{id}', [UserController::class, 'show'])->name('profesor.show');
 
 
     //CRUD Alumno
     Route::get('/admin/alumno', [UserController::class, 'index'])->name('admin.indexAlumno');
     Route::post('/admin/alumno', [UserController::class, 'createAlumno'])->name('admin.createAlumno');
-    Route::patch('/admin/alumno', [UserController::class, 'update'])->name('admin.updateAlumno');
+    Route::put('/admin/alumno/{id}', [UserController::class, 'update'])->name('admin.updateAlumno');
     Route::delete('/admin/alumno', [UserController::class, 'destroy'])->name('admin.destroyAlumno');
     Route::get('alumno/buscador/{nombre}', [UserController::class, 'buscarAlumno'])->name('admin.buscadorAlumno');
+    Route::get('alumno/{id}', [UserController::class, 'show'])->name('alumno.show');
 
 });
 
@@ -92,7 +95,7 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
    //CRUD Profesor
    Route::get('/profesor', [UserController::class, 'index'])->name('profesor.indexProfesor');
    Route::post('/profesor', [UserController::class, 'createProfesor'])->name('profesor.createProfesor');
-   Route::patch('/profesor', [UserController::class, 'update'])->name('profesor.updateProfesor');
+   Route::put('/profesor', [UserController::class, 'update'])->name('profesor.updateProfesor');
    Route::delete('/profesor', [UserController::class, 'destroy'])->name('profesor.destroyProfesor');
    Route::get('/profesor/buscador/{email}', [UserController::class, 'buscarProfesor'])->name('admin.buscadorProfesor');
 
@@ -100,7 +103,7 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
    //CRUD Alumno
    Route::get('/profesor/alumno', [UserController::class, 'index'])->name('profesor.indexAlumno');
    Route::post('/profesor/alumno', [UserController::class, 'createAlumno'])->name('profesor.createAlumno');
-   Route::patch('/profesor/alumno', [UserController::class, 'update'])->name('profesor.updateAlumno');
+   Route::put('/profesor/alumno', [UserController::class, 'update'])->name('profesor.updateAlumno');
    Route::delete('/profesor/alumno', [UserController::class, 'destroy'])->name('profesor.destroyAlumno');
    Route::get('/alumno/buscador/{email}', [UserController::class, 'buscarAlumno'])->name('admin.buscadorAlumno');
 
