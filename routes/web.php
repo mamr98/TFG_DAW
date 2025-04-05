@@ -23,9 +23,9 @@ Route::get('/', function () {
 
 /* AUTHENTICATED LAYOUT */
 Route::get('/inicio', function () {return Inertia::render('Dashboard', ['toast' => request()->input('toast')]);})->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage');})->middleware(['auth', 'verified'])->name('subir-imagen');
+Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage');})->middleware(['auth', 'verified', "role:admin|alumno"])->name('subir-imagen');
 Route::get('/notas', function () {return Inertia::render('NotasPage');})->middleware(['auth', 'verified'])->name('notas');
-Route::get('/gestionusuarios', function () {return Inertia::render('CreacionUsuarioPage');})->middleware(['auth', 'verified'])->name('gestionusuarios');
+Route::get('/gestionusuarios', function () {return Inertia::render('CreacionUsuarioPage');})->middleware(['auth', 'verified', "role:admin"])->name('gestionusuarios');
 Route::get('/panelprofesor', function(){return Inertia::render('Panel');})->middleware(['auth', 'verified', "role:admin|profesor"])->name('panelprofesor');
 
 /* VERIFICACION EMAIL */
