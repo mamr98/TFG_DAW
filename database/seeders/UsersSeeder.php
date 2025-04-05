@@ -78,6 +78,13 @@ class UsersSeeder extends Seeder
                 'estado' => true,
                 'email_verified_at' => now()
             ],
+            [
+                'name' => 'Dario',
+                'email' => 'dario@escuela.com',
+                'password' => '12341234',
+                'estado' => true,
+                'email_verified_at' => now()
+            ],
         ];
 
         foreach ($alumnos as $alumno) {

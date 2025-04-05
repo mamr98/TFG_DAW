@@ -64,41 +64,46 @@ Route::middleware('auth', 'verified', "role:admin")->group(function () {
 
     //CRUD Admin
     Route::get('/admin', [UserController::class, 'index'])->name('admin.index');
-    Route::get('/admin', [UserController::class, 'edit'])->name('admin.edit');
     Route::post('/admin', [UserController::class, 'createAdmin'])->name('admin.create');
     Route::patch('/admin', [UserController::class, 'update'])->name('admin.update');
     Route::delete('/admin', [UserController::class, 'destroy'])->name('admin.destroy');
+    Route::get('admin/buscador/{nombre}', [UserController::class, 'buscarAdmin'])->name('admin.buscador');
+
 
     //CRUD Profesor
     Route::get('/admin/profesor', [UserController::class, 'index'])->name('admin.indexProfesor');
-    Route::get('/admin/profesor', [UserController::class, 'edit'])->name('admin.editProfesor');
     Route::post('/admin/profesor', [UserController::class, 'createProfesor'])->name('admin.createProfesor');
     Route::patch('/admin/profesor', [UserController::class, 'update'])->name('admin.updateProfesor');
     Route::delete('/admin/profesor', [UserController::class, 'destroy'])->name('admin.destroyProfesor');
+    Route::get('profesor/buscador/{nombre}', [UserController::class, 'buscarProfesor'])->name('admin.buscadorProfesor');
+
 
     //CRUD Alumno
     Route::get('/admin/alumno', [UserController::class, 'index'])->name('admin.indexAlumno');
-    Route::get('/admin/alumno', [UserController::class, 'edit'])->name('admin.editAlumno');
     Route::post('/admin/alumno', [UserController::class, 'createAlumno'])->name('admin.createAlumno');
     Route::patch('/admin/alumno', [UserController::class, 'update'])->name('admin.updateAlumno');
     Route::delete('/admin/alumno', [UserController::class, 'destroy'])->name('admin.destroyAlumno');
+    Route::get('alumno/buscador/{nombre}', [UserController::class, 'buscarAlumno'])->name('admin.buscadorAlumno');
+
 });
 
 //rutas para profesor
 Route::middleware('auth', 'verified', "role:profesor")->group(function () {
    //CRUD Profesor
    Route::get('/profesor', [UserController::class, 'index'])->name('profesor.indexProfesor');
-   Route::get('/profesor', [UserController::class, 'edit'])->name('profesor.editProfesor');
    Route::post('/profesor', [UserController::class, 'createProfesor'])->name('profesor.createProfesor');
    Route::patch('/profesor', [UserController::class, 'update'])->name('profesor.updateProfesor');
    Route::delete('/profesor', [UserController::class, 'destroy'])->name('profesor.destroyProfesor');
+   Route::get('/profesor/buscador/{email}', [UserController::class, 'buscarProfesor'])->name('admin.buscadorProfesor');
+
    
    //CRUD Alumno
    Route::get('/profesor/alumno', [UserController::class, 'index'])->name('profesor.indexAlumno');
-   Route::get('/profesor/alumno', [UserController::class, 'edit'])->name('profesor.editAlumno');
    Route::post('/profesor/alumno', [UserController::class, 'createAlumno'])->name('profesor.createAlumno');
    Route::patch('/profesor/alumno', [UserController::class, 'update'])->name('profesor.updateAlumno');
    Route::delete('/profesor/alumno', [UserController::class, 'destroy'])->name('profesor.destroyAlumno');
+   Route::get('/alumno/buscador/{email}', [UserController::class, 'buscarAlumno'])->name('admin.buscadorAlumno');
+
    
 });
 

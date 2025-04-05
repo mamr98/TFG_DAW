@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -28,12 +29,9 @@ class UserController extends Controller
         $user -> name = $request ->input('name');
         $user -> email = $request ->input('email');
         $user->password = Hash::make($request->input('password'));
+        $user->email_verified_at = $request->input('email_verified_at');
         $user -> estado = $request ->input('estado');
-        $role = Role::where('name', 'alumno')->first();
-
-        if ($role) {
-            $user->roles()->sync([$role->id]); // Asigna el rol correctamente
-        } 
+        $user->assignRole(3); // Asigna el rol correctamente
         $user->save();
         return response()->json($user, 201);
     }
@@ -44,12 +42,10 @@ class UserController extends Controller
         $user -> name = $request ->input('name');
         $user -> email = $request ->input('email');
         $user->password = Hash::make($request->input('password'));
+        $user->email_verified_at = $request->input('email_verified_at');
         $user -> estado = $request ->input('estado');
         $role = Role::where('name', 'profesor')->first();
-
-        if ($role) {
-            $user->roles()->sync([$role->id]); // Asigna el rol correctamente
-        } 
+        $user->assignRole(2); // Asigna el rol correctamente
         $user->save();
         return response()->json($user, 201);
     }
@@ -60,12 +56,9 @@ class UserController extends Controller
         $user -> name = $request ->input('name');
         $user -> email = $request ->input('email');
         $user->password = Hash::make($request->input('password'));
+        $user->email_verified_at = $request->input('email_verified_at');
         $user -> estado = $request ->input('estado');
-        $role = Role::where('name', 'admin')->first();
-
-        if ($role) {
-            $user->roles()->sync([$role->id]); // Asigna el rol correctamente
-        } 
+        $user->assignRole(1); // Asigna el rol correctamente
         $user->save();
         return response()->json($user, 201);
     }
@@ -75,7 +68,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        
     }
 
     /**
@@ -98,9 +90,9 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($request->input('id'));
         $user->update($request->all());
         return response()->json($user);
     }
@@ -108,9 +100,51 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        User::destroy($id);
+        User::destroy($request->input('id'));
         return response()->json(null, 204);
+    }
+
+    public function buscarAlumno($nombre)
+    {
+        $alumnos = User::where('name', 'LIKE', "%{$nombre}%")
+        ->whereExists(function ($query) {
+            $query->select(DB::raw(1))
+                  ->from('model_has_roles')
+                  ->whereColumn('model_id', 'users.id')
+                  ->where('role_id', 3);
+        })
+        ->get();
+
+    return response()->json($alumnos, 200);
+    }
+
+    public function buscarProfesor($nombre)
+    {
+        $profesores = User::where('name', 'LIKE', "%{$nombre}%")
+        ->whereExists(function ($query) {
+            $query->select(DB::raw(1))
+                  ->from('model_has_roles')
+                  ->whereColumn('model_id', 'users.id')
+                  ->where('role_id', 2);
+        })
+        ->get();
+
+        return response()->json($profesores, 200);
+    }
+
+    public function buscarAdmin($nombre)
+    {
+        $administradores = User::where('name', 'LIKE', "%{$nombre}%")
+        ->whereExists(function ($query) {
+            $query->select(DB::raw(1))
+                  ->from('model_has_roles')
+                  ->whereColumn('model_id', 'users.id')
+                  ->where('role_id', 1);
+        })
+        ->get();
+
+        return response()->json($administradores, 200);
     }
 }
