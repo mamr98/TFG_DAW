@@ -11,11 +11,6 @@ function CrudUsuario() {
     const [nombreBusqueda, setNombreBusqueda] = useState("");
     const [resultados, setResultados] = useState([]);
 
-    const handleAccion = async (accion, tipoUsuario, id = null) => {
-        // Implementar lógica para modificar/activar/desactivar
-        console.log(`${accion} ${tipoUsuario} ${id || ''}`);
-    };
-
     const crear = async (tipoUsuario) => {
         if (!token) {
             console.error("Token CSRF no encontrado");

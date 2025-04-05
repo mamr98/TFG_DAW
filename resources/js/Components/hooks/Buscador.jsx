@@ -1,42 +1,52 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 
 export function Buscador({ tipoUsuario, nombreBusqueda, setNombreBusqueda, onResultados }) {
-    useEffect(() => {
-        const fetchUsuarios = async () => {
-            if (nombreBusqueda.length > 0) {
-                try {
-                    let endpoint = "";
-                    switch (tipoUsuario) {
-                        case "alumno":
-                            endpoint = `alumno/buscador/${nombreBusqueda}`;
-                            break;
-                        case "profesor":
-                            endpoint = `profesor/buscador/${nombreBusqueda}`;
-                            break;
-                        case "admin":
-                            endpoint = `admin/buscador/${nombreBusqueda}`;
-                            break;
-                        default:
-                            endpoint = `admin/buscador/${nombreBusqueda}`;
-                    }
+    const fetchUsuarios = useCallback(async (searchTerm) => {
+        try {
+            let endpoint = "";
+            switch (tipoUsuario) {
+                case "alumno":
+                    endpoint = `alumno/buscador/${searchTerm}`;
+                    break;
+                case "profesor":
+                    endpoint = `profesor/buscador/${searchTerm}`;
+                    break;
+                case "admin":
+                    endpoint = `admin/buscador/${searchTerm}`;
+                    break;
+                default:
+                    endpoint = `admin/buscador/${searchTerm}`;
+            }
 
-                    const response = await fetch(endpoint);
-                    if (!response.ok) throw new Error("Error en la búsqueda");
-                    
-                    const data = await response.json();
-                    onResultados(data);
-                } catch (error) {
-                    console.error("Error:", error);
-                    onResultados([]);
-                }
+            const response = await fetch(endpoint);
+            if (!response.ok) throw new Error("Error en la búsqueda");
+
+            const data = await response.json();
+            onResultados(data);
+        } catch (error) {
+            console.error("Error:", error);
+            onResultados([]);
+        }
+    }, [tipoUsuario, onResultados]);
+
+    // Función para el botón de búsqueda manual
+    const handleButtonSearch = () => {
+        if (nombreBusqueda.length > 0) {
+            fetchUsuarios(nombreBusqueda);
+        }
+    };
+
+    useEffect(() => {
+        const debounceTimer = setTimeout(() => {
+            if (nombreBusqueda.length > 0) {
+                fetchUsuarios(nombreBusqueda);
             } else {
                 onResultados([]);
             }
-        };
+        }, 300);
 
-        const debounceTimer = setTimeout(fetchUsuarios, 300);
         return () => clearTimeout(debounceTimer);
-    }, [nombreBusqueda, tipoUsuario, onResultados]);
+    }, [nombreBusqueda, fetchUsuarios, onResultados]);
 
     return (
         <div className="w-full max-w-2xl mx-auto mb-8">
@@ -49,8 +59,18 @@ export function Buscador({ tipoUsuario, nombreBusqueda, setNombreBusqueda, onRes
                     value={nombreBusqueda}
                     onChange={(e) => setNombreBusqueda(e.target.value)}
                 />
-                <span className="absolute right-4 top-3 text-gray-400">
-                    <i className="bi bi-search text-xl"></i>
+                <span className="absolute right-4 top-3 flex items-center gap-2 text-gray-400">
+                    <i className="bi bi-search text-sm"></i>
+                    <button 
+                        onClick={handleButtonSearch}
+                        className="w-6 h-6 flex items-center justify-center hover:bg-gray-100 rounded"
+                    >
+                        <img
+                            src="flecha.png"
+                            alt="Flecha"
+                            className="w-4 h-4 object-contain"
+                        />
+                    </button>
                 </span>
             </div>
         </div>
