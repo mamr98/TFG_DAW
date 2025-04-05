@@ -16,7 +16,7 @@ export default function VerifyEmail({ status }) {
         <>
         <Navbar/>
         <GuestLayout>
-            <Head title="Email Verification" />
+            <Head title="Verificación Correo" />
 
             <div className="mb-4 text-sm text-003049 dark:text-white">
                 ¡Gracias por registrarte! Antes de empezar, por favor verifica tu dirección de correo electrónico haciendo clic en el enlace que te acabamos de enviar. Si no recibiste el correo, te enviaremos otro con gusto.

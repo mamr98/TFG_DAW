@@ -124,7 +124,7 @@ export default function Welcome({ auth }) {
                     style={{ backgroundImage: `url(${inicio})` }}
                 >
                     <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center">
-                        <h1 className="text-white text-5xl font-bold">
+                        <h1 className="text-white text-5xl font-bold text-center">
                             Corrige exámenes en{" "}
                             <span className="text-blue-400">segundos</span> con
                             IA
@@ -142,7 +142,7 @@ export default function Welcome({ auth }) {
                 <section className="bg-sky-700 mx-auto px-4 py-12 rounded-sm">
                     <div className="max-w-screen-xl mx-auto grid md:grid-cols-3 gap-6">
                         <div
-                            className="relative h-64 bg-cover bg-center flex flex-col justify-center items-center text-white p-6 rounded-lg shadow-lg hover:transform hover:-translate-y-2 transition duration-300"
+                            className="relative h-64 bg-cover bg-center flex flex-col justify-center items-center text-center text-white p-6 rounded-lg shadow-lg hover:transform hover:-translate-y-2 transition duration-300"
                             style={{ backgroundImage: `url(${correcion})` }}
                         >
                             <div className="absolute inset-0 bg-black bg-opacity-50 rounded-lg"></div>
