@@ -66,7 +66,7 @@ Route::middleware('auth', 'verified', "role:admin")->group(function () {
     Route::get('/admin', [UserController::class, 'index'])->name('admin.index');
     Route::post('/admin', [UserController::class, 'createAdmin'])->name('admin.create');
     Route::put('/admin/{id}', [UserController::class, 'update'])->name('admin.update');
-    Route::delete('/admin', [UserController::class, 'destroy'])->name('admin.destroy');
+    Route::put('admin/estado/{id}', [UserController::class, 'estado'])->name('admin.estado');
     Route::get('admin/buscador/{nombre}', [UserController::class, 'buscarAdmin'])->name('admin.buscador');
     Route::get('admin/{id}', [UserController::class, 'show'])->name('admin.show');
 
@@ -75,7 +75,7 @@ Route::middleware('auth', 'verified', "role:admin")->group(function () {
     Route::get('/admin/profesor', [UserController::class, 'index'])->name('admin.indexProfesor');
     Route::post('/admin/profesor', [UserController::class, 'createProfesor'])->name('admin.createProfesor');
     Route::put('/admin/profesor/{id}', [UserController::class, 'update'])->name('admin.updateProfesor');
-    Route::delete('/admin/profesor', [UserController::class, 'destroy'])->name('admin.destroyProfesor');
+    Route::put('admin/profesor/estado/{id}', [UserController::class, 'estado'])->name('admin.destroyProfesor');
     Route::get('profesor/buscador/{nombre}', [UserController::class, 'buscarProfesor'])->name('admin.buscadorProfesor');
     Route::get('profesor/{id}', [UserController::class, 'show'])->name('profesor.show');
 
@@ -84,7 +84,7 @@ Route::middleware('auth', 'verified', "role:admin")->group(function () {
     Route::get('/admin/alumno', [UserController::class, 'index'])->name('admin.indexAlumno');
     Route::post('/admin/alumno', [UserController::class, 'createAlumno'])->name('admin.createAlumno');
     Route::put('/admin/alumno/{id}', [UserController::class, 'update'])->name('admin.updateAlumno');
-    Route::delete('/admin/alumno', [UserController::class, 'destroy'])->name('admin.destroyAlumno');
+    Route::put('admin/alumno/estado/{id}', [UserController::class, 'estado'])->name('admin.destroyAlumno');
     Route::get('alumno/buscador/{nombre}', [UserController::class, 'buscarAlumno'])->name('admin.buscadorAlumno');
     Route::get('alumno/{id}', [UserController::class, 'show'])->name('alumno.show');
 

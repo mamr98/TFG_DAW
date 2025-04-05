@@ -147,4 +147,18 @@ class UserController extends Controller
 
         return response()->json($administradores, 200);
     }
+
+    public function estado($id)
+    {
+        $user = User::findOrFail($id);
+        if ($user->estado == true) {
+            $user->estado= false;
+        }
+        else{
+            $user->estado= true;
+        }
+        $user->save();
+        
+        return response()->json($user);
+    }
 }

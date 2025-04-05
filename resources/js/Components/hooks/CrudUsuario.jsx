@@ -207,23 +207,22 @@ function CrudUsuario() {
         }
     };
 
-    const borrar = async (tipoUsuario, id) => {
+    const estado = async (tipoUsuario, id) => {
         if (!token) {
             console.error("Token CSRF no encontrado");
             return;
         }
 
-        const ruta = tipoUsuario === "admin" ? `admin` : `admin/${tipoUsuario}`;
+        const ruta = tipoUsuario === "admin" ? `admin/estado` : `admin/${tipoUsuario}/estado`;
 
         try {
-            const res = await fetch(`${ruta}`, {
-                method: "DELETE",
+            const res = await fetch(`${ruta}/${id}`, {
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     "X-CSRF-TOKEN": token,
                 },
                 credentials: "same-origin",
-                body: JSON.stringify({ id }),
             });
 
             if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -310,7 +309,7 @@ function CrudUsuario() {
                                             Editar
                                         </button>
                                         <button
-                                            onClick={() => handleAccion(usuario.estado ? 'desactivar' : 'activar', buscadorTipoUsuario, usuario.id)}
+                                            onClick={() => estado( buscadorTipoUsuario, usuario.id)}
                                             className={`px-4 py-2 rounded-lg transition-colors ${
                                                 usuario.estado 
                                                     ? 'bg-red-500 hover:bg-red-600 text-white'
