@@ -1,6 +1,8 @@
 import { usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -13,13 +15,18 @@ export default function PanelProfesor() {
     // Mostrar notificaciones flash
     useEffect(() => {
         if (flash?.success) {
-            Swal.fire({
-                title: 'Éxito',
-                text: flash.success,
-                icon: 'success',
-                confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#2563eb',
+            toast.success(flash.success, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
             });
+        }
+        if (flash?.error) {
+            toast.error(flash.error);
         }
     }, [flash]);
 
@@ -49,6 +56,7 @@ export default function PanelProfesor() {
                 </h2>
             }
         >
+            
             <Head title="Crear Examen" />
             <div className="max-w-4xl mx-auto p-6">
                 {showForm ? (

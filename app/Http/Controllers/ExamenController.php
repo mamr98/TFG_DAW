@@ -37,7 +37,7 @@ class ExamenController extends Controller
         $examen = Examen::create($validated);
 
         // Redireccionar con mensaje de éxito
-        return redirect()->back()->with('success', 'Examen creado correctamente');
+        return redirect()->route('panelprofesor')->with('success', 'Examen creado correctamente');
     }
 
     public function generarCodigoExamen(){

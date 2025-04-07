@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1658b639199de91246fa619bd6c4013e",
+    "content-hash": "0c12342e06d4d97b03abdc18fc9d1a72",
     "packages": [
         {
             "name": "brick/math",
@@ -1252,6 +1252,52 @@
                 }
             ],
             "time": "2025-02-03T10:55:03+00:00"
+        },
+        {
+            "name": "hilalahmad/php-toastr",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fullstack124/php-toastr.git",
+                "reference": "94a999a23b517d31235e240398156886bf33a9d0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fullstack124/php-toastr/zipball/94a999a23b517d31235e240398156886bf33a9d0",
+                "reference": "94a999a23b517d31235e240398156886bf33a9d0",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Hilalahmad\\PhpToastr\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "fullstack124",
+                    "email": "stackf63@gmail.com"
+                }
+            ],
+            "description": "The PHP Toastr package is a user-friendly and lightweight PHP library designed to create simple and stylish notification messages in web applications. It offers a convenient way to display various types of notifications, such as success messages, error alerts, information pop-ups, and more, in a visually appealing manner to enhance the user experience.",
+            "keywords": [
+                "ci4alert",
+                "phpalert",
+                "phptoastr",
+                "toastr"
+            ],
+            "support": {
+                "issues": "https://github.com/fullstack124/php-toastr/issues",
+                "source": "https://github.com/fullstack124/php-toastr/tree/v1.1.0"
+            },
+            "time": "2023-11-06T13:04:15+00:00"
         },
         {
             "name": "inertiajs/inertia-laravel",
@@ -8767,5 +8813,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
