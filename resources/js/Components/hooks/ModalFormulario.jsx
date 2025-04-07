@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 export default function ModalFormulario({ onClose }) {
     const { data, setData, post, processing, errors } = useForm({
-        nombre: "",
+        nombre_examen: "",
         fecha_inicio: "",
         fecha_fin: "",
         asignatura_id: "",
@@ -80,8 +80,8 @@ export default function ModalFormulario({ onClose }) {
                         </label>
                         <input
                             type="text"
-                            value={data.nombre}
-                            onChange={(e) => setData("nombre", e.target.value)}
+                            value={data.nombre_examen}
+                            onChange={(e) => setData("nombre_examen", e.target.value)}
                             className={`w-full px-4 py-2 border rounded-md ${errors.nombre
                                     ? "border-red-500"
                                     : "focus:ring-blue-500 focus:border-blue-500"
