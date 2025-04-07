@@ -99,7 +99,14 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
     Route::post('/profesor/examen', [ExamenController::class, 'store'])->name('profesor.examen.store');
 });
 
-Route::get('/examenesAlumno', [ExamenController::class, 'examenesAlumno'])->name('examenesAlumno');
+Route::middleware('auth', 'verified', "role:alumno")->group(function () {
+    Route::get('/examenesAlumno', [ExamenController::class, 'recogerExamenesAlumno'])->name('examenesAlumno');
+    
+
+    Route::post('/alumno/examen/{idExamen}', [ExamenController::class, 'examenAlumno'])->name('examen.alumno');
+});
+
+
 //Tiene que estar al final
 Route::fallback(function(){
     return Inertia::render('Errors/404');

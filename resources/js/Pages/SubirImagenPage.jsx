@@ -2,11 +2,13 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
 import SubirImagen from "@/Components/hooks/SubirImagen";
+import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function SubirImagenPage() {
     // Estado para almacenar los exámenes
     const [examenes, setExamenes] = useState([]);
     const [loading, setLoading] = useState(true); // Estado para mostrar el loading
+    const [mostrarSubirImagen, setMostrarSubirImagen] = useState(false);
 
     // Efecto que se ejecuta cuando el componente se monta
     useEffect(() => {
@@ -37,16 +39,6 @@ export default function SubirImagenPage() {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            Aquí se subirá la imagen
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
                             {loading ? (
                                 <p>Cargando exámenes...</p>
                             ) : (
@@ -56,11 +48,25 @@ export default function SubirImagenPage() {
                                         {examenes.length > 0 ? (
                                             examenes.map((examen) => (
                                                 <li key={examen.id} className="mb-4">
-                                                    <div className="font-medium">{examen.nombre_examen}</div>                                                
+                                                    <div className="flex justify-between items-center">
+                                                        <div className="font-medium">{examen.nombre_examen}</div>
+                                                        <PrimaryButton
+                                                            onClick={() => setMostrarSubirImagen(examen.id)}
+                                                            className="px-6 py-3 text-base font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300 ease-in-out">
+                                                            Subir Examen
+                                                        </PrimaryButton>
+                                                    </div>
+                                                    
+                                                    {/* Mostrar SubirImagen solo para el examen seleccionado */}
+                                                    {mostrarSubirImagen === examen.id && (
+                                                        <div className="pt-4">
+                                                            <SubirImagen />
+                                                        </div>
+                                                    )}
                                                 </li>
                                             ))
                                         ) : (
-                                            <p>No hay exámenes disponibles.</p>
+                                            <p className="text-red-600">No hay exámenes disponibles.</p>
                                         )}
                                     </ul>
                                 </div>
@@ -69,16 +75,6 @@ export default function SubirImagenPage() {
                     </div>
                 </div>
             </div>
-
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <SubirImagen />
-                        </div>
-                    </div>
-                </div>
-            </div>
         </AuthenticatedLayout>
-    );
+    );  
 }

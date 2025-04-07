@@ -63,7 +63,7 @@ class ExamenController extends Controller
     return response()->json($clases);
     }
 
-    public function examenesAlumno()
+    public function recogerExamenesAlumno()
 {
     $claseIds = DB::table('clase_alumno')
         ->where('alumno_id', auth()->id())
@@ -72,5 +72,15 @@ class ExamenController extends Controller
     $examenes = Examen::whereIn('clase_id', $claseIds)->get();
 
     return $examenes;
+}
+
+public function examenAlumno(String $idExamen){
+    DB::table('examen_alumno')->insert([
+        'alumno_id' => auth()->id(),
+        'examen_id' => $idExamen,
+        'fecha_subida' => now(),
+        'created_at' => now(),
+        'updated_at' => now()
+    ]);
 }
 }
