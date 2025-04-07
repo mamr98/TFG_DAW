@@ -19,7 +19,7 @@ class Examen extends Model
         'fichero_profesor',
         'fecha_inicio',
         'fecha_fin',
-        'titulo_examen',
+        'nombre_examen',
         'json_examen'
     ];
 
