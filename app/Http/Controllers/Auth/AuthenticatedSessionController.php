@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
     if (!$user->hasVerifiedEmail()) {
         Auth::logout();
         return back()->withErrors([
-            'email' => 'You must verify your email before logging in or the user is disabled.',
+            'email' => 'Debe verificar su correo electrónico antes de iniciar sesión o el usuario quedará deshabilitado.',
         ]);
     }
 
