@@ -62,4 +62,15 @@ class ExamenController extends Controller
         ->get();
     return response()->json($clases);
     }
+
+    public function examenesAlumno()
+{
+    $claseIds = DB::table('clase_alumno')
+        ->where('alumno_id', auth()->id())
+        ->pluck('clase_id');
+
+    $examenes = Examen::whereIn('clase_id', $claseIds)->get();
+
+    return $examenes;
+}
 }
