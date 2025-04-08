@@ -95,8 +95,11 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
     Route::get('/asignaturas', [ExamenController::class, 'recogerAsignaturas'])->name('asignaturas');
     Route::get('/clases', [ExamenController::class, 'recogerClases'])->name('clases');
     
+    Route::get('/examenesProfesor', [ExamenController::class, 'recogerExamenesProfesor'])->name('examenesProfesor');
+    
 
     Route::post('/profesor/examen', [ExamenController::class, 'store'])->name('profesor.examen.store');
+    
 });
 
 Route::middleware('auth', 'verified', "role:alumno")->group(function () {

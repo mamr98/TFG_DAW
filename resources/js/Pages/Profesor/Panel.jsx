@@ -9,8 +9,10 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import ModalFormulario from '@/Components/hooks/ModalFormulario';
 
 export default function PanelProfesor() {
-    const { examenes, flash } = usePage().props;
+    const { flash } = usePage().props;
     const [showForm, setShowForm] = useState(false);
+    const [examenes, setExamenes] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     // Mostrar notificaciones flash
     useEffect(() => {
@@ -29,6 +31,20 @@ export default function PanelProfesor() {
             toast.error(flash.error);
         }
     }, [flash]);
+
+    // Obtener exámenes del profesor
+    useEffect(() => {
+        fetch('examenesProfesor')
+            .then((response) => response.json())
+            .then((data) => {
+                setExamenes(data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error al obtener los exámenes:", error);
+                setLoading(false);
+            });
+    }, []);
 
     // Confirmación para abrir formulario
     const handleNuevoExamen = () => {
@@ -56,8 +72,9 @@ export default function PanelProfesor() {
                 </h2>
             }
         >
-            
             <Head title="Crear Examen" />
+            <ToastContainer />
+
             <div className="max-w-4xl mx-auto p-6">
                 {showForm ? (
                     <ModalFormulario onClose={() => setShowForm(false)} />
@@ -72,23 +89,25 @@ export default function PanelProfesor() {
 
                         {/* Listado de exámenes */}
                         <div className="mt-8">
-                            {examenes?.length > 0 ? (
+                            {loading ? (
+                                <div className="text-center text-gray-500">Cargando exámenes...</div>
+                            ) : examenes.length > 0 ? (
                                 <div className="bg-white rounded-lg shadow overflow-hidden">
                                     <h2 className="bg-gray-100 px-4 py-3 font-semibold">
                                         Tus exámenes ({examenes.length})
                                     </h2>
                                     <ul className="divide-y divide-gray-200">
                                         {examenes.map((examen) => (
-                                            <li key={examen.id} className="p-4 hover:bg-gray-50">
+                                            <li key={examen.examen?.id} className="p-4 hover:bg-gray-50">
                                                 <div className="flex justify-between items-center">
                                                     <div>
-                                                        <h3 className="font-medium">{examen.nombre}</h3>
+                                                        <h3 className="font-medium">{examen.examen.nombre}</h3>
                                                         <p className="text-sm text-gray-500">
-                                                            {examen.asignatura} • {examen.preguntas} preguntas
+                                                            {examen.asignatura?.nombre} • {examen.examen.preguntas} preguntas
                                                         </p>
                                                     </div>
-                                                    <a 
-                                                        href={`/storage/${examen.archivo_path}`} 
+                                                    <a
+                                                        href={`/storage/${examen.examen.archivo_path}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="text-blue-600 hover:text-blue-800 text-sm"
@@ -98,6 +117,7 @@ export default function PanelProfesor() {
                                                 </div>
                                             </li>
                                         ))}
+
                                     </ul>
                                 </div>
                             ) : (

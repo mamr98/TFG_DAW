@@ -74,6 +74,23 @@ class ExamenController extends Controller
     return $examenes;
 }
 
+public function recogerExamenesProfesor()
+{
+    $examenes = Examen::where('profesor_id', auth()->id())->get();
+
+    $resultado = $examenes->map(function ($examen) {
+        $asignatura = Asignatura::find($examen->asignatura_id);
+
+        return [
+            'examen' => $examen,
+            'asignatura' => $asignatura,
+        ];
+    });
+
+    return response()->json($resultado);
+}
+
+
 public function examenAlumno(String $idExamen){
     DB::table('examen_alumno')->insert([
         'alumno_id' => auth()->id(),
