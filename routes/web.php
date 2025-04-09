@@ -98,7 +98,7 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
     Route::get('/examenesProfesor', [ExamenController::class, 'recogerExamenesProfesor'])->name('examenesProfesor');
     Route::post('/profesor/examen', [ExamenController::class, 'store'])->name('profesor.examen.store');
     Route::put('/profesor/examen/{id}', [ExamenController::class, 'actualizarExamen'])->name('profesor.examen.update');
-    Route::delete('/profesor/examen/{id}', [ExamenController::class, 'deleteExamen'])->name('profesor.examen.delete');
+    Route::delete('/profesor/examen/{id}', [ExamenController::class, 'deleteExamen'])->name('profesor.examen.destroy');
 
 
 });

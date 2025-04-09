@@ -35,8 +35,8 @@ export default function PanelProfesor() {
 
         // Cargar asignaturas y clases del profesor antes de abrir el modal
         Promise.all([
-            fetch(route('asignaturas')).then((res) => res.json()),
-            fetch(route('clases')).then((res) => res.json()),
+            fetch(route("asignaturas")).then((res) => res.json()),
+            fetch(route("clases")).then((res) => res.json()),
         ])
             .then(([asignaturasData, clasesData]) => {
                 setAsignaturas(asignaturasData);
@@ -87,7 +87,7 @@ export default function PanelProfesor() {
         toast.success("Examen actualizado correctamente");
     };
 
-    // Función para eliminar un examen
+    // Función corregida para eliminar un examen
     const handleDeleteExamen = (examenId) => {
         Swal.fire({
             title: "¿Estás seguro?",
@@ -98,26 +98,23 @@ export default function PanelProfesor() {
             cancelButtonColor: "#3085d6",
             confirmButtonText: "Sí, eliminar",
             cancelButtonText: "Cancelar",
-        }).then((result) => {
+        }).then(async (result) => {
+            // Añadido async aquí
             if (result.isConfirmed) {
-                // Usar Inertia para eliminar el examen
-                router.delete(`/profesor/examen/${examen.id}`, {
-                    onSuccess: () => {
-                        // Actualizar el estado local eliminando el examen
-                        setExamenes((prev) =>
-                            prev.filter(
-                                (examen) => examen.examen.id !== examenId
-                            )
-                        );
-
-                        // Mostrar notificación de éxito
-                        toast.success("Examen eliminado correctamente");
-                    },
-                    onError: (errors) => {
-                        console.error("Error al eliminar:", errors);
-                        toast.error("Error al eliminar el examen");
-                    },
-                });
+                try {
+                    router.delete(`profesor/examen/${examenId}`, {
+                        onSuccess: () => {
+                            setExamenes(prev => prev.filter(item => item.id !== examenId));
+                            toast.success("Examen eliminado correctamente");
+                        },
+                        onError: (errors) => {
+                            toast.error(errors.message || "Error al eliminar");
+                        }
+                    });
+                } catch (error) {
+                    console.error("Error:", error);
+                    toast.error("Error de conexión al eliminar el examen");
+                }
             }
         });
     };

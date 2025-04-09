@@ -46,7 +46,7 @@ export default function EditExamenForm({
         setErrors({});
 
         try {
-            const response = await fetch(`/profesor/examen/${examen.id}`, {
+            const response = await fetch(`profesor/examen/${examen.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

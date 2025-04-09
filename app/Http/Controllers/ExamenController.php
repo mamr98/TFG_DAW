@@ -140,6 +140,6 @@ class ExamenController extends Controller
         // Eliminar el examen
         $examen->delete();
         
-        return response()->json(['success' => 'Examen eliminado correctamente']);
+        return redirect()->back()->with('success', 'Examen eliminado correctamente');
     }
 }
