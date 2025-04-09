@@ -42,9 +42,9 @@ function SubirImagen({ examenId }) {
             formData.append('imagen', fileInput.files[0]);
             formData.append('examen_id', examenId);
 
-            const response = await fetch('/api/subir-imagen', {
+            const response = await fetch('alumno/examen/'+examenId, {
                 method: 'POST',
-                body: formData,
+               /*  body: formData, */
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 },

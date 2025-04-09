@@ -59,15 +59,28 @@ class ExamenController extends Controller
     }
 
     public function recogerExamenesAlumno()
-    {
-        $claseIds = DB::table('clase_alumno')
-            ->where('alumno_id', auth()->id())
-            ->pluck('clase_id');
+{
+    $alumnoId = auth()->id();
 
-        $examenes = Examen::whereIn('clase_id', $claseIds)->get();
+    // Obtener los IDs de las clases del alumno
+    $claseIds = DB::table('clase_alumno')
+        ->where('alumno_id', $alumnoId)
+        ->pluck('clase_id');
 
-        return $examenes;
-    }
+    // Obtener los IDs de los exámenes que ya ha realizado el alumno
+    $examenesRealizados = DB::table('examen_alumno')
+        ->where('alumno_id', $alumnoId)
+        ->pluck('examen_id');
+
+    // Obtener los exámenes que pertenecen a las clases del alumno
+    // y que aún no han sido realizados por él
+    $examenes = Examen::whereIn('clase_id', $claseIds)
+        ->whereNotIn('id', $examenesRealizados)
+        ->get();
+
+    return $examenes;
+}
+
 
     public function recogerExamenesProfesor()
     {
@@ -85,7 +98,7 @@ class ExamenController extends Controller
         return response()->json($resultado);
     }
 
-    public function examenAlumno(String $idExamen)
+    public function crearExamenAlumno(String $idExamen)
     {
         DB::table('examen_alumno')->insert([
             'alumno_id' => auth()->id(),
@@ -94,6 +107,7 @@ class ExamenController extends Controller
             'created_at' => now(),
             'updated_at' => now()
         ]);
+        return redirect()->route('subir-imagen')->with('success', 'Examen subido correctamente');
     }
 
     public function actualizarExamen(Request $request, $id)
