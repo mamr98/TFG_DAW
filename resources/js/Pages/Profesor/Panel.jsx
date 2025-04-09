@@ -70,10 +70,10 @@ export default function PanelProfesor() {
                 prev.map((item) =>
                     item.examen.id === updatedExamen.id
                         ? {
-                              ...item,
-                              examen: updatedExamen,
-                              asignatura: updatedAsignatura,
-                          }
+                            ...item,
+                            examen: updatedExamen,
+                            asignatura: updatedAsignatura,
+                        }
                         : item
                 )
             );
@@ -201,24 +201,32 @@ export default function PanelProfesor() {
                             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                                 Gestión de Exámenes
                             </h1>
-                            <PrimaryButton
-                                onClick={handleNuevoExamen}
-                                className="px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2"
+                            <button
+                                onClick={fetchExamenes}
+                                disabled={isReloading}
+                                className="flex items-center gap-2 px-3 py-2 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className="h-5 w-5"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
+                                    className={`h-5 w-5 ${isReloading
+                                        ? "animate-spin"
+                                        : ""
+                                        }`}
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
                                 >
                                     <path
-                                        fillRule="evenodd"
-                                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                                        clipRule="evenodd"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                                     />
                                 </svg>
-                                Crear Examen
-                            </PrimaryButton>
+                                {isReloading
+                                    ? "Recargando..."
+                                    : "Recargar"}
+                            </button>
                         </div>
 
                         <div className="mt-6">
@@ -247,33 +255,24 @@ export default function PanelProfesor() {
                                                 {examenes.length}
                                             </span>
                                         </h2>
-                                        <button
-                                            onClick={fetchExamenes}
-                                            disabled={isReloading}
-                                            className="flex items-center gap-2 px-3 py-2 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        <PrimaryButton
+                                            onClick={handleNuevoExamen}
+                                            className="px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2"
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className={`h-5 w-5 ${
-                                                    isReloading
-                                                        ? "animate-spin"
-                                                        : ""
-                                                }`}
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
+                                                className="h-5 w-5"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
                                             >
                                                 <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                                    fillRule="evenodd"
+                                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                                    clipRule="evenodd"
                                                 />
                                             </svg>
-                                            {isReloading
-                                                ? "Recargando..."
-                                                : "Recargar"}
-                                        </button>
+                                            Crear Examen
+                                        </PrimaryButton>
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
