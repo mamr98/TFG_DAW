@@ -2,15 +2,17 @@
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Aws\Textract\TextractClient;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ExamenController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TextractController;
+use App\Http\Controllers\Admin\UserContoller;
 use App\Http\Controllers\ComparacionController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use App\Http\Controllers\Admin\UserContoller;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -57,6 +59,7 @@ Route::middleware('auth', 'verified')->group(function () {
 
 //rutas para admin
 Route::middleware('auth', 'verified', "role:admin")->group(function () {
+    Route::post('/process-table', [TextractController::class, 'process']);
 
     //CRUD Admin
     Route::get('/admin', [UserController::class, 'index'])->name('admin.index');
@@ -92,6 +95,7 @@ Route::middleware('auth', 'verified', "role:admin")->group(function () {
 
 //rutas para profesor
 Route::middleware('auth', 'verified', "role:profesor")->group(function () {
+    Route::post('/process-table', [TextractController::class, 'process']);
     Route::get('/asignaturas', [ExamenController::class, 'recogerAsignaturas'])->name('asignaturas');
     Route::get('/clases', [ExamenController::class, 'recogerClases'])->name('clases');
 
@@ -105,6 +109,7 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
 
 
 Route::middleware('auth', 'verified', "role:alumno")->group(function () {
+    Route::post('/process-table', [TextractController::class, 'process']);
     Route::get('/examenesAlumno', [ExamenController::class, 'recogerExamenesAlumno'])->name('examenesAlumno');
     Route::post('/alumno/examen/{idExamen}', [ExamenController::class, 'crearExamenAlumno'])->name('examen.alumno');
 });
@@ -113,6 +118,47 @@ Route::middleware('auth', 'verified', "role:alumno")->group(function () {
 //Tiene que estar al final
 Route::fallback(function(){
     return Inertia::render('Errors/404');
+});
+
+Route::get('/test-textract', function () {
+    // 1. Configura el cliente
+    $client = new TextractClient([
+        'version' => '2018-06-27',
+        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+        'credentials' => [
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+        ],
+    ]);
+
+    // 2. Procesa la imagen de prueba
+    try {
+        $result = $client->analyzeDocument([
+            'Document' => [
+                'Bytes' => file_get_contents(public_path('prueba2.png'))
+            ],
+            'FeatureTypes' => ['TABLES'],
+        ]);
+
+        // 3. Extrae datos simples (para prueba)
+        $text = '';
+        foreach ($result['Blocks'] as $block) {
+            if ($block['BlockType'] === 'LINE') {
+                $text .= $block['Text'] . "\n";
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'text' => $text,
+            'full_response' => $result->toArray() // ¡Opcional! Solo para debug
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => $e->getMessage()
+        ], 500);
+    }
 });
 
 require __DIR__.'/auth.php';
