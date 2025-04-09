@@ -1,7 +1,14 @@
+"use client";
+
 import { useState } from "react";
 import ExamenActionsMenu from "./ExamenActionsMenu";
 
-export default function ExamenCard({ examen, asignatura }) {
+export default function ExamenCard({
+    examen,
+    asignatura,
+    onEditClick,
+    onDeleteClick,
+}) {
     const [openMenuId, setOpenMenuId] = useState(null);
 
     const toggleMenu = (id, e) => {
@@ -35,7 +42,9 @@ export default function ExamenCard({ examen, asignatura }) {
                                     />
                                 </svg>
                                 <span className="font-medium">Asignatura:</span>{" "}
-                                <span className="truncate">{asignatura?.nombre || "No especificada"}</span>
+                                <span className="truncate">
+                                    {asignatura?.nombre || "No especificada"}
+                                </span>
                             </p>
                             <p className="flex items-center gap-2">
                                 <svg
@@ -89,16 +98,21 @@ export default function ExamenCard({ examen, asignatura }) {
                                     />
                                 </svg>
                                 <span className="font-medium">Subido:</span>{" "}
-                                {new Date(examen.created_at).toLocaleDateString()}
+                                {new Date(
+                                    examen.created_at
+                                ).toLocaleDateString()}
                             </p>
                         </div>
                     </div>
 
-                    <ExamenActionsMenu 
-                        examenId={examen.id} 
+                    <ExamenActionsMenu
+                        examenId={examen.id}
                         ficheroProfesor={examen.fichero_profesor}
                         openMenuId={openMenuId}
                         toggleMenu={toggleMenu}
+                        onEditClick={onEditClick}
+                        onDeleteClick={onDeleteClick}
+                        examen={examen}
                     />
                 </div>
 

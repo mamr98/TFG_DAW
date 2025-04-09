@@ -1,4 +1,42 @@
-export default function ExamenActionsMenu({ examenId, ficheroProfesor, openMenuId, toggleMenu }) {
+"use client";
+import Swal from "sweetalert2";
+
+export default function ExamenActionsMenu({
+    examenId,
+    ficheroProfesor,
+    openMenuId,
+    toggleMenu,
+    onEditClick,
+    onDeleteClick,
+    examen,
+}) {
+    const handleEdit = (e) => {
+        e.stopPropagation();
+
+        Swal.fire({
+            title: "¿Editar este examen?",
+            text: "Se abrirá el formulario para editar el examen",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Continuar",
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: "#2563eb",
+            cancelButtonColor: "#d33",
+        }).then((result) => {
+            if (result.isConfirmed && typeof onEditClick === "function") {
+                onEditClick(examen);
+            }
+        });
+    };
+
+    const handleDelete = (e) => {
+        e.stopPropagation();
+
+        if (typeof onDeleteClick === "function") {
+            onDeleteClick(examenId);
+        }
+    };
+
     return (
         <div className="relative">
             <button
@@ -50,9 +88,9 @@ export default function ExamenActionsMenu({ examenId, ficheroProfesor, openMenuI
                             Ver PDF
                         </a>
                     )}
-                    <a
-                        href="#"
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    <button
+                        onClick={handleEdit}
+                        className="w-full text-left flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -69,31 +107,11 @@ export default function ExamenActionsMenu({ examenId, ficheroProfesor, openMenuI
                             />
                         </svg>
                         Editar examen
-                    </a>
-                    <a
-                        href="#"
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 mr-2 text-emerald-500"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                            />
-                        </svg>
-                        Descargar respuestas
-                    </a>
+                    </button>
                     <div className="border-t border-gray-200 dark:border-gray-700 my-1"></div>
-                    <a
-                        href="#"
-                        className="flex items-center px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                    <button
+                        onClick={handleDelete}
+                        className="w-full text-left flex items-center px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -109,8 +127,8 @@ export default function ExamenActionsMenu({ examenId, ficheroProfesor, openMenuI
                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                             />
                         </svg>
-                        Eliminar
-                    </a>
+                        Eliminar examen
+                    </button>
                 </div>
             )}
         </div>

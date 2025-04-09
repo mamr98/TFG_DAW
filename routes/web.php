@@ -94,18 +94,18 @@ Route::middleware('auth', 'verified', "role:admin")->group(function () {
 Route::middleware('auth', 'verified', "role:profesor")->group(function () {
     Route::get('/asignaturas', [ExamenController::class, 'recogerAsignaturas'])->name('asignaturas');
     Route::get('/clases', [ExamenController::class, 'recogerClases'])->name('clases');
-    
-    Route::get('/examenesProfesor', [ExamenController::class, 'recogerExamenesProfesor'])->name('examenesProfesor');
-    
 
+    Route::get('/examenesProfesor', [ExamenController::class, 'recogerExamenesProfesor'])->name('examenesProfesor');
     Route::post('/profesor/examen', [ExamenController::class, 'store'])->name('profesor.examen.store');
-    
+    Route::put('/profesor/examen/{id}', [ExamenController::class, 'actualizarExamen'])->name('profesor.examen.update');
+    Route::delete('/profesor/examen/{id}', [ExamenController::class, 'deleteExamen'])->name('profesor.examen.delete');
+
+
 });
+
 
 Route::middleware('auth', 'verified', "role:alumno")->group(function () {
     Route::get('/examenesAlumno', [ExamenController::class, 'recogerExamenesAlumno'])->name('examenesAlumno');
-    
-
     Route::post('/alumno/examen/{idExamen}', [ExamenController::class, 'examenAlumno'])->name('examen.alumno');
 });
 

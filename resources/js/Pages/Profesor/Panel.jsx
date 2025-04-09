@@ -6,22 +6,121 @@ import Swal from "sweetalert2";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton";
 import ModalFormulario from "@/Components/hooks/ModalFormulario";
 import ExamenCard from "./ExamenCard";
 import PaginationControls from "./PaginationControls";
 import EmptyState from "./EmptyState";
 import LoadingState from "./LoadingState";
+import EditExamenForm from "./EditExamenForm";
 
 export default function PanelProfesor() {
-    const { flash } = usePage().props;
+    const { flash, auth } = usePage().props;
     const [showForm, setShowForm] = useState(false);
     const [examenes, setExamenes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(6);
     const [isReloading, setIsReloading] = useState(false);
+    const [editingExamen, setEditingExamen] = useState(null);
+    const [showEditForm, setShowEditForm] = useState(false);
+    const [asignaturas, setAsignaturas] = useState([]);
+    const [clases, setClases] = useState([]);
+    const [loadingResources, setLoadingResources] = useState(false);
+
+    // Función para manejar el clic en editar examen
+    const handleEditClick = (examen) => {
+        setLoadingResources(true);
+
+        // Cargar asignaturas y clases del profesor antes de abrir el modal
+        Promise.all([
+            fetch(route('asignaturas')).then((res) => res.json()),
+            fetch(route('clases')).then((res) => res.json()),
+        ])
+            .then(([asignaturasData, clasesData]) => {
+                setAsignaturas(asignaturasData);
+                setClases(clasesData);
+                setEditingExamen(examen);
+                setShowEditForm(true);
+            })
+            .catch((error) => {
+                console.error("Error cargando recursos:", error);
+                toast.error("Error al cargar asignaturas y clases");
+            })
+            .finally(() => {
+                setLoadingResources(false);
+            });
+    };
+
+    // Función para cerrar el modal de edición
+    const handleCloseEditForm = () => {
+        setShowEditForm(false);
+        setEditingExamen(null);
+    };
+
+    // Función para manejar el éxito de la edición
+    const handleEditSuccess = (updatedData) => {
+        // Actualizar el estado local con los datos actualizados
+        if (updatedData && updatedData.data && updatedData.data.examen) {
+            const updatedExamen = updatedData.data.examen;
+            const updatedAsignatura = updatedData.data.asignatura;
+
+            setExamenes((prev) =>
+                prev.map((item) =>
+                    item.examen.id === updatedExamen.id
+                        ? {
+                              ...item,
+                              examen: updatedExamen,
+                              asignatura: updatedAsignatura,
+                          }
+                        : item
+                )
+            );
+        }
+
+        // Cerrar el formulario de edición
+        setShowEditForm(false);
+        setEditingExamen(null);
+
+        // Mostrar notificación de éxito
+        toast.success("Examen actualizado correctamente");
+    };
+
+    // Función para eliminar un examen
+    const handleDeleteExamen = (examenId) => {
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "Esta acción no se puede deshacer",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Usar Inertia para eliminar el examen
+                router.delete(`/profesor/examen/${examen.id}`, {
+                    onSuccess: () => {
+                        // Actualizar el estado local eliminando el examen
+                        setExamenes((prev) =>
+                            prev.filter(
+                                (examen) => examen.examen.id !== examenId
+                            )
+                        );
+
+                        // Mostrar notificación de éxito
+                        toast.success("Examen eliminado correctamente");
+                    },
+                    onError: (errors) => {
+                        console.error("Error al eliminar:", errors);
+                        toast.error("Error al eliminar el examen");
+                    },
+                });
+            }
+        });
+    };
 
     useEffect(() => {
         if (flash?.success) {
@@ -32,13 +131,16 @@ export default function PanelProfesor() {
         }
     }, [flash]);
 
+    // Función para obtener exámenes
     const fetchExamenes = () => {
         setIsReloading(true);
         fetch("examenesProfesor")
             .then((response) => response.json())
             .then((data) => {
                 const sortedData = data.sort(
-                    (a, b) => new Date(b.examen.created_at) - new Date(a.examen.created_at)
+                    (a, b) =>
+                        new Date(b.examen.created_at) -
+                        new Date(a.examen.created_at)
                 );
                 setExamenes(sortedData);
                 setCurrentPage(1);
@@ -53,10 +155,12 @@ export default function PanelProfesor() {
             });
     };
 
+    // Cargar exámenes al montar el componente
     useEffect(() => {
         fetchExamenes();
     }, []);
 
+    // Función para abrir el formulario de nuevo examen
     const handleNuevoExamen = () => {
         Swal.fire({
             title: "¿Subir nuevo examen?",
@@ -74,6 +178,7 @@ export default function PanelProfesor() {
         });
     };
 
+    // Función para obtener los exámenes paginados
     const paginatedExamenes = () => {
         const startIndex = (currentPage - 1) * itemsPerPage;
         return examenes.slice(startIndex, startIndex + itemsPerPage);
@@ -152,7 +257,11 @@ export default function PanelProfesor() {
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className={`h-5 w-5 ${isReloading ? "animate-spin" : ""}`}
+                                                className={`h-5 w-5 ${
+                                                    isReloading
+                                                        ? "animate-spin"
+                                                        : ""
+                                                }`}
                                                 fill="none"
                                                 viewBox="0 0 24 24"
                                                 stroke="currentColor"
@@ -164,16 +273,22 @@ export default function PanelProfesor() {
                                                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                                                 />
                                             </svg>
-                                            {isReloading ? "Recargando..." : "Recargar"}
+                                            {isReloading
+                                                ? "Recargando..."
+                                                : "Recargar"}
                                         </button>
                                     </div>
-                                    
+
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                         {paginatedExamenes().map((examen) => (
-                                            <ExamenCard 
+                                            <ExamenCard
                                                 key={examen.examen?.id}
                                                 examen={examen.examen}
                                                 asignatura={examen.asignatura}
+                                                onEditClick={handleEditClick}
+                                                onDeleteClick={
+                                                    handleDeleteExamen
+                                                }
                                             />
                                         ))}
                                     </div>
@@ -193,6 +308,27 @@ export default function PanelProfesor() {
                     </>
                 )}
             </div>
+
+            {/* Modal de edición de examen */}
+            {showEditForm && editingExamen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        {loadingResources ? (
+                            <div className="p-6 flex justify-center items-center">
+                                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
+                            </div>
+                        ) : (
+                            <EditExamenForm
+                                examen={editingExamen}
+                                onClose={handleCloseEditForm}
+                                asignaturas={asignaturas || []}
+                                clases={clases || []}
+                                onSuccess={handleEditSuccess}
+                            />
+                        )}
+                    </div>
+                </div>
+            )}
         </AuthenticatedLayout>
     );
 }
