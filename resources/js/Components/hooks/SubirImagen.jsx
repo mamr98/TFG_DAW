@@ -105,7 +105,7 @@ function SubirImagen({ examenId }) {
                         o arrastra y suelta
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        PNG, JPG o PDF (MAX. 5MB)
+                        PNG o JPG (MAX. 5MB)
                     </p>
                 </div>
                 <input
