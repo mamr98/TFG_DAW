@@ -106,7 +106,7 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
 
 Route::middleware('auth', 'verified', "role:alumno")->group(function () {
     Route::get('/examenesAlumno', [ExamenController::class, 'recogerExamenesAlumno'])->name('examenesAlumno');
-    Route::post('/alumno/examen/{idExamen}', [ExamenController::class, 'examenAlumno'])->name('examen.alumno');
+    Route::post('/alumno/examen/{idExamen}', [ExamenController::class, 'crearExamenAlumno'])->name('examen.alumno');
 });
 
 
