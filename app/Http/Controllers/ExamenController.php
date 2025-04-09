@@ -23,7 +23,7 @@ class ExamenController extends Controller
             'archivo' => 'required|file|mimes:pdf|max:10240', // Máximo 10MB
         ]);
         // Asignar el ID del profesor autenticado
-        $validated['profesor_id'] = auth()->id(); // o auth()->user()->id   
+        $validated['profesor_id'] = auth()->id(); // o auth()->user()->id
 
         // Añadir fecha_subida automáticamente
         $validated['fecha_subida'] = now(); // Fecha y hora actual
@@ -131,15 +131,15 @@ class ExamenController extends Controller
     public function deleteExamen($id)
     {
         $examen = Examen::findOrFail($id);
-        
+
         // Verificar que el examen pertenece al profesor
         if ($examen->profesor_id !== Auth::id()) {
             return response()->json(['error' => 'No tienes permiso para eliminar este examen'], 403);
         }
-        
+
         // Eliminar el examen
         $examen->delete();
-        
+
         return redirect()->back()->with('success', 'Examen eliminado correctamente');
     }
 }
