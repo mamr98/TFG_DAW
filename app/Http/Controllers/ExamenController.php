@@ -77,6 +77,7 @@ class ExamenController extends Controller
     $examenes = Examen::whereIn('clase_id', $claseIds)
         ->whereNotIn('id', $examenesRealizados)
         ->where('fecha_fin', '>', now())
+        ->where('fecha_inicio', '<', now())
         ->get();
 
     return $examenes;
