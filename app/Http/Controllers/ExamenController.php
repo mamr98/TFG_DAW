@@ -20,7 +20,7 @@ class ExamenController extends Controller
             'fecha_fin' => 'required|date|after:fecha_inicio',
             'asignatura_id' => 'required|exists:asignatura,id',
             'clase_id' => 'required|exists:clase,id',
-            'archivo' => 'required|file|mimes:pdf|max:10240', // Máximo 10MB
+            'fichero_profesor' => 'required|file|mimes:pdf|max:10240', // Máximo 10MB
         ]);
         // Asignar el ID del profesor autenticado
         $validated['profesor_id'] = auth()->id(); // o auth()->user()->id
@@ -29,9 +29,9 @@ class ExamenController extends Controller
         $validated['fecha_subida'] = now(); // Fecha y hora actual
 
         // Guardar el archivo PDF
-        if ($request->hasFile('archivo')) {
-            $path = $request->file('archivo')->store('examenes'); // Guarda en storage/app/examenes
-            $validated['archivo_path'] = $path;
+        if ($request->hasFile('fichero_profesor')) {
+            $path = $request->file('fichero_profesor')->store('examenes'); // Guarda en storage/app/examenes
+            $validated['fichero_profesor'] = $path;
         }
 
         // Crear el examen en la base de datos
@@ -62,25 +62,24 @@ class ExamenController extends Controller
 {
     $alumnoId = auth()->id();
 
-    // Obtener los IDs de las clases del alumno
-    $claseIds = DB::table('clase_alumno')
-        ->where('alumno_id', $alumnoId)
-        ->pluck('clase_id');
-
-    // Obtener los IDs de los exámenes que ya ha realizado el alumno
-    $examenesRealizados = DB::table('examen_alumno')
-        ->where('alumno_id', $alumnoId)
-        ->pluck('examen_id');
-
-    // Obtener los exámenes que pertenecen a las clases del alumno
-    // y que aún no han sido realizados por él
-    $examenes = Examen::whereIn('clase_id', $claseIds)
-        ->whereNotIn('id', $examenesRealizados)
+    // Versión optimizada basada en tu consulta SQL funcional
+    $examenes = DB::table('examen')
+        ->whereIn('clase_id', function($query) use ($alumnoId) {
+            $query->select('clase_id')
+                  ->from('clase_alumno')
+                  ->where('alumno_id', $alumnoId);
+        })
+        ->whereNotIn('id', function($query) use ($alumnoId) {
+            $query->select('examen_id')
+                  ->from('examen_alumno')
+                  ->where('alumno_id', $alumnoId);
+        })
+        ->where('fecha_inicio', '<=', DB::raw('NOW()'))
+        ->where('fecha_fin', '>=', DB::raw('NOW()'))
         ->get();
 
     return $examenes;
 }
-
 
     public function recogerExamenesProfesor()
     {
