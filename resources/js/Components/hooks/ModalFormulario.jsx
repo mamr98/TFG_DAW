@@ -8,7 +8,7 @@ export default function ModalFormulario({ onClose }) {
         fecha_fin: "",
         asignatura_id: "",
         clase_id: "",
-        archivo: null,
+        fichero_profesor: null,
     });
 
     
@@ -46,7 +46,7 @@ export default function ModalFormulario({ onClose }) {
     
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        setData('archivo', file);
+        setData('fichero_profesor', file);
         
         if (file) {
             const reader = new FileReader();
@@ -224,11 +224,11 @@ export default function ModalFormulario({ onClose }) {
                         <input
                             type="file"
                             onChange={handleFileChange}
-                            className={`w-full px-4 py-2 border rounded-md ${errors.archivo ? 'border-red-500' : ''}`}
+                            className={`w-full px-4 py-2 border rounded-md ${errors.fichero_profesor ? 'border-red-500' : ''}`}
                             accept=".pdf"
                             required
                         />
-                        {errors.archivo && <p className="text-red-500 text-sm mt-1">{errors.archivo}</p>}
+                        {errors.fichero_profesor && <p className="text-red-500 text-sm mt-1">{errors.fichero_profesor}</p>}
                         
                         {/* Vista previa del PDF */}
                         {preview && (
@@ -239,7 +239,7 @@ export default function ModalFormulario({ onClose }) {
                                     width="100%" 
                                     height="300px"
                                 />
-                                <p className="text-sm text-gray-500 mt-2">Vista previa del archivo</p>
+                                <p className="text-sm text-gray-500 mt-2">Vista previa del fichero_profesor</p>
                             </div>
                         )}
                     </div>

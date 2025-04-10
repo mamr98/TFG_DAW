@@ -20,7 +20,7 @@ class ExamenController extends Controller
             'fecha_fin' => 'required|date|after:fecha_inicio',
             'asignatura_id' => 'required|exists:asignatura,id',
             'clase_id' => 'required|exists:clase,id',
-            'archivo' => 'required|file|mimes:pdf|max:10240', // Máximo 10MB
+            'fichero_profesor' => 'required|file|mimes:pdf|max:10240', // Máximo 10MB
         ]);
         // Asignar el ID del profesor autenticado
         $validated['profesor_id'] = auth()->id(); // o auth()->user()->id
@@ -29,9 +29,9 @@ class ExamenController extends Controller
         $validated['fecha_subida'] = now(); // Fecha y hora actual
 
         // Guardar el archivo PDF
-        if ($request->hasFile('archivo')) {
-            $path = $request->file('archivo')->store('examenes'); // Guarda en storage/app/examenes
-            $validated['archivo_path'] = $path;
+        if ($request->hasFile('fichero_profesor')) {
+            $path = $request->file('fichero_profesor')->store('examenes'); // Guarda en storage/app/examenes
+            $validated['fichero_profesor'] = $path;
         }
 
         // Crear el examen en la base de datos
