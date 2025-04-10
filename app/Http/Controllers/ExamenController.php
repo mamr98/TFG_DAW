@@ -62,29 +62,24 @@ class ExamenController extends Controller
 {
     $alumnoId = auth()->id();
 
-    // Obtener los IDs de las clases del alumno
-    $claseIds = DB::table('clase_alumno')
-        ->where('alumno_id', $alumnoId)
-        ->pluck('clase_id');
-
-    // Obtener los IDs de los exámenes que ya ha realizado el alumno
-    $examenesRealizados = DB::table('examen_alumno')
-        ->where('alumno_id', $alumnoId)
-        ->pluck('examen_id');
-
-    // Obtener los exámenes que pertenecen a las clases del alumno
-    // y que aún no han sido realizados por él
-
-    
-    $examenes = Examen::whereIn('clase_id', $claseIds)
-        ->whereNotIn('id', $examenesRealizados)
-        ->where('fecha_inicio', '<=', now())
-        ->where('fecha_fin', '>=', now())
+    // Versión optimizada basada en tu consulta SQL funcional
+    $examenes = DB::table('examen')
+        ->whereIn('clase_id', function($query) use ($alumnoId) {
+            $query->select('clase_id')
+                  ->from('clase_alumno')
+                  ->where('alumno_id', $alumnoId);
+        })
+        ->whereNotIn('id', function($query) use ($alumnoId) {
+            $query->select('examen_id')
+                  ->from('examen_alumno')
+                  ->where('alumno_id', $alumnoId);
+        })
+        ->where('fecha_inicio', '<=', DB::raw('NOW()'))
+        ->where('fecha_fin', '>=', DB::raw('NOW()'))
         ->get();
 
     return $examenes;
 }
-
 
     public function recogerExamenesProfesor()
     {
