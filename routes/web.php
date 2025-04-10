@@ -135,7 +135,7 @@ Route::get('/test-textract', function () {
     try {
         $result = $client->analyzeDocument([
             'Document' => [
-                'Bytes' => file_get_contents(public_path('prueba2.png'))
+                'Bytes' => file_get_contents('https://res.cloudinary.com/dpnclrw0v/image/upload/v1744297281/examenes/ubpqa7wfwynhlnnxxzfp.png')
             ],
             'FeatureTypes' => ['TABLES'],
         ]);

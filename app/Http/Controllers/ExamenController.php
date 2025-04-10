@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Examen;
 use App\Models\Asignatura;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Examen;
 use Illuminate\Support\Facades\Auth;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ExamenController extends Controller
 {
@@ -20,7 +21,7 @@ class ExamenController extends Controller
             'fecha_fin' => 'required|date|after:fecha_inicio',
             'asignatura_id' => 'required|exists:asignatura,id',
             'clase_id' => 'required|exists:clase,id',
-            'fichero_profesor' => 'required|file|mimes:pdf|max:10240', // Máximo 10MB
+            'fichero_profesor' => 'required|file|mimes:pdf,jpg,jpeg,png|max:10240', // Máximo 10MB
         ]);
         // Asignar el ID del profesor autenticado
         $validated['profesor_id'] = auth()->id(); // o auth()->user()->id
@@ -30,8 +31,17 @@ class ExamenController extends Controller
 
         // Guardar el archivo PDF
         if ($request->hasFile('fichero_profesor')) {
-            $path = $request->file('fichero_profesor')->store('examenes'); // Guarda en storage/app/examenes
-            $validated['fichero_profesor'] = $path;
+            $uploadedFile = $request->file('fichero_profesor');
+
+            // Subir el archivo a Cloudinary
+            $cloudinaryResponse = Cloudinary::upload($uploadedFile->getRealPath(), [
+                'folder' => 'examenes',
+                'resource_type' => 'auto' // Detecta automáticamente si es imagen o PDF
+            ]);
+
+            // Guardar la URL segura y el public_id en la base de datos
+            $validated['fichero_profesor'] = $cloudinaryResponse->getSecurePath();
+            $validated['public_id'] = $cloudinaryResponse->getPublicId();
         }
 
         // Crear el examen en la base de datos
@@ -59,27 +69,27 @@ class ExamenController extends Controller
     }
 
     public function recogerExamenesAlumno()
-{
-    $alumnoId = auth()->id();
+    {
+        $alumnoId = auth()->id();
 
-    // Versión optimizada basada en tu consulta SQL funcional
-    $examenes = DB::table('examen')
-        ->whereIn('clase_id', function($query) use ($alumnoId) {
-            $query->select('clase_id')
-                  ->from('clase_alumno')
-                  ->where('alumno_id', $alumnoId);
-        })
-        ->whereNotIn('id', function($query) use ($alumnoId) {
-            $query->select('examen_id')
-                  ->from('examen_alumno')
-                  ->where('alumno_id', $alumnoId);
-        })
-        ->where('fecha_inicio', '<=', DB::raw('NOW()'))
-        ->where('fecha_fin', '>=', DB::raw('NOW()'))
-        ->get();
+        // Versión optimizada basada en tu consulta SQL funcional
+        $examenes = DB::table('examen')
+            ->whereIn('clase_id', function ($query) use ($alumnoId) {
+                $query->select('clase_id')
+                    ->from('clase_alumno')
+                    ->where('alumno_id', $alumnoId);
+            })
+            ->whereNotIn('id', function ($query) use ($alumnoId) {
+                $query->select('examen_id')
+                    ->from('examen_alumno')
+                    ->where('alumno_id', $alumnoId);
+            })
+            ->where('fecha_inicio', '<=', DB::raw('NOW()'))
+            ->where('fecha_fin', '>=', DB::raw('NOW()'))
+            ->get();
 
-    return $examenes;
-}
+        return $examenes;
+    }
 
     public function recogerExamenesProfesor()
     {
