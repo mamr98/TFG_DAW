@@ -74,10 +74,11 @@ class ExamenController extends Controller
 
     // Obtener los exámenes que pertenecen a las clases del alumno
     // y que aún no han sido realizados por él
+    $fecha_ahora = now()
     $examenes = Examen::whereIn('clase_id', $claseIds)
         ->whereNotIn('id', $examenesRealizados)
-        ->where('fecha_fin', '>', now())
-        ->where('fecha_inicio', '<', now())
+        ->where('fecha_inicio', '<=', $fecha_ahora)
+        ->where('fecha_fin', '>=', $fecha_ahora)
         ->get();
 
     return $examenes;
