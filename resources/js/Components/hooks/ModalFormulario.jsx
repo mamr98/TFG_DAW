@@ -225,11 +225,11 @@ export default function ModalFormulario({ onClose }) {
                             type="file"
                             onChange={handleFileChange}
                             className={`w-full px-4 py-2 border rounded-md ${errors.fichero_profesor ? 'border-red-500' : ''}`}
-                            accept=".pdf"
+                            accept=".jpg, .jpeg, .png"
                             required
                         />
                         {errors.fichero_profesor && <p className="text-red-500 text-sm mt-1">{errors.fichero_profesor}</p>}
-                        
+
                         {/* Vista previa del PDF */}
                         {preview && (
                             <div className="mt-4 border rounded-md p-2">
