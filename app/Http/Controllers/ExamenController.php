@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use App\Http\Controllers\Aws\TextractController;
 
 class ExamenController extends Controller
 {
@@ -21,34 +22,65 @@ class ExamenController extends Controller
             'fecha_fin' => 'required|date|after:fecha_inicio',
             'asignatura_id' => 'required|exists:asignatura,id',
             'clase_id' => 'required|exists:clase,id',
-            'fichero_profesor' => 'required|file|mimes:pdf,jpg,jpeg,png|max:10240', // Máximo 10MB
+            'fichero_profesor' => 'required|file|mimes:jpg,jpeg,png|max:10240', // Solo imágenes para el análisis
         ]);
-        // Asignar el ID del profesor autenticado
-        $validated['profesor_id'] = auth()->id(); // o auth()->user()->id
 
-        // Añadir fecha_subida automáticamente
-        $validated['fecha_subida'] = now(); // Fecha y hora actual
-
-        // Guardar el archivo PDF
-        if ($request->hasFile('fichero_profesor')) {
-            $uploadedFile = $request->file('fichero_profesor');
+        try {
+            // Asignar el ID del profesor autenticado
+            $validated['profesor_id'] = auth()->id();
+            $validated['fecha_subida'] = now();
 
             // Subir el archivo a Cloudinary
+            $uploadedFile = $request->file('fichero_profesor');
             $cloudinaryResponse = Cloudinary::upload($uploadedFile->getRealPath(), [
                 'folder' => 'examenes',
-                'resource_type' => 'auto' // Detecta automáticamente si es imagen o PDF
+                'resource_type' => 'image',
+                'quality_analysis' => true,
+                'transformation' => [
+                    ['quality' => 'auto:best'],
+                    ['effect' => 'improve'],
+                    ['ocr' => 'adv_ocr']
+                ]
             ]);
 
-            // Guardar la URL segura y el public_id en la base de datos
             $validated['fichero_profesor'] = $cloudinaryResponse->getSecurePath();
             $validated['public_id'] = $cloudinaryResponse->getPublicId();
+
+            // Procesar con Textract
+            $textractController = new TextractController();
+            $analysis = $textractController->analyzeImageFromUrl(new Request([
+                'image_url' => $validated['fichero_profesor']
+            ]));
+
+            $analysisData = json_decode($analysis->getContent());
+
+            if (!$analysisData->success || empty($analysisData->extracted_data->respuestas_correctas)) {
+                throw new \Exception("No se pudieron identificar las respuestas correctas en el examen");
+            }
+
+            $validated['json_examen'] = json_decode(json_encode($analysisData->extracted_data), true); // Guardamos como array
+
+
+            // Crear el examen
+            $examen = Examen::create($validated);
+
+            return redirect()->route('panelprofesor')
+                ->with('success', 'Examen creado y procesado correctamente')
+                ->with('examen_data', $examen->json_examen);
+        } catch (\Exception $e) {
+            // Eliminar la imagen de Cloudinary si hubo error
+            if (isset($cloudinaryResponse)) {
+                try {
+                    Cloudinary::destroy($cloudinaryResponse->getPublicId());
+                } catch (\Exception $cloudinaryError) {
+                    \Log::error('Error al eliminar imagen de Cloudinary: ' . $cloudinaryError->getMessage());
+                }
+            }
+
+            return back()
+                ->withInput()
+                ->with('error', 'Error al crear el examen: ' . $e->getMessage());
         }
-
-        // Crear el examen en la base de datos
-        $examen = Examen::create($validated);
-
-        // Redireccionar con mensaje de éxito
-        return redirect()->route('panelprofesor')->with('success', 'Examen creado correctamente');
     }
 
     public function recogerAsignaturas()
@@ -101,6 +133,7 @@ class ExamenController extends Controller
             return [
                 'examen' => $examen,
                 'asignatura' => $asignatura,
+                'respuestas_correctas' => $examen->json_examen['respuestas_correctas'] ?? null
             ];
         });
 
@@ -164,5 +197,17 @@ class ExamenController extends Controller
         $examen->delete();
 
         return redirect()->back()->with('success', 'Examen eliminado correctamente');
+    }
+
+    public function getExamenData($id)
+    {
+        $examen = Examen::with(['asignatura', 'clase'])
+            ->where('id', $id)
+            ->firstOrFail();
+
+        return response()->json([
+            'examen' => $examen,
+            'respuestas_correctas' => $examen->json_examen['respuestas_correctas'] ?? []
+        ]);
     }
 }

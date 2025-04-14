@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Aws;
 
+use App\Http\Controllers\Controller;
 use Aws\Textract\TextractClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -75,11 +76,7 @@ class TextractController extends Controller
         }
 
         // Obtener todas las celdas de la tabla
-        $cells = $blocks->filter(function ($block) use ($table) {
-            return $block['BlockType'] === 'CELL' && 
-                   isset($block['Relationships'][0]['Ids']) && 
-                   in_array($table['Id'], $block['Relationships'][0]['Ids']);
-        });
+        $cells = $blocks->filter(fn ($block) => $block['BlockType'] === 'CELL');
 
         // Organizar celdas por filas y columnas
         $tableStructure = [];
