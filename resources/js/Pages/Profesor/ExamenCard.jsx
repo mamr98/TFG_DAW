@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ExamenActionsMenu from "./ExamenActionsMenu";
-
+import Swal from "sweetalert2";
 export default function ExamenCard({
     examen,
     asignatura,
@@ -14,6 +14,76 @@ export default function ExamenCard({
     const toggleMenu = (id, e) => {
         e.stopPropagation();
         setOpenMenuId(openMenuId === id ? null : id);
+    };
+    const handleVerNotas = () => {
+        const examenData = examen.json_examen;
+        const respuestasCorrectas = examenData.respuestas_correctas;
+
+        let html = `
+            <style>
+                .respuestas-table {
+                    width: 100%;
+                    border-collapse: separate;
+                    border-spacing: 0 8px;
+                    font-family: 'Segoe UI', sans-serif;
+                }
+                .respuestas-table th {
+                    background-color: #e2e8f0;
+                    padding: 10px 16px;
+                    text-align: center;
+                    font-size: 14px;
+                    border-radius: 8px 8px 0 0;
+                }
+                .respuestas-table td {
+                    background-color: #f9fafb;
+                    padding: 12px 16px;
+                    transition: background-color 0.2s ease;
+                    font-size: 15px;
+                    border-radius: 6px;
+                }
+                .respuestas-table tr:hover td {
+                    background-color: #e0f2fe;
+                }
+                .badge {
+                    background-color: #2563eb;
+                    color: white;
+                    padding: 6px 10px;
+                    border-radius: 6px;
+                    font-weight: bold;
+                    font-size: 14px;
+                }
+            </style>
+            <div style="max-height: 400px; overflow-y: auto;">
+                <table class="respuestas-table">
+                    <thead>
+                        <tr>
+                            <th>Pregunta</th>
+                            <th>Respuesta Correcta</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+        Object.entries(respuestasCorrectas).forEach(
+            ([numPregunta, respuesta]) => {
+                html += `
+                <tr>
+                    <td>${numPregunta}</td>
+                    <td><span class="badge">${respuesta}</span></td>
+                </tr>`;
+            }
+        );
+
+        html += `</tbody></table></div>`;
+
+        Swal.fire({
+            title: `Respuestas correctas de ${examen.nombre_examen}`,
+            html: html,
+            icon: "info",
+            width: "600px",
+            confirmButtonText: "Cerrar",
+            confirmButtonColor: "#d33",
+            background: "#f8fafc",
+        });
     };
 
     return (
@@ -117,11 +187,14 @@ export default function ExamenCard({
                 </div>
 
                 {examen.json_examen && (
-                    <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
+                    <div
+                        onClick={handleVerNotas}
+                        className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700"
+                    >
                         <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="h-3.5 w-3.5 mr-1"
+                                className="h-4 w-4 mr-1"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
@@ -130,16 +203,16 @@ export default function ExamenCard({
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth={2}
-                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                                 />
                                 <path
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth={2}
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                                 />
                             </svg>
-                            Configuración personalizada
+                            Ver respuestas del examen
                         </span>
                     </div>
                 )}

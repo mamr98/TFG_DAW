@@ -196,7 +196,7 @@ class ExamenController extends Controller
         // Eliminar el examen
         $examen->delete();
 
-        return redirect()->back()->with('success', 'Examen eliminado correctamente');
+        return redirect()->back()->with('success', '');
     }
 
     public function getExamenData($id)

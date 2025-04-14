@@ -59,7 +59,6 @@ Route::middleware('auth', 'verified')->group(function () {
 
 //rutas para admin
 Route::middleware('auth', 'verified', "role:admin")->group(function () {
-    Route::post('/process-table', [TextractController::class, 'process']);
 
     //CRUD Admin
     Route::get('/admin', [UserController::class, 'index'])->name('admin.index');
@@ -95,7 +94,6 @@ Route::middleware('auth', 'verified', "role:admin")->group(function () {
 
 //rutas para profesor
 Route::middleware('auth', 'verified', "role:profesor")->group(function () {
-    Route::post('/process-table', [TextractController::class, 'process']);
     Route::get('/asignaturas', [ExamenController::class, 'recogerAsignaturas'])->name('asignaturas');
     Route::get('/clases', [ExamenController::class, 'recogerClases'])->name('clases');
 
@@ -109,7 +107,6 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
 
 
 Route::middleware('auth', 'verified', "role:alumno")->group(function () {
-    Route::post('/process-table', [TextractController::class, 'process']);
     Route::get('/examenesAlumno', [ExamenController::class, 'recogerExamenesAlumno'])->name('examenesAlumno');
     Route::post('/alumno/examen/{idExamen}', [ExamenController::class, 'crearExamenAlumno'])->name('examen.alumno');
 });
