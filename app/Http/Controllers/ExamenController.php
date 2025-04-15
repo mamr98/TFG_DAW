@@ -148,6 +148,11 @@ class ExamenController extends Controller
         ]);
 
         try {
+            $examenProfesor = Examen::findOrFail($idExamen);
+            
+            if (!$examenProfesor->json_examen || !isset($examenProfesor->json_examen['respuestas_correctas'])) {
+                throw new \Exception("El examen del profesor no tiene respuestas correctas definidas");
+            }
             // Subir a Cloudinary con análisis de calidad
             $uploadedFile = $request->file('imagen');
             $cloudinaryResponse = Cloudinary::upload($uploadedFile->getRealPath(), [
@@ -156,17 +161,31 @@ class ExamenController extends Controller
                 'quality_analysis' => true,
                 'transformation' => [
                     ['quality' => 'auto:best'],
-                    ['effect' => 'improve']
+                    ['effect' => 'improve'],
+                    ['ocr' => 'adv_ocr']
                 ]
             ]);
 
-            // Procesar con Textract (opcional)
+            // Procesado por Textract 
             $textractController = new TextractController();
             $analysis = $textractController->analyzeImageFromUrl(new Request([
                 'image_url' => $cloudinaryResponse->getSecurePath()
             ]));
 
             $analysisData = json_decode($analysis->getContent());
+
+            $respuestasAlumno = [];
+
+            if (!empty($analysisData->extracted_data->estructura)) {
+                foreach ($analysisData->extracted_data->estructura as $item) {
+                    if ($item->seleccionada) {
+                        $respuestasAlumno[(string)$item->pregunta] = strtoupper(trim($item->opcion));
+                    }
+                }
+            }
+            $respuestasCorrectas = $examenProfesor->json_examen['respuestas_correctas'];
+            
+            $nota = $this->calcularNota($respuestasAlumno, $respuestasCorrectas);
 
             // Insertar en la base de datos
             DB::table('examen_alumno')->insert([
@@ -175,6 +194,7 @@ class ExamenController extends Controller
                 'fecha_subida' => now(),
                 'fichero_alumno' => $cloudinaryResponse->getSecurePath(),
                 'json_alumno' => $analysisData->success ? json_encode($analysisData->extracted_data) : null,
+                'nota' => $nota,
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
@@ -201,6 +221,21 @@ class ExamenController extends Controller
                 'message' => 'Error al procesar el examen: '.$e->getMessage()
             ], 500);
         }
+    }
+
+    private function calcularNota(array $respuestasAlumno, array $respuestasCorrectas): float
+    {
+        $totalPreguntas = count($respuestasCorrectas);
+        $aciertos = 0;
+        
+        foreach ($respuestasCorrectas as $pregunta => $correcta) {
+            if (isset($respuestasAlumno[$pregunta]) && $respuestasAlumno[$pregunta] === $correcta){
+                $aciertos++;
+            }
+        }
+        
+        // Calcula nota sobre 10 (puedes ajustar la escala)
+        return round(($aciertos / $totalPreguntas) * 10, 2);
     }
 
     public function actualizarExamen(Request $request, $id)
