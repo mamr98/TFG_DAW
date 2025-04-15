@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use App\Http\Controllers\Aws\TextractController;
+use Illuminate\Support\Facades\Storage;
 
 class ExamenController extends Controller
 {
@@ -139,17 +140,67 @@ class ExamenController extends Controller
 
         return response()->json($resultado);
     }
-
-    public function crearExamenAlumno(String $idExamen)
+    public function crearExamenAlumno(Request $request, $idExamen)
     {
-        DB::table('examen_alumno')->insert([
-            'alumno_id' => auth()->id(),
-            'examen_id' => $idExamen,
-            'fecha_subida' => now(),
-            'created_at' => now(),
-            'updated_at' => now()
+        // Validación
+        $request->validate([
+            'imagen' => 'required|image|mimes:jpeg,png,jpg|max:10240', // 10MB máximo
         ]);
-        return redirect()->route('subir-imagen')->with('success', 'Examen subido correctamente');
+
+        try {
+            // Subir a Cloudinary con análisis de calidad
+            $uploadedFile = $request->file('imagen');
+            $cloudinaryResponse = Cloudinary::upload($uploadedFile->getRealPath(), [
+                'folder' => 'examenes/alumnos',
+                'resource_type' => 'image',
+                'quality_analysis' => true,
+                'transformation' => [
+                    ['quality' => 'auto:best'],
+                    ['effect' => 'improve']
+                ]
+            ]);
+
+            // Procesar con Textract (opcional)
+            $textractController = new TextractController();
+            $analysis = $textractController->analyzeImageFromUrl(new Request([
+                'image_url' => $cloudinaryResponse->getSecurePath()
+            ]));
+
+            $analysisData = json_decode($analysis->getContent());
+
+            // Insertar en la base de datos
+            DB::table('examen_alumno')->insert([
+                'alumno_id' => auth()->id(),
+                'examen_id' => $idExamen,
+                'fecha_subida' => now(),
+                'fichero_alumno' => $cloudinaryResponse->getSecurePath(),
+                'json_alumno' => $analysisData->success ? json_encode($analysisData->extracted_data) : null,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Examen subido y procesado correctamente',
+                'image_url' => $cloudinaryResponse->getSecurePath(),
+                'analysis_data' => $analysisData->extracted_data ?? null
+            ]);
+
+        } catch (\Exception $e) {
+            // Eliminar de Cloudinary si hubo error
+            if (isset($cloudinaryResponse)) {
+                try {
+                    Cloudinary::destroy($cloudinaryResponse->getPublicId());
+                } catch (\Exception $cloudinaryError) {
+                    Log::error('Error al eliminar imagen de Cloudinary: '.$cloudinaryError->getMessage());
+                }
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al procesar el examen: '.$e->getMessage()
+            ], 500);
+        }
     }
 
     public function actualizarExamen(Request $request, $id)

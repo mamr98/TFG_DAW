@@ -189,7 +189,7 @@ export default function ExamenCard({
                 {examen.json_examen && (
                     <div
                         onClick={handleVerNotas}
-                        className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700"
+                        className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700 cursor-pointer"
                     >
                         <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300">
                             <svg

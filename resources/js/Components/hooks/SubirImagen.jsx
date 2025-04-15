@@ -33,38 +33,37 @@ function SubirImagen({ examenId }) {
             toast.error("Por favor, selecciona una imagen primero");
             return;
         }
-
+    
         setIsUploading(true);
-
+    
         try {
-            // Aquí iría la lógica para subir la imagen al servidor
-            // Ejemplo con FormData:
             const formData = new FormData();
             const fileInput = document.querySelector('input[type="file"]');
             formData.append("imagen", fileInput.files[0]);
             formData.append("examen_id", examenId);
-
-            const response = await fetch("alumno/examen/" + examenId, {
+    
+            const response = await fetch(`alumno/examen/${examenId}`, {
                 method: "POST",
-                /*  body: formData, */
+                body: formData, // ¡Descomenta esta línea!
                 headers: {
-                    "X-CSRF-TOKEN": document.querySelector(
-                        'meta[name="csrf-token"]'
-                    ).content,
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                    "Accept": "application/json" // Añade esto para esperar JSON
                 },
             });
-
-            if (response.ok) {
-                toast.success("Imagen subida correctamente");
-                setSelectedImage(null);
-                // Limpiar input file
-                fileInput.value = "";
-            } else {
-                throw new Error("Error en la subida");
+    
+            const data = await response.json();
+    
+            if (!response.ok) {
+                throw new Error(data.message || "Error en la subida");
             }
+    
+            toast.success(data.message || "Examen subido correctamente");
+            setSelectedImage(null);
+            fileInput.value = "";
+    
         } catch (error) {
             console.error("Error al subir la imagen:", error);
-            toast.error("Error al subir la imagen");
+            toast.error(error.message || "Error al subir la imagen");
         } finally {
             setIsUploading(false);
         }
