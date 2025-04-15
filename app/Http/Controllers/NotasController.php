@@ -16,7 +16,7 @@ class NotasController extends Controller
                     return [
                         'alumno' => $alumno->name,
                         'nota' => $alumno->pivot->nota,
-                        'examen' => $examen->nombre,
+                        'examen' => $examen->nombre_examen,
                         'asignatura' => $examen->asignatura->nombre,
                     ];
                 });
