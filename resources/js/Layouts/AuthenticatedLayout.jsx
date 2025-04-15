@@ -51,6 +51,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                         Crear examen
                                     </NavLink>
                                 </Can>
+                                <Can permissions={["permisoprofesor", "sinpermiso"]}>
                                 <NavLink
                                     href={route('notas')}
                                     active={route().current('notas')}
@@ -58,6 +59,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     {/* Todos y dentro un can para alternar la información*/}
                                     Notas
                                 </NavLink>
+                                </Can>
                                 <Can permissions={["permisoadmin"]}>
                                     <NavLink
                                         href={route('gestionusuarios')}
