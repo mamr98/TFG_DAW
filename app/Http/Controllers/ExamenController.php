@@ -234,7 +234,7 @@ class ExamenController extends Controller
             }
         }
         
-        // Calcula nota sobre 10 (puedes ajustar la escala)
+        // Calcula nota sobre 10
         return round(($aciertos / $totalPreguntas) * 10, 2);
     }
 

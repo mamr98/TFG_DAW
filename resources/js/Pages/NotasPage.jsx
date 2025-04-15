@@ -3,21 +3,7 @@ import { Head } from "@inertiajs/react";
 import React from "react";
 import AnimatedList from "@/Components/hooks/AnimateList";
 
-export default function SubirImagenPage() {
-    const notas = [
-        "Alumno 1: 9.5",
-        "Alumno 2: 8.3",
-        "Alumno 3: 7.2",
-        "Alumno 1: 9.5",
-        "Alumno 2: 8.3",
-        "Alumno 3: 7.2",
-        "Alumno 1: 9.5",
-        "Alumno 2: 8.3",
-        "Alumno 3: 7.2",
-        "Alumno 1: 9.5",
-        "Alumno 2: 8.3",
-        "Alumno 3: 7.2",
-    ];
+export default function NotasPage({ notas }) {
 
     return (
         <AuthenticatedLayout
@@ -44,10 +30,8 @@ export default function SubirImagenPage() {
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <AnimatedList
-                                items={[...notas]}
-                                onItemSelect={(item, index) =>
-                                    console.log(item, index)
-                                }
+                                items={notas.map((n) => `${n.alumno}: ${n.nota} - ${n.examen} (${n.asignatura})`)}
+                                onItemSelect={(item, index) => console.log(item, index)}
                                 showGradients={true}
                                 enableArrowNavigation={true}
                                 displayScrollbar={true}

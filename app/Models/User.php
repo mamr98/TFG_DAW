@@ -65,7 +65,7 @@ class User extends Authenticatable implements MustVerifyEmail
     // 1. Exámenes asignados como alumno (ya lo tenías)
     public function examenesAsignados()
     {
-        return $this->belongsToMany(Examen::class, 'examen_alumno')
+        return $this->belongsToMany(Examen::class, 'examen_alumno', 'examen_id', 'alumno_id')
                    ->withPivot(['fecha_subida', 'fichero_alumno', 'json_alumno', 'nota'])
                    ->withTimestamps();
     }
