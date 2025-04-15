@@ -30,7 +30,7 @@ export default function NotasPage({ notas }) {
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <AnimatedList
-                                items={notas.map((n) => `${n.alumno}: ${n.nota} - ${n.examen} (${n.asignatura})`)}
+                                items={notas.map((n) => `${n.alumno}: ${n.nota} (${n.asignatura})`)}
                                 onItemSelect={(item, index) => console.log(item, index)}
                                 showGradients={true}
                                 enableArrowNavigation={true}
