@@ -1,5 +1,3 @@
-"use client";
-
 import { usePage } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";

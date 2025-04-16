@@ -1,3 +1,4 @@
+import Can from "@/Components/hooks/Can";
 export default function EmptyState({ onCrearExamen }) {
     return (
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-8 text-center border border-gray-200 dark:border-gray-700">
@@ -16,7 +17,14 @@ export default function EmptyState({ onCrearExamen }) {
                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                     />
                 </svg>
-                <p className="text-gray-500 dark:text-gray-400 mb-4">No hay exámenes registrados</p>
+                <Can permissions={["permisoprofesor"]}>
+                <p className="text-gray-500 dark:text-gray-400 mb-4">No hay registrado ningun examen</p>
+                </Can>
+                <Can permissions={["sinpermiso"]}>
+                <p className="text-gray-500 dark:text-gray-400 mb-4">No tienes examenes pendientes</p>
+                </Can>
+
+                <Can permissions={["permisoprofesor"]}>
                 <button
                     onClick={onCrearExamen}
                     className="px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors flex items-center gap-2"
@@ -35,6 +43,7 @@ export default function EmptyState({ onCrearExamen }) {
                     </svg>
                     Crear tu primer examen
                 </button>
+                </Can>
             </div>
         </div>
     );
