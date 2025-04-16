@@ -2,6 +2,7 @@ import { useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 
 export default function ModalFormulario({ onClose }) {
+    const [isUploading, setIsUploading] = useState(false);
     const { data, setData, post, processing, errors } = useForm({
         nombre_examen: "",
         fecha_inicio: "",
@@ -11,7 +12,7 @@ export default function ModalFormulario({ onClose }) {
         fichero_profesor: null,
     });
 
-    
+
     const [preview, setPreview] = useState(null);
     const [asignaturas, setAsignaturas] = useState([]);
     const [clases, setClases] = useState([]);
@@ -43,11 +44,11 @@ export default function ModalFormulario({ onClose }) {
         fetchData();
     }, []);
 
-    
+
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         setData('fichero_profesor', file);
-        
+
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => setPreview(reader.result);
@@ -56,15 +57,23 @@ export default function ModalFormulario({ onClose }) {
             setPreview(null);
         }
     };
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        setIsUploading(true); // Activar el indicador de carga
+
         post(route("profesor.examen.store"), {
-            onSuccess: () => onClose(),
+            onSuccess: () => {
+                setIsUploading(false); // Desactivar al terminar
+                onClose();
+            },
+            onError: () => {
+                setIsUploading(false); // Desactivar si hay error
+            },
             preserveScroll: true,
         });
     };
-    
+
     return (
         <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold mb-6 text-center">
@@ -83,8 +92,8 @@ export default function ModalFormulario({ onClose }) {
                             value={data.nombre_examen}
                             onChange={(e) => setData("nombre_examen", e.target.value)}
                             className={`w-full px-4 py-2 border rounded-md ${errors.nombre
-                                    ? "border-red-500"
-                                    : "focus:ring-blue-500 focus:border-blue-500"
+                                ? "border-red-500"
+                                : "focus:ring-blue-500 focus:border-blue-500"
                                 }`}
                             required
                         />
@@ -107,8 +116,8 @@ export default function ModalFormulario({ onClose }) {
                                 setData("fecha_inicio", e.target.value)
                             }
                             className={`w-full px-4 py-2 border rounded-md ${errors.fecha_inicio
-                                    ? "border-red-500"
-                                    : "focus:ring-blue-500 focus:border-blue-500"
+                                ? "border-red-500"
+                                : "focus:ring-blue-500 focus:border-blue-500"
                                 }`}
                             required
                         />
@@ -131,8 +140,8 @@ export default function ModalFormulario({ onClose }) {
                                 setData("fecha_fin", e.target.value)
                             }
                             className={`w-full px-4 py-2 border rounded-md ${errors.fecha_fin
-                                    ? "border-red-500"
-                                    : "focus:ring-blue-500 focus:border-blue-500"
+                                ? "border-red-500"
+                                : "focus:ring-blue-500 focus:border-blue-500"
                                 }`}
                             required
                         />
@@ -154,8 +163,8 @@ export default function ModalFormulario({ onClose }) {
                                 setData("asignatura_id", e.target.value)
                             }
                             className={`w-full px-4 py-2 border rounded-md ${errors.asignatura_id
-                                    ? "border-red-500"
-                                    : "focus:ring-blue-500 focus:border-blue-500"
+                                ? "border-red-500"
+                                : "focus:ring-blue-500 focus:border-blue-500"
                                 }`}
                             required
                             disabled={loading.asignaturas}
@@ -192,8 +201,8 @@ export default function ModalFormulario({ onClose }) {
                                 setData("clase_id", e.target.value)
                             }
                             className={`w-full px-4 py-2 border rounded-md ${errors.clase_id
-                                    ? "border-red-500"
-                                    : "focus:ring-blue-500 focus:border-blue-500"
+                                ? "border-red-500"
+                                : "focus:ring-blue-500 focus:border-blue-500"
                                 }`}
                             required
                             disabled={loading.clases}
@@ -233,17 +242,17 @@ export default function ModalFormulario({ onClose }) {
                         {/* Vista previa del PDF */}
                         {preview && (
                             <div className="mt-4 border rounded-md p-2">
-                                <embed 
-                                    src={preview} 
-                                    type="application/pdf" 
-                                    width="100%" 
+                                <embed
+                                    src={preview}
+                                    type="application/pdf"
+                                    width="100%"
                                     height="300px"
                                 />
                                 <p className="text-sm text-gray-500 mt-2">Vista previa del fichero_profesor</p>
                             </div>
                         )}
                     </div>
-                </div> 
+                </div>
 
                 {/* Botones del formulario */}
                 <div className="mt-6 flex justify-end space-x-3">
@@ -257,12 +266,38 @@ export default function ModalFormulario({ onClose }) {
                     </button>
                     <button
                         type="submit"
-                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:opacity-50"
-                        disabled={
-                            processing || loading.asignaturas || loading.clases
-                        }
+                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:opacity-50 flex items-center justify-center"
+                        disabled={processing || loading.asignaturas || loading.clases || isUploading}
                     >
-                        {processing ? "Guardando..." : "Guardar Examen"}
+                        {isUploading ? (
+                            <>
+                                <svg
+                                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <circle
+                                        className="opacity-25"
+                                        cx="12"
+                                        cy="12"
+                                        r="10"
+                                        stroke="currentColor"
+                                        strokeWidth="4"
+                                    ></circle>
+                                    <path
+                                        className="opacity-75"
+                                        fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                    ></path>
+                                </svg>
+                                Creando Examen...
+                            </>
+                        ) : processing ? (
+                            "Guardando..."
+                        ) : (
+                            "Guardar Examen"
+                        )}
                     </button>
                 </div>
             </form>
