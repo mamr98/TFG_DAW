@@ -26,9 +26,9 @@ Route::get('/', function () {
 
 /* AUTHENTICATED LAYOUT */
 Route::get('/inicio', function () {return Inertia::render('Dashboard', ['toast' => request()->input('toast')]);})->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage');})->middleware(['auth', 'verified', "role:admin|alumno"])->name('subir-imagen');
+Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage');})->middleware(['auth', 'verified', "role:alumno"])->name('subir-imagen');
 Route::get('/gestionusuarios', function () {return Inertia::render('CreacionUsuarioPage');})->middleware(['auth', 'verified', "role:admin"])->name('gestionusuarios');
-Route::get('/panelprofesor', function(){return Inertia::render('Panel');})->middleware(['auth', 'verified', "role:admin|profesor"])->name('panelprofesor');
+Route::get('/panelprofesor', function(){return Inertia::render('Panel');})->middleware(['auth', 'verified', "role:profesor"])->name('panelprofesor');
 
 /* VERIFICACION EMAIL */
 Route::get('/email/verify', function () {return Inertia::render('Auth/VerifyEmail');})->middleware('auth')->name('verification.notice');
