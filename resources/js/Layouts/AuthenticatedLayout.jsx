@@ -33,7 +33,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     {/* Todos */}
                                     Inicio
                                 </NavLink>
-                                <Can permissions={["permisoadmin", "sinpermiso"]}>
+                                <Can permissions={["sinpermiso"]}>
                                     <NavLink
                                         href={route('subir-imagen')}
                                         active={route().current('subir-imagen')}
@@ -42,7 +42,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                         Subir Examen
                                     </NavLink>
                                 </Can>
-                                <Can permissions={["permisoadmin", "permisoprofesor"]}>
+                                <Can permissions={["permisoprofesor"]}>
                                     <NavLink
                                         href={route('panelprofesor')}
                                         active={route().current('panelprofesor')}
@@ -174,7 +174,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Inicio
                         </ResponsiveNavLink>
-                        <Can permissions={["permisoadmin", "sinpermiso"]}>
+                        <Can permissions={["sinpermiso"]}>
                             <ResponsiveNavLink
                                 href={route('subir-imagen')}
                                 active={route().current('subir-imagen')}
@@ -182,7 +182,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 Subir Imagen
                             </ResponsiveNavLink>
                         </Can>
-                        <Can permissions={["permisoadmin", "permisoprofesor"]}>
+                        <Can permissions={["permisoprofesor"]}>
                             <ResponsiveNavLink
                                 href={route('panelprofesor')}
                                 active={route().current('panelprofesor')}
