@@ -174,6 +174,10 @@ class ExamenController extends Controller
 
             $analysisData = json_decode($analysis->getContent());
 
+            if (!$analysisData->success || empty($analysisData->extracted_data->respuestas_correctas)) {
+                throw new \Exception("No se pudieron identificar las respuestas correctas en el examen");
+            }
+
             $respuestasAlumno = [];
 
             if (!empty($analysisData->extracted_data->estructura)) {
