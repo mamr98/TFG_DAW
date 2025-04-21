@@ -15,6 +15,7 @@ class NotasController extends Controller
         // Si es profesor, retorna todas las notas
         if ($user->can('permisoprofesor')) {
             $notas = Examen::with(['alumnos', 'asignatura'])
+                ->orderBy('id', 'desc')
                 ->get()
                 ->flatMap(function ($examen) {
                     return $examen->alumnos->map(function ($alumno) use ($examen) {
@@ -32,6 +33,7 @@ class NotasController extends Controller
                 ->whereHas('alumnos', function ($query) use ($user) {
                     $query->where('alumno_id', $user->id);
                 })
+                ->orderBy('id', 'desc')
                 ->get()
                 ->flatMap(function ($examen) use ($user) {
                     return $examen->alumnos

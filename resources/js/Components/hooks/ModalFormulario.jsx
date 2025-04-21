@@ -228,7 +228,7 @@ export default function ModalFormulario({ onClose }) {
                     {/* Campo Archivo PDF */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Archivo PDF *
+                            Imagen PNG o JPEG *
                         </label>
                         <input
                             type="file"
