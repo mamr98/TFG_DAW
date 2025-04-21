@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('examen_alumno', function (Blueprint $table) {
             $table->id();
             $table->foreignId('alumno_id')->constrained('users');
-            $table->foreignId('examen_id')->constrained('users');
+            $table->foreignId('examen_id')->constrained('examen');
             $table->dateTime('fecha_subida')->nullable();
             $table->string('fichero_alumno')->nullable();
             $table->json('json_alumno')->nullable();
