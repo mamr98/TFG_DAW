@@ -2,27 +2,48 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout"
 import { Head } from "@inertiajs/react"
 import Swal from "sweetalert2"
 import Can from "../Components/hooks/Can";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PaginationControls from "./Profesor/PaginationControls";
 
 export default function NotasPage({ notas }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(6);
+  const [notasAgrupadas, setNotasAgrupadas] = useState({});
+  const [examenesPaginados, setExamenesPaginados] = useState([]);
 
-  // Agrupar las notas por examen
-  const notasAgrupadas = notas.reduce((acc, nota) => {
-    if (!acc[nota.examen]) {
-      acc[nota.examen] = {
-        asignatura: nota.asignatura,
-        alumnos: [],
+  useEffect(() => {
+    // Agrupar las notas por examen
+    const agrupadas = notas.reduce((acc, nota) => {
+      if (!acc[nota.examen]) {
+        acc[nota.examen] = {
+          asignatura: nota.asignatura,
+          alumnos: [],
+        };
       }
-    }
-    acc[nota.examen].alumnos.push({
-      alumno: nota.alumno,
-      nota: nota.nota,
-    })
-    return acc
-  }, {})
+      acc[nota.examen].alumnos.push({
+        alumno: nota.alumno,
+        nota: nota.nota,
+      });
+      return acc;
+    }, {});
+    setNotasAgrupadas(agrupadas);
+  }, [notas]);
+
+  useEffect(() => {
+    // Paginación de los exámenes agrupados
+    const examenes = Object.keys(notasAgrupadas);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const examenesPagina = examenes.slice(startIndex, endIndex);
+
+    // Crear un nuevo objeto con solo los exámenes de la página actual
+    const notasAgrupadasPagina = examenesPagina.reduce((acc, examen) => {
+      acc[examen] = notasAgrupadas[examen];
+      return acc;
+    }, {});
+
+    setExamenesPaginados(notasAgrupadasPagina);
+  }, [notasAgrupadas, currentPage, itemsPerPage]);
 
   const handleVerNotasAlumnos = (examen, alumnos) => {
     if (alumnos.length === 0) {
@@ -189,9 +210,9 @@ export default function NotasPage({ notas }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Examenes corregidos</h1>
         <Can permissions={["permisoprofesor"]}>
-          {Object.keys(notasAgrupadas).length > 0 ? (
+          {Object.keys(examenesPaginados).length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Object.entries(notasAgrupadas).map(([examen, data], index) => (
+              {Object.entries(examenesPaginados).map(([examen, data], index) => (
                 <div
                   key={index}
                   className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700"
@@ -288,9 +309,9 @@ export default function NotasPage({ notas }) {
           )}</Can>
 
         <Can permissions={["sinpermiso"]}>
-          {Object.keys(notasAgrupadas).length > 0 ? (
+          {Object.keys(examenesPaginados).length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Object.entries(notasAgrupadas).map(([examen, data], index) => (
+              {Object.entries(examenesPaginados).map(([examen, data], index) => (
                 <div
                   key={index}
                   className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700"
@@ -373,7 +394,7 @@ export default function NotasPage({ notas }) {
           <div className="mt-8">
             <PaginationControls
               currentPage={currentPage}
-              totalItems={notas.length}
+              totalItems={Object.keys(notasAgrupadas).length}
               itemsPerPage={itemsPerPage}
               onPageChange={setCurrentPage}
               onItemsPerPageChange={setItemsPerPage}
