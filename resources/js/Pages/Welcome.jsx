@@ -10,8 +10,20 @@ import miguel from "../../assets/images/miguel.png";
 import Footer from "@/Components/hooks/Footer";
 import { useEffect, useState } from "react";
 export default function Welcome({ auth }) {
+    const [isSticky, setIsSticky] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+
+    // Efecto para detectar el scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            // Si el scroll es mayor a 100px, activa el sticky
+            setIsSticky(window.scrollY > 0);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     useEffect(() => {
         const handleResize = () => {
@@ -31,7 +43,7 @@ export default function Welcome({ auth }) {
             <Head title="Bienvenido" />
             <div className="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
                 {/* Navbar */}
-                <nav className="bg-gray-800 shadow-sm w-full z-10 pt-4 pb-4">
+                <nav className={`bg-gray-800 shadow-sm w-full z-50 transition-all duration-300 ${isSticky ? "fixed top-0" : "relative"}`}>
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex justify-between h-16">
                             <div className="flex items-center">
