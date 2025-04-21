@@ -14,6 +14,9 @@ export function Buscador({ tipoUsuario, nombreBusqueda, setNombreBusqueda, onRes
                 case "admin":
                     endpoint = `admin/buscador/${searchTerm}`;
                     break;
+                    case "examen":
+                        endpoint = `buscadorExamen/${searchTerm}`;
+                        break;
                 default:
                     endpoint = `admin/buscador/${searchTerm}`;
             }
