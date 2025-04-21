@@ -16,7 +16,7 @@ export default function SubirImagenPage() {
 
     const fetchExamenes = () => {
         setIsReloading(true);
-        fetch('examenesAlumno')
+        fetch("examenesAlumno")
             .then((response) => response.json())
             .then((data) => {
                 setExamenes(data);
@@ -58,7 +58,9 @@ export default function SubirImagenPage() {
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className={`h-5 w-5 ${isReloading ? "animate-spin" : ""}`}
+                            className={`h-5 w-5 ${
+                                isReloading ? "animate-spin" : ""
+                            }`}
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -90,14 +92,38 @@ export default function SubirImagenPage() {
                                                 <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
                                                     {examen.nombre_examen}
                                                 </h3>
-                                                {examen.asignatura && (
+                                                {examen.asignatura ? (
                                                     <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                                                        Asignatura: {examen.asignatura.nombre}
+                                                        Asignatura:{" "}
+                                                        {
+                                                            examen.asignatura
+                                                                .nombre
+                                                        }
+                                                        {examen.asignatura
+                                                            .codigo &&
+                                                            ` (${examen.asignatura.codigo})`}
+                                                    </p>
+                                                ) : examen.asignatura_id ? (
+                                                    <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
+                                                        Asignatura ID:{" "}
+                                                        {asignatura.nombre}{" "}
+                                                        (nombre no disponible)
+                                                    </p>
+                                                ) : (
+                                                    <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
+                                                        Sin asignatura asignada
                                                     </p>
                                                 )}
                                             </div>
                                             <PrimaryButton
-                                                onClick={() => setMostrarSubirImagen(mostrarSubirImagen === examen.id ? false : examen.id)}
+                                                onClick={() =>
+                                                    setMostrarSubirImagen(
+                                                        mostrarSubirImagen ===
+                                                            examen.id
+                                                            ? false
+                                                            : examen.id
+                                                    )
+                                                }
                                                 className="px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2"
                                             >
                                                 <svg
@@ -112,13 +138,18 @@ export default function SubirImagenPage() {
                                                         clipRule="evenodd"
                                                     />
                                                 </svg>
-                                                {mostrarSubirImagen === examen.id ? "Cancelar" : "Subir Examen"}
+                                                {mostrarSubirImagen ===
+                                                examen.id
+                                                    ? "Cancelar"
+                                                    : "Subir Examen"}
                                             </PrimaryButton>
                                         </div>
 
                                         {mostrarSubirImagen === examen.id && (
                                             <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                                <SubirImagen examenId={examen.id} />
+                                                <SubirImagen
+                                                    examenId={examen.id}
+                                                />
                                             </div>
                                         )}
                                     </div>

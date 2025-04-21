@@ -106,7 +106,7 @@ class ExamenController extends Controller
         $alumnoId = auth()->id();
 
         // Versión optimizada basada en tu consulta SQL funcional
-        $examenes = DB::table('examen')
+        $examenes = Examen::with('asignatura')
             ->whereIn('clase_id', function ($query) use ($alumnoId) {
                 $query->select('clase_id')
                     ->from('clase_alumno')
