@@ -12,7 +12,6 @@ import PaginationControls from "./PaginationControls";
 import EmptyState from "./EmptyState";
 import LoadingState from "./LoadingState";
 import EditExamenForm from "./EditExamenForm";
-import Buscador from "@/Components/hooks/Buscador";
 
 export default function PanelProfesor() {
     const { flash, auth } = usePage().props;
@@ -27,11 +26,6 @@ export default function PanelProfesor() {
     const [asignaturas, setAsignaturas] = useState([]);
     const [clases, setClases] = useState([]);
     const [loadingResources, setLoadingResources] = useState(false);
-
-    const [buscadorTipoUsuario] = useState("examen");
-    const [nombreBusqueda, setNombreBusqueda] = useState("");
-    const [resultados, setResultados] = useState([]);
-    
 
     // Función para manejar el clic en editar examen
     const handleEditClick = (examen) => {
@@ -185,111 +179,150 @@ export default function PanelProfesor() {
         return examenes.slice(startIndex, startIndex + itemsPerPage);
     };
 
-   return (
-    <AuthenticatedLayout
-        header={
-            <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                Panel de Exámenes
-            </h2>
-        }
-    >
-        <Head title="Panel de Exámenes" />
-        <ToastContainer />
+    return (
+        <AuthenticatedLayout
+            header={
+                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+                    Panel de Exámenes
+                </h2>
+            }
+        >
+            <Head title="Panel de Exámenes" />
+            <ToastContainer />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            {showForm ? (
-                <ModalFormulario onClose={() => setShowForm(false)} />
-            ) : (
-                <>
-                    <div className="flex justify-between items-center mb-8">
-                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                            Gestión de Exámenes
-                        </h1>
-                        <button
-                            onClick={fetchExamenes}
-                            disabled={isReloading}
-                            className="flex items-center gap-2 px-3 py-2 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className={`h-5 w-5 ${isReloading ? "animate-spin" : ""}`}
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                {showForm ? (
+                    <ModalFormulario onClose={() => setShowForm(false)} />
+                ) : (
+                    <>
+                        <div className="flex justify-between items-center mb-8">
+                            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                                Gestión de Exámenes
+                            </h1>
+                            <button
+                                onClick={fetchExamenes}
+                                disabled={isReloading}
+                                className="flex items-center gap-2 px-3 py-2 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                                />
-                            </svg>
-                            {isReloading ? "Recargando..." : "Recargar"}
-                        </button>
-                    </div>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className={`h-5 w-5 ${isReloading
+                                        ? "animate-spin"
+                                        : ""
+                                        }`}
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                    />
+                                </svg>
+                                {isReloading
+                                    ? "Recargando..."
+                                    : "Recargar"}
+                            </button>
+                        </div>
 
-                    {/* Buscador siempre visible */}
-                    <Buscador
-                        tipoUsuario={buscadorTipoUsuario}
-                        nombreBusqueda={nombreBusqueda}
-                        setNombreBusqueda={setNombreBusqueda}
-                        onResultados={setResultados}
-                    />
-
-                    {/* Resultados del Buscador */}
-                    {nombreBusqueda && (
-                        <div className="mt-8 space-y-4">
-                            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                Resultados de búsqueda
-                            </h3>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {resultados.length > 0 ? (
-                                    resultados.map((examen) => (
-                                        <ExamenCard
-                                            key={examen.id}
-                                            examen={examen}
-                                            asignatura={examen.asignatura}
-                                            onEditClick={handleEditClick}
-                                            onDeleteClick={handleDeleteExamen}
-                                        />
-                                    ))
-                                ) : (
-                                    <div className="col-span-full text-center py-6">
-                                        <p className="text-gray-500 dark:text-gray-300 text-lg">
-                                            No se encontraron resultados 😞
-                                        </p>
+                        <div className="mt-6">
+                            {loading ? (
+                                <LoadingState />
+                            ) : examenes.length > 0 ? (
+                                <>
+                                    <div className="flex justify-between items-center mb-6">
+                                        <h2 className="text-xl font-semibold text-gray-800 dark:text-white flex items-center gap-2">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="h-6 w-6 text-emerald-500"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                                />
+                                            </svg>
+                                            Tus exámenes
+                                            <span className="ml-2 bg-emerald-100 text-emerald-800 text-sm font-medium px-2.5 py-0.5 rounded-full dark:bg-emerald-900 dark:text-emerald-300">
+                                                {examenes.length}
+                                            </span>
+                                        </h2>
+                                        <PrimaryButton
+                                            onClick={handleNuevoExamen}
+                                            className="px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="h-5 w-5"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                                    clipRule="evenodd"
+                                                />
+                                            </svg>
+                                            Crear Examen
+                                        </PrimaryButton>
                                     </div>
-                                )}
-                            </div>
-                        </div>
-                    )}
-                </>
-            )}
-        </div>
 
-        {/* Modal de edición de examen */}
-        {showEditForm && editingExamen && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                    {loadingResources ? (
-                        <div className="p-6 flex justify-center items-center">
-                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {paginatedExamenes().map((examen) => (
+                                            <ExamenCard
+                                                key={examen.examen?.id}
+                                                examen={examen.examen}
+                                                asignatura={examen.asignatura}
+                                                onEditClick={handleEditClick}
+                                                onDeleteClick={
+                                                    handleDeleteExamen
+                                                }
+                                            />
+                                        ))}
+                                    </div>
+
+                                    <PaginationControls
+                                        currentPage={currentPage}
+                                        totalItems={examenes.length}
+                                        itemsPerPage={itemsPerPage}
+                                        onPageChange={setCurrentPage}
+                                        onItemsPerPageChange={setItemsPerPage}
+                                    />
+                                </>
+                            ) : (
+                                <EmptyState onCrearExamen={handleNuevoExamen} />
+                            )}
                         </div>
-                    ) : (
-                        <EditExamenForm
-                            examen={editingExamen}
-                            onClose={handleCloseEditForm}
-                            asignaturas={asignaturas || []}
-                            clases={clases || []}
-                            onSuccess={handleEditSuccess}
-                        />
-                    )}
-                </div>
+                    </>
+                )}
             </div>
-        )}
-    </AuthenticatedLayout>
-);
 
-    
+            {/* Modal de edición de examen */}
+            {showEditForm && editingExamen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        {loadingResources ? (
+                            <div className="p-6 flex justify-center items-center">
+                                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
+                            </div>
+                        ) : (
+                            <EditExamenForm
+                                examen={editingExamen}
+                                onClose={handleCloseEditForm}
+                                asignaturas={asignaturas || []}
+                                clases={clases || []}
+                                onSuccess={handleEditSuccess}
+                            />
+                        )}
+                    </div>
+                </div>
+            )}
+        </AuthenticatedLayout>
+    );
 }
