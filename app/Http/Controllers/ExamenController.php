@@ -300,11 +300,4 @@ class ExamenController extends Controller
             'respuestas_correctas' => $examen->json_examen['respuestas_correctas'] ?? []
         ]);
     }
-
-    public function buscarExamenes($nombre)
-    {
-        $examenes = Examen::where('nombre_examen', 'LIKE', "%{$nombre}%")->get();
-
-        return response()->json($examenes, 200);
-    }
 }

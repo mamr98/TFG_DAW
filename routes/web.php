@@ -102,7 +102,7 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
     Route::put('/profesor/examen/{id}', [ExamenController::class, 'actualizarExamen'])->name('profesor.examen.update');
     Route::delete('/profesor/examen/{id}', [ExamenController::class, 'deleteExamen'])->name('profesor.examen.destroy');
 
-    Route::get('/buscadorExamen/{nombre}', [ExamenController::class, 'buscarExamenes'])->name('buscadorExamen');
+
 });
 
 
