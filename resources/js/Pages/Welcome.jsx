@@ -159,7 +159,7 @@ export default function Welcome({ auth }) {
                         >
                             <div className="absolute inset-0 bg-black bg-opacity-50 rounded-lg"></div>
                             <h2 className="relative text-2xl font-bold">
-                                Corrección Instantánea
+                                Correcciones Instantáneas
                             </h2>
                             <p className="relative mt-2 text-center">
                                 Resultados en 30 segundos
@@ -224,11 +224,11 @@ export default function Welcome({ auth }) {
                                     </span>
                                 </div>
                                 <h3 className="text-xl font-semibold mb-2">
-                                    Sube los exámenes a corregir
+                                    Sube tu examen a corregir
                                 </h3>
                                 <p className="text-gray-600">
-                                    Adjunta las imágenes de los exámenes
-                                    completados por los estudiantes o deja que
+                                    Adjunta la imagen del examen
+                                    completado por los estudiantes o deja que
                                     tus estudiantes lo suban por ellos mismos.
                                 </p>
                             </div>
@@ -260,22 +260,6 @@ export default function Welcome({ auth }) {
                             <div className="bg-white p-8 rounded-lg shadow-md hover:transform hover:-translate-y-2 transition duration-300">
                                 <div className="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-6">
                                     <img
-                                        src={david}
-                                        alt="David Peláez"
-                                        className="w-full h-full rounded-full object-cover"
-                                    />
-                                </div>
-                                <h3 className="text-2xl font-bold text-center">
-                                    David Peláez
-                                </h3>
-                                <p className="text-gray-600 text-center">
-                                    Desarrollador Frontend
-                                </p>
-                            </div>
-
-                            <div className="bg-white p-8 rounded-lg shadow-md hover:transform hover:-translate-y-2 transition duration-300">
-                                <div className="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-6">
-                                    <img
                                         src={pablo}
                                         alt="Pablo Gallego"
                                         className="w-full h-full rounded-full object-cover"
@@ -285,7 +269,7 @@ export default function Welcome({ auth }) {
                                     Pablo Gallego
                                 </h3>
                                 <p className="text-gray-600 text-center">
-                                    Diseñador
+                                    FullStack Developer
                                 </p>
                             </div>
 
@@ -301,7 +285,23 @@ export default function Welcome({ auth }) {
                                     Miguel Ángel Milena
                                 </h3>
                                 <p className="text-gray-600 text-center">
-                                    Desarrollador Backend
+                                    FullStack Developer
+                                </p>
+                            </div>
+
+                            <div className="bg-white p-8 rounded-lg shadow-md hover:transform hover:-translate-y-2 transition duration-300">
+                                <div className="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-6">
+                                    <img
+                                        src={david}
+                                        alt="David Peláez"
+                                        className="w-full h-full rounded-full object-cover"
+                                    />
+                                </div>
+                                <h3 className="text-2xl font-bold text-center">
+                                    David Peláez
+                                </h3>
+                                <p className="text-gray-600 text-center">
+                                    FullStack Developer
                                 </p>
                             </div>
                         </div>
