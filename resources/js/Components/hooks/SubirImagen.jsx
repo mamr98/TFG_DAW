@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PrimaryButton from "../PrimaryButton";
 import { toast } from "react-toastify";
 
-function SubirImagen({ examenId }) {
+function SubirImagen({ examenId, onUploadSuccess }) {
     const [selectedImage, setSelectedImage] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
 
@@ -60,6 +60,7 @@ function SubirImagen({ examenId }) {
             toast.success(data.message || "Examen subido correctamente");
             setSelectedImage(null);
             fileInput.value = "";
+            onUploadSuccess(examenId);
     
         } catch (error) {
             console.error("Error al subir la imagen:", error);
