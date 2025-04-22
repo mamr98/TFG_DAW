@@ -11,6 +11,7 @@ use App\Http\Controllers\ComparacionController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Admin\UserContoller;
+use App\Http\Controllers\ExportController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -99,6 +100,8 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
     Route::post('/profesor/examen', [ExamenController::class, 'store'])->name('profesor.examen.store');
     Route::put('/profesor/examen/{id}', [ExamenController::class, 'actualizarExamen'])->name('profesor.examen.update');
     Route::delete('/profesor/examen/{id}', [ExamenController::class, 'deleteExamen'])->name('profesor.examen.destroy');
+    //Route::get('/',[ExportController::class, 'index'])->name('indexExcel');
+    //Route::get('/export',[ExportController::class, 'export'])->name('exportExcel');
 
 
 });
