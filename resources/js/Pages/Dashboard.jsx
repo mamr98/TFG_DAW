@@ -4,9 +4,11 @@ import StatsDashboard from "@/Components/hooks/StatsDashboard";
 import Can from "../Components/hooks/Can";
 import { useAuth } from "../Context/AuthContext";
 import ToastNotifier from '@/Components/hooks/ToastNotifier';
+import RoleDistributionChart from '@/Components/RoleDistributionChart';
 
-export default function Dashboard({ stats }) {
+export default function Dashboard({ stats, chartData }) {
     const { user } = useAuth(); // Accede al usuario
+
     return (
         <AuthenticatedLayout
             header={
@@ -43,6 +45,11 @@ export default function Dashboard({ stats }) {
                                         <p className="text-green-800">Has entrado con un usuario que tiene el rol Alumno.</p>
                                     </Can>
                                 </div>
+                            </div>
+
+                            {/* 📊 Gráfico circular de distribución de roles */}
+                            <div className="mt-12">
+                                <RoleDistributionChart chartData={chartData} />
                             </div>
                         </div>
                     </div>

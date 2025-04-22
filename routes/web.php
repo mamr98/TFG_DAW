@@ -89,6 +89,8 @@ Route::middleware('auth', 'verified', "role:admin")->group(function () {
     Route::get('/asignaturas', [ExamenController::class, 'recogerAsignaturas'])->name('asignaturas');
     Route::get('/clases', [ExamenController::class, 'recogerClases'])->name('clases_profesor');
 
+    Route::get('/admin/dashboard', [UserController::class, 'Grafico'])->name('admin.dashboard');
+
 
 });
 
