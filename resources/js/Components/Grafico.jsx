@@ -6,7 +6,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const defaultColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
 
-const RoleDistributionChart = ({ chartData }) => {
+const Grafico = ({ chartData }) => {
     const total = chartData.reduce((sum, item) => sum + item.value, 0);
 
     const data = {
