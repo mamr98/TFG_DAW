@@ -53,7 +53,7 @@ export default function UpdateProfileInformation({
                     <InputError className="mt-2" message={errors.name} />
                 </div>
 
-                <div>
+                {/* <div>
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
@@ -67,7 +67,7 @@ export default function UpdateProfileInformation({
                     />
 
                     <InputError className="mt-2" message={errors.email} />
-                </div>
+                </div> */}
 
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
