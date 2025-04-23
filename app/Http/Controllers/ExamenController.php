@@ -125,21 +125,28 @@ class ExamenController extends Controller
     }
 
     public function recogerExamenesProfesor()
-    {
-        $examenes = Examen::where('profesor_id', auth()->id())->get();
+{
+    $examenes = Examen::where('profesor_id', auth()->id())->get();
 
-        $resultado = $examenes->map(function ($examen) {
-            $asignatura = Asignatura::find($examen->asignatura_id);
+    $resultado = $examenes->map(function ($examen) {
+        $asignatura = Asignatura::find($examen->asignatura_id);
 
-            return [
-                'examen' => $examen,
-                'asignatura' => $asignatura,
-                'respuestas_correctas' => $examen->json_examen['respuestas_correctas'] ?? null
-            ];
-        });
+        // Contamos los registros en la tabla examen_alumno
+        $cantidadRelacionados = DB::table('examen_alumno')
+            ->where('examen_id', $examen->id)
+            ->count();
 
-        return response()->json($resultado);
-    }
+        return [
+            'examen' => $examen,
+            'asignatura' => $asignatura,
+            'respuestas_correctas' => $examen->json_examen['respuestas_correctas'] ?? null,
+            'tieneRelaciones' => $cantidadRelacionados > 0 // ¡Asegúrate de que esta línea esté aquí!
+        ];
+    });
+
+    return response()->json($resultado); // ¡Y que estés retornando esto!
+}
+
     public function crearExamenAlumno(Request $request, $idExamen)
     {
         // Validación

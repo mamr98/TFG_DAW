@@ -48,9 +48,9 @@ export default function Dashboard({ stats, chartData }) {
                             </div>
 
                             {/* 📊 Gráfico circular de distribución de roles */}
-                            <div className="mt-12">
+                            {/* <div className="mt-12">
                                 <Grafico chartData={chartData} />
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
