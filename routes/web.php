@@ -122,6 +122,7 @@ Route::get('/notas', [NotasController::class, 'index'])->middleware(['auth', 've
 
 
 Route::get('/inicio', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth'])->get('/clases-profesor', [DashboardController::class, 'clasesAsignadas']);
 
 
 require __DIR__.'/auth.php';

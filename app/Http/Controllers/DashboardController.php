@@ -8,6 +8,8 @@ use App\Models\Examen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Clase;
 
 class DashboardController extends Controller
 {
@@ -99,5 +101,16 @@ class DashboardController extends Controller
                 'examenes_por_mes' => $dataMeses,
             ],
         ]);
+    }
+
+    public function clasesAsignadas()
+    {
+        $profesor = Auth::user();
+
+        $clases = $profesor->relacion_clase_profesor()
+            ->select('clase.id', 'clase.nombre')
+            ->get();
+
+        return response()->json($clases);
     }
 }
