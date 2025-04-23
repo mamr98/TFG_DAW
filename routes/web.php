@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\UserContoller;
 use App\Http\Controllers\ComparacionController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -118,5 +119,10 @@ Route::fallback(function(){
 });
 
 Route::get('/notas', [NotasController::class, 'index'])->middleware(['auth', 'verified', "role:profesor|alumno"])->name('notas');
+
+
+Route::get('/inicio', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth'])->get('/clases-profesor', [DashboardController::class, 'clasesAsignadas']);
+
 
 require __DIR__.'/auth.php';
