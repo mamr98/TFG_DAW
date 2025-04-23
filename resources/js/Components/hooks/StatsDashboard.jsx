@@ -54,42 +54,15 @@ export default function StatsDashboard({ stats }) {
         },
     };
 
-    // Leyenda personalizada
-    const customLegend = (
-        <div className="flex justify-center gap-4 mb-4">
-            <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-green-400 rounded-sm"></div>
-                <span className="text-sm text-gray-700 dark:text-gray-300">
-                    Activos
-                </span>
-            </div>
-            <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-red-400 rounded-sm"></div>
-                <span className="text-sm text-gray-700 dark:text-gray-300">
-                    Inactivos
-                </span>
-            </div>
-            <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-blue-400 rounded-sm"></div>
-                <span className="text-sm text-gray-700 dark:text-gray-300">
-                    Totales
-                </span>
-            </div>
-        </div>
-    );
-
     const usuariosSection = (
-        <div className="border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
-            <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4">
+        <div className="relative border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-md" />
+            <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
                 Estadísticas de Usuarios
             </h2>
-
-            {customLegend}
-
             <div>
                 <Bar data={data} options={options} />
             </div>
-
             <div className="mt-6 flex justify-around text-sm text-gray-700 dark:text-gray-300">
                 <p>Activos: {activos}</p>
                 <p>Inactivos: {inactivos}</p>
@@ -117,18 +90,22 @@ export default function StatsDashboard({ stats }) {
     };
 
     const profesoresSection = (
-        <div className="border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
-            <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4">
+        <div className="relative border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900 h-[300px] flex flex-col overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-md" />
+            <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
                 Profesores con más exámenes subidos
             </h2>
-            <div
-                className="mx-auto"
-                style={{ width: "300px", height: "300px" }}
-            >
-                <Doughnut data={chartData} />
+            <div className="flex-1 w-full relative">
+                <div className="absolute inset-0">
+                    <Doughnut
+                        data={chartData}
+                        options={{ responsive: true, maintainAspectRatio: false }}
+                    />
+                </div>
             </div>
         </div>
     );
+
 
     const examenesPorMes = stats?.examenes_por_mes ?? [];
 
@@ -167,13 +144,18 @@ export default function StatsDashboard({ stats }) {
     };
 
     const examenesMesSection = (
-        <div className="border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
-            <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4">
+        <div className="relative border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900 h-[300px] flex flex-col overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-md" />
+            <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
                 Exámenes subidos por mes
             </h2>
-            <div className="mx-auto" style={{ width: "300px", height: "300px" }}>
-
-            <Bar data={dataExamenesMes} options={optionsExamenesMes} />
+            <div className="flex-1 w-full relative">
+                <div className="absolute inset-0">
+                    <Bar
+                        data={dataExamenesMes}
+                        options={{ ...optionsExamenesMes, maintainAspectRatio: false }}
+                    />
+                </div>
             </div>
         </div>
     );
