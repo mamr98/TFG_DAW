@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
@@ -203,4 +204,35 @@ class UserController extends Controller
         
         return response()->json($user);
     }
+
+    public function Grafico()
+{
+    // Obtener la distribución de usuarios por rol
+    $roles = Role::withCount('users')->get();
+    
+    // Formatear los datos para el gráfico
+    $chartData = $roles->map(function ($role) {
+        return [
+            'name' => $role->name,
+            'value' => $role->users_count,
+            'color' => $this->getRoleColor($role->name) // Función para colores por rol
+        ];
+    });
+
+    return Inertia::render('Dashboard', [
+        'chartData' => $chartData
+    ]);
+}
+
+// Función auxiliar para asignar colores a los roles
+private function getRoleColor($roleName)
+{
+    $colors = [
+        'admin' => '#FF6384',
+        'professor' => '#36A2EB',
+        'alumno' => '#FFCE56'
+    ];
+
+    return $colors[strtolower($roleName)] ?? '#4BC0C0';
+}
 }

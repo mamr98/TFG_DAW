@@ -283,6 +283,7 @@ export default function PanelProfesor() {
                                                 onDeleteClick={
                                                     handleDeleteExamen
                                                 }
+                                                tieneRelaciones={examen.tieneRelaciones}
                                             />
                                         ))}
                                     </div>

@@ -8,7 +8,9 @@ export default function ExamenCard({
     asignatura,
     onEditClick,
     onDeleteClick,
+    tieneRelaciones,
 }) {
+    console.log(`Examen ${examen.id} tiene relaciones:`, tieneRelaciones);
     const [openMenuId, setOpenMenuId] = useState(null);
 
     const toggleMenu = (id, e) => {
@@ -183,6 +185,7 @@ export default function ExamenCard({
                         onEditClick={onEditClick}
                         onDeleteClick={onDeleteClick}
                         examen={examen}
+                        tieneRelaciones={tieneRelaciones}
                     />
                 </div>
 

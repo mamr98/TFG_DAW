@@ -5,8 +5,9 @@ import Can from "../Components/hooks/Can";
 import { useAuth } from "../Context/AuthContext";
 import ToastNotifier from "@/Components/hooks/ToastNotifier";
 
-export default function Dashboard({ stats }) {
+export default function Dashboard({ stats, chartData }) {
     const { user } = useAuth(); // Accede al usuario
+
     return (
         <AuthenticatedLayout
             header={
@@ -74,6 +75,11 @@ export default function Dashboard({ stats }) {
                                     </Can>
                                 </div>
                             </div>
+
+                            {/* 📊 Gráfico circular de distribución de roles */}
+                            {/* <div className="mt-12">
+                                <Grafico chartData={chartData} />
+                            </div> */}
                         </div>
                     </div>
                 </div>
