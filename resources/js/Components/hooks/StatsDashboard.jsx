@@ -219,20 +219,62 @@ export default function StatsDashboard({ stats }) {
             });
     }, []);
 
+    // Seccion donde se muestra el nº de exámenes totales
     const claseSection = (
         <div className="relative border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-md" />
             <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
-                Exámenes Creados
+                Exámenes Creados en la App
             </h2>
             {/* Mostrar el total de exámenes */}
             <div
                 className="mt-4 p-2 bg-blue-50 rounded-md border border-blue-200 dark:bg-blue-900 dark:border-blue-700 flex flex-col items-center justify-center min-h-[100px]" // Añadimos min-h
             >
-                <p className="text-center">Total de Exámenes Creados:</p>
+                <p className="text-center">Total de Exámenes:</p>
                 <p className="text-center">
                     <span className="font-bold text-blue-800 dark:text-blue-200">
                         {totalExamenes}
+                    </span>
+                </p>
+            </div>
+        </div>
+    );
+
+    // Seccion donde se muestra el nº de exámenes totales por profesor
+    const [totalExamenesProfesor, setTotalExamenesProfesor] = useState(0);
+
+    useEffect(() => {
+        const fetchTotalExamenesProfesor = async () => {
+            try {
+                const response = await fetch("examenes/profesor/total");
+                const data = await response.json();
+                setTotalExamenesProfesor(data.total);
+            } catch (error) {
+                console.error(
+                    "Error al obtener el total de exámenes por profesor:",
+                    error
+                );
+                // Manejar el error según sea necesario
+            }
+        };
+
+        fetchTotalExamenesProfesor();
+    }, []);
+
+    const claseSectionProfesor = (totalExamenesProfesor) => (
+        <div className="relative border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-md" />
+            <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
+                Exámenes creados por tí
+            </h2>
+            {/* Mostrar el total de exámenes por profesor */}
+            <div 
+                className="mt-4 p-2 bg-blue-50 rounded-md border border-blue-200 dark:bg-blue-900 dark:border-blue-700 flex flex-col items-center justify-center min-h-[100px]" // Añadimos min-h
+                >
+                <p className="text-center">Total de Exámenes:</p>
+                <p className="text-center">
+                    <span className="font-bold text-indigo-800 dark:text-indigo-200">
+                        {totalExamenesProfesor}
                     </span>
                 </p>
             </div>
@@ -253,14 +295,13 @@ export default function StatsDashboard({ stats }) {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {clasesSection} {/* Mostrar las clases del profesor */}
                     {claseSection}
+                    {claseSectionProfesor(totalExamenesProfesor)}
                 </div>
             </Can>
 
             <Can permission="sinpermiso">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {usuariosSection}
-                    {usuariosSection}
-                    {usuariosSection}
+                    
                 </div>
             </Can>
         </>

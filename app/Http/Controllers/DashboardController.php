@@ -120,4 +120,9 @@ class DashboardController extends Controller
         $totalExamenes = Examen::count(); // Obtiene el total de registros en la tabla 'examenes'
         return response()->json(['total' => $totalExamenes]);
     }
+    public function getTotalExamenesPorProfesor()
+    {
+        $totalExamenes = Examen::where('profesor_id', Auth::user()->id)->count();
+        return response()->json(['total' => $totalExamenes]);
+    }
 }
