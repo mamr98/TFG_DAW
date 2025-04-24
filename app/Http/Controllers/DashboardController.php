@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Examen;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Clase;
+use App\Models\Examen;
+use App\Models\ExamenAlumno;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 
 class DashboardController extends Controller
@@ -125,4 +126,30 @@ class DashboardController extends Controller
         $totalExamenes = Examen::where('profesor_id', Auth::user()->id)->count();
         return response()->json(['total' => $totalExamenes]);
     }
+    public function getTotalExamenesPorAlumno()
+    {
+        $totalExamenes = ExamenAlumno::where('alumno_id', Auth::user()->id)->count();
+        return response()->json(['total' => $totalExamenes]);
+    }
+    public function getTotalMediaAlumno()
+    {
+        $notaMedia = ExamenAlumno::where('alumno_id', Auth::user()->id)->avg('nota');
+
+        // Asegúrate de que $notaMedia no sea null antes de devolverlo
+        return response()->json(['media' => $notaMedia ?? 0]);
+    }
+    public function getClasesAlumno()
+    {
+        $user = Auth::user();
+
+        if ($user) {
+            $clases = $user->relacion_clase_alumno()->get();
+            $nombresClases = $clases->pluck('nombre'); // Extrae solo la columna 'nombre'
+
+            return response()->json($nombresClases);
+        }
+
+        return response()->json([]);
+    }
+
 }

@@ -53,7 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail
     // Relacion con clases (alumno)
     public function relacion_clase_alumno()
     {
-        return $this->belongsToMany(Clase::class, 'clase_alumno');
+        return $this->belongsToMany(Clase::class, 'clase_alumno', 'alumno_id', 'clase_id');
     }
 
     // Relacion con profesor (profesor)

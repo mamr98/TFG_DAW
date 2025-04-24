@@ -127,6 +127,9 @@ Route::get('/inicio', [DashboardController::class, 'dashboard'])->middleware(['a
 Route::middleware(['auth'])->get('/clases-profesor', [DashboardController::class, 'clasesAsignadas']);
 Route::get('/examenes/total', [DashboardController::class, 'getTotalExamenes'])->middleware(['auth', 'verified'])->name('examenes.total');
 Route::get('/examenes/profesor/total', [DashboardController::class, 'getTotalExamenesPorProfesor'])->middleware(['auth', 'verified'])->name('examenesprofesor.total');
+Route::get('/examenes/alumno/total', [DashboardController::class, 'getTotalExamenesPorAlumno'])->middleware(['auth', 'verified'])->name('examenesalumno.total');
+Route::get('/examenes/alumno/media', [DashboardController::class, 'getTotalMediaAlumno'])->middleware(['auth', 'verified'])->name('examenesalumno.media');
+Route::get('/clase/alumno', [DashboardController::class, 'getClasesAlumno'])->middleware(['auth', 'verified'])->name('clase.alumno');
 
 
 require __DIR__.'/auth.php';
