@@ -28,6 +28,8 @@ Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage
 Route::get('/notas', function () {return Inertia::render('NotasPage');})->middleware(['auth', 'verified'])->name('notas');
 Route::get('/gestionusuarios', function () {return Inertia::render('CreacionUsuarioPage');})->middleware(['auth', 'verified', "role:admin"])->name('gestionusuarios');
 Route::get('/panelprofesor', function(){return Inertia::render('Panel');})->middleware(['auth', 'verified', "role:admin|profesor"])->name('panelprofesor');
+// ruta para la vista de los cursos del profesor
+Route::get('/cursos', function(){return Inertia::render('Cursos');})->middleware(['auth', 'verified', "role:profesor"])->name('cursos');
 
 /* VERIFICACION EMAIL */
 Route::get('/email/verify', function () {return Inertia::render('Auth/VerifyEmail');})->middleware('auth')->name('verification.notice');
@@ -100,8 +102,8 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
     Route::post('/profesor/examen', [ExamenController::class, 'store'])->name('profesor.examen.store');
     Route::put('/profesor/examen/{id}', [ExamenController::class, 'actualizarExamen'])->name('profesor.examen.update');
     Route::delete('/profesor/examen/{id}', [ExamenController::class, 'deleteExamen'])->name('profesor.examen.destroy');
-    //Route::get('/',[ExportController::class, 'index'])->name('indexExcel');
-    //Route::get('/export',[ExportController::class, 'export'])->name('exportExcel');
+    //Route::get('/',[ExportController::class, 'index'])->name('indexExcel'); Esta ruta no hará falta ya que es para mostrar una vista
+    //Route::get('/export',[ExportController::class, 'export'])->name('exportExcel'); Esta ruta es la que va a la funcion que exporta a Excel
 
 
 });
