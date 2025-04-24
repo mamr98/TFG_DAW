@@ -70,8 +70,8 @@ export default function StatsDashboard({ stats }) {
     };
 
     const usuariosSection = (
-        <div className="relative border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-md" />
+        <div className="relative border border-green-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-emerald-500 rounded-t-md" />
             <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
                 Estadísticas de Usuarios
             </h2>
@@ -105,8 +105,8 @@ export default function StatsDashboard({ stats }) {
     };
 
     const profesoresSection = (
-        <div className="relative border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900 h-[300px] flex flex-col overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-md" />
+        <div className="relative border border-green-300 rounded-md p-6 text-center bg-white dark:bg-gray-900 h-[300px] flex flex-col overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-emerald-500 rounded-t-md" />
             <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
                 Profesores con más exámenes subidos
             </h2>
@@ -161,8 +161,8 @@ export default function StatsDashboard({ stats }) {
     };
 
     const examenesMesSection = (
-        <div className="relative border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900 h-[300px] flex flex-col overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-md" />
+        <div className="relative border border-green-300 rounded-md p-6 text-center bg-white dark:bg-gray-900 h-[300px] flex flex-col overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-emerald-500 rounded-t-md" />
             <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
                 Exámenes subidos por mes
             </h2>
@@ -182,8 +182,8 @@ export default function StatsDashboard({ stats }) {
 
     // Nueva sección para los cursos del profesor
     const clasesSection = (
-        <div className="relative border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-md" />
+        <div className="relative border border-green-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-emerald-500 rounded-t-md" />
             <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
                 Cursos Asignados
             </h2>
@@ -193,7 +193,7 @@ export default function StatsDashboard({ stats }) {
                         {clases.map((clase) => (
                             <li
                                 key={clase.id}
-                                className="p-2 border rounded-md bg-gray-100 dark:bg-gray-800"
+                                className="bg-gradient-to-r from-emerald-500 to-teal-600 p-2 rounded-md text-white dark:text-gray-800 font-bold"
                             >
                                 {clase.nombre}
                             </li>
@@ -221,18 +221,18 @@ export default function StatsDashboard({ stats }) {
 
     // Seccion donde se muestra el nº de exámenes totales
     const claseSection = (
-        <div className="relative border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-md" />
+        <div className="relative border border-green-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-emerald-500 rounded-t-md" />
             <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
                 Exámenes Creados en la App
             </h2>
             {/* Mostrar el total de exámenes */}
             <div
-                className="mt-4 p-2 bg-blue-50 rounded-md border border-blue-200 dark:bg-blue-900 dark:border-blue-700 flex flex-col items-center justify-center min-h-[100px]" // Añadimos min-h
+                className="mt-4 p-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-md flex flex-col items-center justify-center min-h-[100px]" // Añadimos min-h
             >
-                <p className="text-center">Total de Exámenes:</p>
+                <p className="font-bold text-center text-white dark:text-gray-800">Total de Exámenes:</p>
                 <p className="text-center">
-                    <span className="font-bold text-blue-800 dark:text-blue-200">
+                    <span className="font-bold text-white dark:text-gray-800">
                         {totalExamenes}
                     </span>
                 </p>
@@ -262,18 +262,18 @@ export default function StatsDashboard({ stats }) {
     }, []);
 
     const claseSectionProfesor = (totalExamenesProfesor) => (
-        <div className="relative border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-md" />
+        <div className="relative border border-green-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-emerald-500 rounded-t-md" />
             <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
                 Exámenes creados por tí
             </h2>
             {/* Mostrar el total de exámenes por profesor */}
             <div
-                className="mt-4 p-2 bg-blue-50 rounded-md border border-blue-200 dark:bg-blue-900 dark:border-blue-700 flex flex-col items-center justify-center min-h-[100px]" // Añadimos min-h
+                className="mt-4 p-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-md flex flex-col items-center justify-center min-h-[100px]" // Añadimos min-h
             >
-                <p className="text-center">Total de Exámenes:</p>
+                <p className="font-bold text-white dark:text-gray-800 text-center">Total de Exámenes:</p>
                 <p className="text-center">
-                    <span className="font-bold text-indigo-800 dark:text-indigo-200">
+                    <span className="font-bold text-white dark:text-gray-800">
                         {totalExamenesProfesor}
                     </span>
                 </p>
@@ -309,7 +309,7 @@ export default function StatsDashboard({ stats }) {
             <div
                 className="mt-4 p-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-md border border-green-200 dark:border-green-700 flex flex-col items-center justify-center min-h-[100px]"
             >
-                <p className="text-center text-white dark:text-gray-800">Total de Exámenes Entregados:</p>
+                <p className="font-bold text-center text-white dark:text-gray-800">Total de Exámenes Entregados:</p>
                 <p className="text-center">
                     <span className="font-bold text-white dark:text-gray-800">
                         {totalExamenesAlumno}
@@ -346,7 +346,7 @@ export default function StatsDashboard({ stats }) {
             <div
                 className="mt-4 p-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-md border border-green-200 dark:border-green-700 flex flex-col items-center justify-center min-h-[100px]"
             >
-                <p className="text-center text-white dark:text-gray-800">Nota Media de tus Exámenes:</p>
+                <p className="font-bold text-center text-white dark:text-gray-800">Nota Media de tus Exámenes:</p>
                 <p className="text-center">
                     <span className="font-bold text-white dark:text-gray-800">
                         {parseFloat(mediaExamenesAlumno).toFixed(2)}
@@ -387,7 +387,7 @@ export default function StatsDashboard({ stats }) {
                         {nombresClasesAlumno.map((nombreClase, index) => (
                             <li
                                 key={index}
-                                className="bg-gradient-to-r from-emerald-500 to-teal-600 p-2 rounded-md"
+                                className="bg-gradient-to-r from-emerald-500 to-teal-600 p-2 rounded-md font-bold"
                             >
                                 {nombreClase}
                             </li>
