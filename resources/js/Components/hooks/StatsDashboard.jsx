@@ -206,6 +206,39 @@ export default function StatsDashboard({ stats }) {
         </div>
     );
 
+    const [totalExamenes, setTotalExamenes] = useState(0); // Nuevo estado para el total de exámenes
+
+    useEffect(() => {
+        axios
+            .get("examenes/total")
+            .then((response) => {
+                setTotalExamenes(response.data.total);
+            })
+            .catch((error) => {
+                console.error("Error al obtener el total de exámenes:", error);
+            });
+    }, []);
+
+    const claseSection = (
+        <div className="relative border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-md" />
+            <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
+                Exámenes Creados
+            </h2>
+            {/* Mostrar el total de exámenes */}
+            <div
+                className="mt-4 p-2 bg-blue-50 rounded-md border border-blue-200 dark:bg-blue-900 dark:border-blue-700 flex flex-col items-center justify-center min-h-[100px]" // Añadimos min-h
+            >
+                <p className="text-center">Total de Exámenes Creados:</p>
+                <p className="text-center">
+                    <span className="font-bold text-blue-800 dark:text-blue-200">
+                        {totalExamenes}
+                    </span>
+                </p>
+            </div>
+        </div>
+    );
+
     return (
         <>
             <Can permission="permisoadmin">
@@ -218,8 +251,8 @@ export default function StatsDashboard({ stats }) {
 
             <Can permission="permisoprofesor">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {usuariosSection}
                     {clasesSection} {/* Mostrar las clases del profesor */}
+                    {claseSection}
                 </div>
             </Can>
 
