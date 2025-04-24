@@ -27,24 +27,24 @@ export default function Dashboard({ stats, chartData }) {
 
                             {/* Sección adicional */}
                             <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="relative bg-indigo-50 p-6 rounded-lg">
+                                <div className="relative bg-green-50 p-6 rounded-lg">
                                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-lg" />
-                                    <h3 className="text-lg font-semibold text-indigo-800 mt-2">
+                                    <h3 className="text-lg font-semibold text-green-800 mt-2">
                                         Listado de permisos
                                     </h3>
                                     <Can permission="permisoadmin">
-                                        <p className="text-lg text-indigo-800">
+                                        <p className="text-lg text-green-800">
                                             Búsqueda-CRUD de Usuarios
                                         </p>
                                     </Can>
                                     <Can permission="permisoprofesor">
-                                        <p className="text-lg text-indigo-800">
+                                        <p className="text-lg text-green-800">
                                             Crud de exámenes y visualización
                                             nota alumnado
                                         </p>
                                     </Can>
                                     <Can permission="sinpermiso">
-                                        <p className="text-lg text-indigo-800">
+                                        <p className="text-lg text-green-800">
                                             Subir exámen y visualizar dicha nota
                                         </p>
                                     </Can>

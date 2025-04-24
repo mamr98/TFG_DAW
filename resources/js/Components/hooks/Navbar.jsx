@@ -54,21 +54,21 @@ export default function Navbar() {
                             {normalizedPath === "/login" ? (
                                 <Link
                                     href={route("register")}
-                                    className="rounded-md mx-4 px-4 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300 sm:mx-0"
+                                    className="rounded-md mx-4 px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium transition duration-300 sm:mx-0"
                                 >
                                     Registrarse
                                 </Link>
                             ) : normalizedPath === "/register" ? (
                                 <Link
                                     href={route("login")}
-                                    className="rounded-md mx-4 px-4 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300 sm:mx-0"
+                                    className="rounded-md mx-4 px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium transition duration-300 sm:mx-0"
                                 >
                                     Iniciar sesión
                                 </Link>
                             ) : normalizedPath === "/confirm-password" ? (
                                 <Link
                                     href={route("dashboard")}
-                                    className="rounded-md mx-4 px-4 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300 sm:mx-0"
+                                    className="rounded-md mx-4 px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium transition duration-300 sm:mx-0"
                                 >
                                     Acceder App
                                 </Link>
@@ -86,7 +86,7 @@ export default function Navbar() {
                                         </Link>
                                         <Link
                                             href={route("register")}
-                                            className="rounded-md px-3 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300"
+                                            className="rounded-md px-3 py-2 bg-emerald-500 dark:bg-emerald-600 text-white font-medium"
                                         >
                                             Registrarse
                                         </Link>
@@ -127,7 +127,7 @@ export default function Navbar() {
                             </Link>
                             <Link
                                 href={route("register")}
-                                className="block rounded-md px-3 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300 text-center"
+                                className="block rounded-md px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium text-center"
                                 onClick={() => setIsOpen(false)}
                             >
                                 Registrarse

@@ -77,7 +77,7 @@ export default function Welcome({ auth }) {
                                             </Link>
                                             <Link
                                                 href={route("register")}
-                                                className="rounded-md px-3 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300"
+                                                className="rounded-md px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium"
                                             >
                                                 Registrarse
                                             </Link>
@@ -119,7 +119,7 @@ export default function Welcome({ auth }) {
                                     </Link>
                                     <Link
                                         href={route("register")}
-                                        className="block rounded-md px-3 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300 text-center"
+                                        className="block rounded-md px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium transition duration-300 text-center"
                                         onClick={() => setIsOpen(false)}
                                     >
                                         Registrarse
@@ -138,7 +138,7 @@ export default function Welcome({ auth }) {
                     <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center">
                         <h1 className="text-white text-5xl font-bold text-center">
                             Corrige exámenes en{" "}
-                            <span className="text-blue-400">segundos</span> con
+                            <span className="text-emerald-500">segundos</span> con
                             IA
                         </h1>
                         <div className="mt-4">
@@ -151,7 +151,7 @@ export default function Welcome({ auth }) {
                 </header>
 
                 {/*3 cosas importantes sobre el proyecto*/}
-                <section className="bg-sky-700 mx-auto px-4 py-12 rounded-sm">
+                <section className="bg-gray-900 mx-auto px-4 py-12 rounded-sm">
                     <div className="max-w-screen-xl mx-auto grid md:grid-cols-3 gap-6">
                         <div
                             className="relative h-64 bg-cover bg-center flex flex-col justify-center items-center text-center text-white p-6 rounded-lg shadow-lg hover:transform hover:-translate-y-2 transition duration-300"
@@ -197,51 +197,51 @@ export default function Welcome({ auth }) {
                 </section>
 
                 {/*Como funciona*/}
-                <section className="bg-gray-100 text-black py-12">
+                <section className="bg-[#34455d] text-white py-12">
                     <div className="max-w-6xl mx-auto px-4">
                         <h2 className="text-3xl font-bold text-center mb-12">
                             ¿Cómo funciona?
                         </h2>
                         <div className="grid md:grid-cols-3 gap-8">
                             <div className="text-center">
-                                <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <span className="text-blue-600 text-2xl font-bold">
+                                <div className="bg-emerald-50 hover:bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span className="text-emerald-700 text-2xl font-bold">
                                         1
                                     </span>
                                 </div>
                                 <h3 className="text-xl font-semibold mb-2">
                                     Sube tu examen maestro
                                 </h3>
-                                <p className="text-gray-600">
+                                <p className="text-white">
                                     Carga la plantilla con las respuestas
                                     correctas en formato imagen.
                                 </p>
                             </div>
                             <div className="text-center">
-                                <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <span className="text-blue-600 text-2xl font-bold">
+                                <div className="bg-emerald-50 hover:bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span className="text-emerald-700 text-2xl font-bold">
                                         2
                                     </span>
                                 </div>
                                 <h3 className="text-xl font-semibold mb-2">
                                     Sube tu examen a corregir
                                 </h3>
-                                <p className="text-gray-600">
+                                <p className="text-white">
                                     Adjunta la imagen del examen
                                     completado por los estudiantes o deja que
                                     tus estudiantes lo suban por ellos mismos.
                                 </p>
                             </div>
                             <div className="text-center">
-                                <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <span className="text-blue-600 text-2xl font-bold">
+                                <div className="bg-emerald-50 hover:bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span className="text-emerald-700 text-2xl font-bold">
                                         3
                                     </span>
                                 </div>
                                 <h3 className="text-xl font-semibold mb-2">
                                     Obtén los resultados
                                 </h3>
-                                <p className="text-gray-600">
+                                <p className="text-white">
                                     Recibe las correcciones automáticas de las
                                     puntuaciones al momento.
                                 </p>
@@ -251,13 +251,13 @@ export default function Welcome({ auth }) {
                 </section>
 
                 {/* Equipo */}
-                <section className="bg-sky-700 p-8 pb-12 pt-12">
-                    <p className="text-black text-center mb-7 font-semibold text-3xl">
+                <section className="bg-gray-900 p-8 pb-12 pt-12">
+                    <p className="text-white text-center mb-7 font-semibold text-3xl">
                         Creadores de la web
                     </p>
                     <div className="max-w-7xl mx-auto">
                         <div className=" text-black grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            <div className="bg-white p-8 rounded-lg shadow-md hover:transform hover:-translate-y-2 transition duration-300">
+                            <div className="bg-[#34455d] p-8 rounded-lg shadow-md hover:transform hover:-translate-y-2 transition duration-300">
                                 <div className="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-6">
                                     <img
                                         src={pablo}
@@ -265,15 +265,15 @@ export default function Welcome({ auth }) {
                                         className="w-full h-full rounded-full object-cover"
                                     />
                                 </div>
-                                <h3 className="text-2xl font-bold text-center">
+                                <h3 className="text-emerald-50 text-2xl font-bold text-center">
                                     Pablo Gallego
                                 </h3>
-                                <p className="text-gray-600 text-center">
+                                <p className="text-white text-center">
                                     FullStack Developer
                                 </p>
                             </div>
 
-                            <div className="bg-white p-8 rounded-lg shadow-md hover:transform hover:-translate-y-2 transition duration-300">
+                            <div className="bg-[#34455d] p-8 rounded-lg shadow-md hover:transform hover:-translate-y-2 transition duration-300">
                                 <div className="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-6">
                                     <img
                                         src={miguel}
@@ -281,15 +281,15 @@ export default function Welcome({ auth }) {
                                         className="w-full h-full rounded-full object-cover"
                                     />
                                 </div>
-                                <h3 className="text-2xl font-bold text-center">
+                                <h3 className="text-emerald-50 text-2xl font-bold text-center">
                                     Miguel Ángel Milena
                                 </h3>
-                                <p className="text-gray-600 text-center">
+                                <p className="text-white text-center">
                                     FullStack Developer
                                 </p>
                             </div>
 
-                            <div className="bg-white p-8 rounded-lg shadow-md hover:transform hover:-translate-y-2 transition duration-300">
+                            <div className="bg-[#34455d] p-8 rounded-lg shadow-md hover:transform hover:-translate-y-2 transition duration-300">
                                 <div className="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-6">
                                     <img
                                         src={david}
@@ -297,10 +297,10 @@ export default function Welcome({ auth }) {
                                         className="w-full h-full rounded-full object-cover"
                                     />
                                 </div>
-                                <h3 className="text-2xl font-bold text-center">
+                                <h3 className="text-emerald-50 text-2xl font-bold text-center">
                                     David Peláez
                                 </h3>
-                                <p className="text-gray-600 text-center">
+                                <p className="text-white text-center">
                                     FullStack Developer
                                 </p>
                             </div>
