@@ -35,6 +35,17 @@ export default function SubirImagenPage() {
         fetchExamenes();
     }, []);
 
+    const handleUploadSuccess = (examenIdSubido) => {
+        // Filtramos la lista de exámenes para eliminar el que se acaba de subir
+        setExamenes((prevExamenes) =>
+            prevExamenes.filter((examen) => examen.id !== examenIdSubido)
+        );
+        // Opcionalmente, podrías cerrar el formulario de subida para ese examen
+        setMostrarSubirImagen((prevMostrar) =>
+            prevMostrar === examenIdSubido ? false : prevMostrar
+        );
+    };
+
     return (
         <AuthenticatedLayout
             header={
@@ -149,6 +160,7 @@ export default function SubirImagenPage() {
                                             <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                                                 <SubirImagen
                                                     examenId={examen.id}
+                                                    onUploadSuccess={handleUploadSuccess}
                                                 />
                                             </div>
                                         )}
