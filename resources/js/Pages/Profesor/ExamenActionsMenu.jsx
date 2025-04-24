@@ -103,7 +103,11 @@ export default function ExamenActionsMenu({
 
                     <div className="border-t border-gray-200 dark:border-gray-700 my-1"></div>
 
-                    {!tieneRelaciones && (
+                    {tieneRelaciones ? (
+                        <p className="px-4 py-2 text-sm text-gray-500 dark:text-red-400">
+                            Este examen no se puede eliminar porque tiene relaciones.
+                        </p>
+                    ) : (
                         <button
                             onClick={handleDelete}
                             className="w-full text-left flex items-center px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
