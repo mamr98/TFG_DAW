@@ -55,7 +55,7 @@ export function Buscador({ tipoUsuario, nombreBusqueda, setNombreBusqueda, onRes
                     type="text"
                     placeholder="Buscar por nombre..."
                     style={{ color: '#000000' }}
-                    className="w-full px-4 py-3 rounded-full border-0 shadow-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    className="w-full px-4 py-3 rounded-full shadow-lg focus:ring-4 focus:ring-green-500 focus:outline-none"
                     value={nombreBusqueda}
                     onChange={(e) => setNombreBusqueda(e.target.value)}
                 />
