@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Clase;
+use Illuminate\Http\JsonResponse;
+
 
 class DashboardController extends Controller
 {
@@ -112,5 +114,10 @@ class DashboardController extends Controller
             ->get();
 
         return response()->json($clases);
+    }
+    public function getTotalExamenes()
+    {
+        $totalExamenes = Examen::count(); // Obtiene el total de registros en la tabla 'examenes'
+        return response()->json(['total' => $totalExamenes]);
     }
 }
