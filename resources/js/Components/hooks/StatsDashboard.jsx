@@ -307,11 +307,11 @@ export default function StatsDashboard({ stats }) {
             </h2>
             {/* Mostrar el total de exámenes por alumno */}
             <div
-                className="mt-4 p-2 bg-green-50 rounded-md border border-green-200 dark:bg-green-900 dark:border-green-700 flex flex-col items-center justify-center min-h-[100px]"
+                className="mt-4 p-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-md border border-green-200 dark:border-green-700 flex flex-col items-center justify-center min-h-[100px]"
             >
-                <p className="text-center">Total de Exámenes Entregados:</p>
+                <p className="text-center text-white dark:text-gray-800">Total de Exámenes Entregados:</p>
                 <p className="text-center">
-                    <span className="font-bold text-green-800 dark:text-green-200">
+                    <span className="font-bold text-white dark:text-gray-800">
                         {totalExamenesAlumno}
                     </span>
                 </p>
@@ -338,17 +338,17 @@ export default function StatsDashboard({ stats }) {
     }, []);
 
     const mediaAlumno = (mediaExamenesAlumno) => (
-        <div className="relative border border-yellow-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-400 to-orange-500 rounded-t-md" />
+        <div className="relative border border-green-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-emerald-500 rounded-t-md" />
             <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
                 Nota Media
             </h2>
             <div
-                className="mt-4 p-2 bg-yellow-50 rounded-md border border-yellow-200 dark:bg-yellow-900 dark:border-yellow-700 flex flex-col items-center justify-center min-h-[100px]"
+                className="mt-4 p-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-md border border-green-200 dark:border-green-700 flex flex-col items-center justify-center min-h-[100px]"
             >
-                <p className="text-center">Nota Media de tus Exámenes:</p>
+                <p className="text-center text-white dark:text-gray-800">Nota Media de tus Exámenes:</p>
                 <p className="text-center">
-                    <span className="font-bold text-yellow-800 dark:text-yellow-200">
+                    <span className="font-bold text-white dark:text-gray-800">
                         {parseFloat(mediaExamenesAlumno).toFixed(2)}
                     </span>
                 </p>
@@ -376,18 +376,18 @@ export default function StatsDashboard({ stats }) {
     }, []);
 
     const clasAlumno = (nombresClasesAlumno) => (
-        <div className="relative border border-blue-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-t-md" />
+        <div className="relative border border-green-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-emerald-500 rounded-t-md" />
             <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
                 Tus Cursos Asignados
             </h2>
             <div>
                 {nombresClasesAlumno.length > 0 ? (
-                    <ul className="space-y-2">
+                    <ul className="space-y-2 text-white dark:text-gray-800">
                         {nombresClasesAlumno.map((nombreClase, index) => (
                             <li
                                 key={index}
-                                className="p-2 border rounded-md bg-gray-100 dark:bg-gray-800"
+                                className="bg-gradient-to-r from-emerald-500 to-teal-600 p-2 rounded-md"
                             >
                                 {nombreClase}
                             </li>
