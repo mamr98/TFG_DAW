@@ -33,7 +33,7 @@ export default function Navbar() {
     const is404Page = component === 'Errors/404';
 
     return (
-        <nav className="bg-gray-800 shadow-sm w-full z-10 pt-4 pb-3">
+        <nav className="bg-gray-800 shadow-sm w-full z-10">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16">
                     <div className="flex items-center">
@@ -54,21 +54,21 @@ export default function Navbar() {
                             {normalizedPath === "/login" ? (
                                 <Link
                                     href={route("register")}
-                                    className="rounded-md mx-4 px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium transition duration-300 sm:mx-0"
+                                    className="rounded-md mx-4 px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium sm:mx-0 transition-transform duration-200 hover:scale-105"
                                 >
                                     Registrarse
                                 </Link>
                             ) : normalizedPath === "/register" ? (
                                 <Link
                                     href={route("login")}
-                                    className="rounded-md mx-4 px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium transition duration-300 sm:mx-0"
+                                    className="rounded-md mx-4 px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium sm:mx-0 transition-transform duration-200 hover:scale-105"
                                 >
                                     Iniciar sesión
                                 </Link>
                             ) : normalizedPath === "/confirm-password" ? (
                                 <Link
                                     href={route("dashboard")}
-                                    className="rounded-md mx-4 px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium transition duration-300 sm:mx-0"
+                                    className="rounded-md mx-4 px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium sm:mx-0 transition-transform duration-200 hover:scale-105"
                                 >
                                     Acceder App
                                 </Link>
@@ -86,7 +86,7 @@ export default function Navbar() {
                                         </Link>
                                         <Link
                                             href={route("register")}
-                                            className="rounded-md px-3 py-2 bg-emerald-500 dark:bg-emerald-600 text-white font-medium"
+                                            className="rounded-md px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium transition-transform duration-200 hover:scale-105"
                                         >
                                             Registrarse
                                         </Link>
@@ -127,7 +127,7 @@ export default function Navbar() {
                             </Link>
                             <Link
                                 href={route("register")}
-                                className="block rounded-md px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium text-center"
+                                className="block rounded-md px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium text-center transition-transform duration-200 hover:scale-105"
                                 onClick={() => setIsOpen(false)}
                             >
                                 Registrarse

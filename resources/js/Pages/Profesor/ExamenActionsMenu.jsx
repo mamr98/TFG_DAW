@@ -1,6 +1,6 @@
 "use client";
 import Swal from "sweetalert2";
-
+import { useEffect, useRef } from "react";
 export default function ExamenActionsMenu({
     examenId,
     ficheroProfesor,
@@ -11,6 +11,7 @@ export default function ExamenActionsMenu({
     examen,
     tieneRelaciones,
 }) {
+    const menuRef = useRef(null);
     const handleEdit = (e) => {
         e.stopPropagation();
         Swal.fire({
@@ -36,9 +37,28 @@ export default function ExamenActionsMenu({
         }
     };
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            // Si el menú está abierto y el clic no fue dentro del menú ni en el botón de toggle
+            if (openMenuId === examenId && menuRef.current && !menuRef.current.contains(event.target)) {
+                // Verificar si el clic no fue en el botón de menú
+                const menuButton = document.querySelector(`[data-menu-id="${examenId}"]`);
+                if (menuButton && !menuButton.contains(event.target)) {
+                    toggleMenu(examenId, event);
+                }
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [openMenuId, examenId, toggleMenu]);
+
     return (
-        <div className="relative">
-            <button
+        <div className="relative" ref={menuRef}>
+        <button
+                data-menu-id={examenId}
                 onClick={(e) => toggleMenu(examenId, e)}
                 className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-colors"
             >

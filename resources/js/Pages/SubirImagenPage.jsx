@@ -135,11 +135,13 @@ export default function SubirImagenPage() {
                                                             : examen.id
                                                     )
                                                 }
-                                                className="px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2"
+                                                className="px-4 py-2 sm:px-6 sm:py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 text-sm sm:text-base"
                                             >
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
-                                                    className="h-5 w-5"
+                                                    className={`h-5 w-5 transform transition-transform duration-700 ${
+                                                        mostrarSubirImagen === examen.id ? "rotate-180" : "rotate-0"
+                                                    }`}
                                                     viewBox="0 0 20 20"
                                                     fill="currentColor"
                                                 >
@@ -149,21 +151,27 @@ export default function SubirImagenPage() {
                                                         clipRule="evenodd"
                                                     />
                                                 </svg>
-                                                {mostrarSubirImagen ===
-                                                examen.id
-                                                    ? "Cancelar"
-                                                    : "Subir Examen"}
+                                                <span className="hidden sm:inline">
+                                                    {mostrarSubirImagen ===
+                                                    examen.id
+                                                        ? "Cancelar"
+                                                        : "Subir Examen"}
+                                                </span>
                                             </PrimaryButton>
                                         </div>
 
-                                        {mostrarSubirImagen === examen.id && (
-                                            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                                <SubirImagen
-                                                    examenId={examen.id}
-                                                    onUploadSuccess={handleUploadSuccess}
-                                                />
+                                        <div className={`overflow-hidden transition-[max-height] duration-500 ease-in-out 
+                                            ${mostrarSubirImagen === examen.id ? "max-h-[1000px]" : "max-h-0"}`}>
+                                            <div className={`transition-opacity duration-300 ease-in-out 
+                                                ${mostrarSubirImagen === examen.id ? "opacity-100 delay-100" : "opacity-0"}`}>
+                                                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                                    <SubirImagen
+                                                        examenId={examen.id}
+                                                        onUploadSuccess={handleUploadSuccess}
+                                                    />
+                                                </div>
                                             </div>
-                                        )}
+                                        </div>
                                     </div>
                                 ))}
                             </div>

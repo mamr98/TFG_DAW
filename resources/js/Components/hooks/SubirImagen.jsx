@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PrimaryButton from "../PrimaryButton";
 import { toast } from "react-toastify";
 
-function SubirImagen({ examenId, onUploadSuccess }) {
+function SubirImagen({ examenId, onUploadSuccess, isOpen  }) {
     const [selectedImage, setSelectedImage] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
 
@@ -70,6 +70,15 @@ function SubirImagen({ examenId, onUploadSuccess }) {
         }
     };
 
+    const handleRemoveImage = () => {
+        setSelectedImage(null);
+        // Reseteamos el input de archivo
+        const fileInput = document.querySelector('input[type="file"]');
+        if (fileInput) {
+            fileInput.value = "";
+        }
+    };
+
     return (
         <div className="w-full p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
@@ -85,7 +94,7 @@ function SubirImagen({ examenId, onUploadSuccess }) {
                         className="w-full h-64 object-contain rounded-lg border border-gray-200 dark:border-gray-700"
                     />
                     <button
-                        onClick={() => setSelectedImage(null)}
+                        onClick={handleRemoveImage}
                         className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                         aria-label="Quitar imagen"
                     >
@@ -144,7 +153,7 @@ function SubirImagen({ examenId, onUploadSuccess }) {
             <div className="mt-6 flex justify-end space-x-3">
                 {selectedImage && (
                     <button
-                        onClick={() => setSelectedImage(null)}
+                        onClick={handleRemoveImage}
                         className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
                     >
                         Cancelar

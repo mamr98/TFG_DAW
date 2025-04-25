@@ -61,7 +61,7 @@ export default function Welcome({ auth }) {
                                 {auth.user ? (
                                     <Link
                                         href={route("dashboard")}
-                                        className="rounded-md px-4 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition duration-300"
+                                        className="rounded-md px-4 py-2 bg-sky-700 text-white font-medium hover:bg-blue-700 transition-transform duration-200 hover:scale-105"
                                     >
                                         Acceder App
                                     </Link>
@@ -77,7 +77,7 @@ export default function Welcome({ auth }) {
                                             </Link>
                                             <Link
                                                 href={route("register")}
-                                                className="rounded-md px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium"
+                                                className="rounded-md px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium transition-transform duration-200 hover:scale-105"
                                             >
                                                 Registrarse
                                             </Link>
@@ -119,7 +119,7 @@ export default function Welcome({ auth }) {
                                     </Link>
                                     <Link
                                         href={route("register")}
-                                        className="block rounded-md px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium transition duration-300 text-center"
+                                        className="block rounded-md px-3 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium text-center transition-transform duration-200 hover:scale-105"
                                         onClick={() => setIsOpen(false)}
                                     >
                                         Registrarse

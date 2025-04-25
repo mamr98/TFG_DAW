@@ -94,7 +94,8 @@ export default function NotasPage({ notas }) {
           margin-top: 4px;
         }
         .notas-table {
-          width: 100%;
+          width: auto;
+          min-width: 100%;
           border-collapse: separate;
           border-spacing: 0 8px;
           font-family: 'Segoe UI', sans-serif;
@@ -102,20 +103,29 @@ export default function NotasPage({ notas }) {
         .notas-table th {
           color: #4b5563;
           font-weight: 600;
-          padding: 12px 16px;
+          padding: 12px 20px;
           text-align: left;
           font-size: 14px;
           background-color: #f9fafb;
           border-bottom: 2px solid #e5e7eb;
+          white-space: nowrap;
         }
         .notas-table td {
-          padding: 14px 16px;
+          padding: 14px 20px;
           font-size: 15px;
           border-bottom: 1px solid #f3f4f6;
           color: #4b5563;
+          white-space: nowrap;
         }
         .notas-table tr:hover td {
           background-color: #f3f4f6;
+        }
+        .notas-table-container {
+          width: 100%;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          scroll-behavior: smooth;
+          scroll-padding: 50% 0 0 50%;
         }
         .nota-value {
           font-weight: 600;
@@ -154,33 +164,35 @@ export default function NotasPage({ notas }) {
         </div>
       </div>
       <div class="notas-container">
-        <table class="notas-table">
-          <thead>
-            <tr>
-              <th>Alumno</th>
-              <th style="text-align: center;">Nota</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${alumnos
-        .map(
-          (alumno) => `
-                  <tr>
-                    <td>
-                      <div class="alumno-name">
-                        <div class="alumno-avatar">${alumno.alumno.charAt(0).toUpperCase()}</div>
-                        ${alumno.alumno}
-                      </div>
-                    </td>
-                    <td style="text-align: center;">
-                      <span class="nota-value">${alumno.nota}</span>
-                    </td>
-                  </tr>
-                `
-        )
-        .join("")}
-          </tbody>
-        </table>
+        <div class="notas-table-container">
+          <table class="notas-table">
+            <thead>
+              <tr>
+                <th>Alumno</th>
+                <th style="text-align: center;">Nota</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${alumnos
+          .map(
+            (alumno) => `
+                    <tr>
+                      <td>
+                        <div class="alumno-name">
+                          <div class="alumno-avatar">${alumno.alumno.charAt(0).toUpperCase()}</div>
+                          ${alumno.alumno}
+                        </div>
+                      </td>
+                      <td style="text-align: center;">
+                        <span class="nota-value">${alumno.nota}</span>
+                      </td>
+                    </tr>
+                  `
+          )
+          .join("")}
+            </tbody>
+          </table>
+        </div>  
       </div>
     `
 
@@ -198,6 +210,38 @@ export default function NotasPage({ notas }) {
       },
       background: "#ffffff",
       backdrop: "rgba(0,0,0,0.4)",
+      didOpen: () => {
+        const popup = Swal.getPopup();
+        const container = popup.querySelector('.notas-table-container');
+        console.log('Contenedor .notas-table-container:', container);
+        
+        // Ajuste para móviles pequeños
+        if (window.innerWidth <= 640) {
+          popup.style.width = '95%';
+          popup.style.maxWidth = '100%';
+          
+          // Centrado más preciso con timeout
+          setTimeout(() => {
+            const container = popup.querySelector('.notas-table-container');
+            if (container) {
+              // Fuerza el centrado después de la renderización
+              container.scrollLeft = (container.scrollWidth - container.clientWidth) / 2;
+              
+              // Añade listener para mantener el centrado al cambiar tamaño
+              const resizeObserver = new ResizeObserver(() => {
+                container.scrollLeft = (container.scrollWidth - container.clientWidth) / 2;
+              });
+              resizeObserver.observe(container);
+              
+              // Limpiar al cerrar
+              popup.addEventListener('close', () => resizeObserver.disconnect());
+            }
+          }, 300); // Aumenté el delay para dispositivos lentos
+        }
+      },
+      willClose: () => {
+        // Limpiar cualquier event listener pendiente
+      }
     })
   }
 
@@ -217,7 +261,7 @@ export default function NotasPage({ notas }) {
                   key={index}
                   className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700"
                 >
-                  <div className="bg-emerald-500 dark:bg-emerald-600 h-2"></div>
+                  <div className="bg-gradient-to-r from-emerald-400 to-teal-500 h-2"></div>
                   <div className="p-6">
                     <div className="flex items-center mb-4">
                       <div className="bg-emerald-100 dark:bg-emerald-900/30 p-2 rounded-full mr-3">
@@ -279,9 +323,10 @@ export default function NotasPage({ notas }) {
                       </div>
                       <button
                         onClick={() => handleVerNotasAlumnos(examen, data.alumnos)}
-                        className="bg-emerald-500 hover:bg-emerald-600 text-white text-sm px-4 py-2 rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                        className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-sm px-4 py-2 rounded-md hover:shadow-lg transition-all duration-200"
                       >
-                        Ver notas
+                        <span className="hidden sm:inline">Ver Notas</span>
+                        <span className="inline sm:hidden">Notas</span>
                       </button>
                     </div>
                   </div>
@@ -316,7 +361,7 @@ export default function NotasPage({ notas }) {
                   key={index}
                   className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700"
                 >
-                  <div className="bg-emerald-500 dark:bg-emerald-600 h-2"></div>
+                  <div className="bg-gradient-to-r from-emerald-400 to-teal-500 h-2"></div>
                   <div className="p-6">
                     <div className="flex items-center mb-4">
                       <div className="bg-emerald-100 dark:bg-emerald-900/30 p-2 rounded-full mr-3">
@@ -361,7 +406,7 @@ export default function NotasPage({ notas }) {
                     <div className="flex items-center justify-between">
                       <button
                         onClick={() => handleVerNotasAlumnos(examen, data.alumnos)}
-                        className="bg-emerald-500 hover:bg-emerald-600 text-white text-sm px-4 py-2 rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                        className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-sm px-4 py-2 rounded-md hover:shadow-lg transition-all duration-200"
                       >
                         Ver nota
                       </button>
