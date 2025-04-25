@@ -256,7 +256,7 @@ export default function Welcome({ auth }) {
                         Creadores de la web
                     </p>
                     <div className="max-w-7xl mx-auto">
-                        <div className=" text-black grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className=" text-black grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-8">
                             <div className="bg-[#34455d] p-8 rounded-lg shadow-md hover:transform hover:-translate-y-2 transition duration-300">
                                 <div className="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-6">
                                     <img

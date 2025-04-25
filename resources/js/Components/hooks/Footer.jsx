@@ -21,7 +21,7 @@ export default function Footer() {
                     </div>
 
                     {/* Tercera columna: Redes sociales */}
-                    <div className="flex items-center justify-center space-x-4 md:pl-28 social-icons">
+                    <div className="flex items-center justify-center space-x-4 md:pl-12 social-icons pr-2">
                         <a
                             href="https://www.instagram.com/institutomedac/?hl=es"
                             target="_blank"
