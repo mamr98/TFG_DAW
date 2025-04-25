@@ -59,6 +59,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     {/* Todos y dentro un can para alternar la información*/}
                                     Notas
                                 </NavLink>
+                                </Can>
                                 <Can permissions={["permisoprofesor"]}>
                                     <NavLink
                                         href={route('cursos')} // enlace a la vista cursos

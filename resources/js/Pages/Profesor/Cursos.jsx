@@ -3,27 +3,17 @@ import { Head } from "@inertiajs/react";
 import React from "react";
 import AnimatedList from "@/Components/hooks/AnimateList";
 
-export default function SubirImagenPage() {
-    const notas = [
-        "Alumno 1: 9.5",
-        "Alumno 2: 8.3",
-        "Alumno 3: 7.2",
-        "Alumno 1: 9.5",
-        "Alumno 2: 8.3",
-        "Alumno 3: 7.2",
-        "Alumno 1: 9.5",
-        "Alumno 2: 8.3",
-        "Alumno 3: 7.2",
-        "Alumno 1: 9.5",
-        "Alumno 2: 8.3",
-        "Alumno 3: 7.2",
-    ];
+export default function SubirImagenPage({ alumnos }) {
+    // Extraemos los nombres de los alumnos
+
+    // Esto seguramente este mal
+    const nombresAlumnos = (alumnos ?? []).map((alumno) => alumno.name);
 
     return (
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Cursos
+                    Notas
                 </h2>
             }
         >
@@ -33,7 +23,7 @@ export default function SubirImagenPage() {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            Selecciona un curso para ver sus alumnos
+                            Aquí se subirá las notas de los alumnos
                         </div>
                     </div>
                 </div>
@@ -43,7 +33,14 @@ export default function SubirImagenPage() {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            
+                            {/* Usamos AnimatedList para mostrar los nombres de los alumnos */}
+                            <AnimatedList
+                                items={nombresAlumnos}
+                                onItemSelect={(item, index) => console.log(item, index)}
+                                showGradients={true}
+                                enableArrowNavigation={true}
+                                displayScrollbar={true}
+                            />
                         </div>
                     </div>
                 </div>

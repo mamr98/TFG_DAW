@@ -6,15 +6,15 @@ use Aws\Textract\TextractClient;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ExamenController;
 use App\Http\Controllers\NotasController;
+use App\Http\Controllers\ExamenController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TextractController;
 use App\Http\Controllers\Admin\UserContoller;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ComparacionController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use App\Http\Controllers\Admin\UserContoller;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -30,6 +30,7 @@ Route::get('/inicio', function () {return Inertia::render('Dashboard', ['toast' 
 Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage');})->middleware(['auth', 'verified', "role:alumno"])->name('subir-imagen');
 Route::get('/gestionusuarios', function () {return Inertia::render('CreacionUsuarioPage');})->middleware(['auth', 'verified', "role:admin"])->name('gestionusuarios');
 Route::get('/panelprofesor', function(){return Inertia::render('Panel');})->middleware(['auth', 'verified', "role:admin|profesor"])->name('panelprofesor');
+Route::get('/cursos', function(){return Inertia::render('Cursos');})->middleware(['auth', 'verified', "role:profesor"])->name('cursos');
 
 /* VERIFICACION EMAIL */
 Route::get('/email/verify', function () {return Inertia::render('Auth/VerifyEmail');})->middleware('auth')->name('verification.notice');

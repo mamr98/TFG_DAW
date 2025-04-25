@@ -4,7 +4,7 @@ import React from "react";
 import AnimatedList from "@/Components/hooks/AnimateList";
 
 export default function SubirImagenPage() {
-    const notas = [
+    const alumnos = [
         "Nombre del alumno",
         "Nombre del alumno",
         "Nombre del alumno",
