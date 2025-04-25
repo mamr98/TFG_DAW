@@ -2,23 +2,114 @@
 
 import { useState } from "react";
 import ExamenActionsMenu from "./ExamenActionsMenu";
-
+import Swal from "sweetalert2";
 export default function ExamenCard({
     examen,
     asignatura,
     onEditClick,
     onDeleteClick,
+    tieneRelaciones,
 }) {
+    console.log(`Examen ${examen.id} tiene relaciones:`, tieneRelaciones);
     const [openMenuId, setOpenMenuId] = useState(null);
 
     const toggleMenu = (id, e) => {
         e.stopPropagation();
         setOpenMenuId(openMenuId === id ? null : id);
     };
+    const handleVerNotas = () => {
+        const examenData = examen.json_examen;
+        const respuestasCorrectas = examenData.respuestas_correctas;
+
+        let html = `
+            <style>
+                .respuestas-container {
+                    max-height: 400px;
+                    overflow-y: auto;
+                    padding: 0 4px;
+                    margin-top: 16px;
+                }
+                .respuestas-table-container {
+                    width: 100%;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                    scroll-behavior: smooth;
+                }
+                .respuestas-table {
+                    width: auto; /* Se ajusta al contenido, permitiendo scroll horizontal */
+                    min-width: 100%; /* Asegura que al menos ocupe el ancho del contenedor */
+                    border-collapse: separate;
+                    border-spacing: 0 8px;
+                    font-family: 'Segoe UI', sans-serif;
+                }
+                .respuestas-table th {
+                    color: #4b5563; /* Texto gris oscuro */
+                    font-weight: 600; /* Negrita */
+                    padding: 12px 20px; /* Más espaciado */
+                    text-align: center; /* Centrado del texto del encabezado */
+                    font-size: 14px;
+                    background-color: #f9fafb; /* Gris claro de fondo */
+                    border-bottom: 2px solid #e5e7eb; /* Borde inferior más visible */
+                    white-space: nowrap; /* Evita el salto de línea */
+                    border-radius: 8px 8px 0 0; /* Bordes redondeados arriba */
+                }
+                .respuestas-table td {
+                    background-color: #fff; /* Fondo blanco para las celdas */
+                    padding: 14px 20px; /* Más espaciado */
+                    font-size: 15px;
+                    border-bottom: 1px solid #f3f4f6; /* Borde inferior sutil */
+                    color: #4b5563; /* Texto gris oscuro */
+                    white-space: nowrap; /* Evita el salto de línea */
+                    border-radius: 6px; /* Bordes redondeados */
+                }
+                .respuestas-table tr:hover td {
+                    background-color: #f3f4f6; /* Gris claro al pasar el ratón */
+                }
+                .badge {
+                    background-color: #3b82f6; /* Azul similar al original */
+                    color: white;
+                    padding: 6px 10px;
+                    border-radius: 9999px; /* Más redondeado */
+                    font-weight: 600; /* Negrita */
+                    font-size: 14px;
+                }
+            </style>
+            <div style="max-height: 400px; overflow-y: auto;">
+                <table class="respuestas-table">
+                    <thead>
+                        <tr>
+                            <th>Pregunta</th>
+                            <th>Respuesta Correcta</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+        Object.entries(respuestasCorrectas).forEach(
+            ([numPregunta, respuesta]) => {
+                html += `
+                <tr>
+                    <td>${numPregunta}</td>
+                    <td><span class="badge">${respuesta}</span></td>
+                </tr>`;
+            }
+        );
+
+        html += `</tbody></table></div>`;
+
+        Swal.fire({
+            title: `Respuestas correctas de ${examen.nombre_examen}`,
+            html: html,
+            icon: "info",
+            width: "600px",
+            confirmButtonText: "Cerrar",
+            confirmButtonColor: "#d33",
+            background: "bg-white",
+        });
+    };
 
     return (
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all duration-200 relative group">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
+            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
             <div className="p-6">
                 <div className="flex justify-between items-start">
                     <div className="flex-1">
@@ -27,24 +118,27 @@ export default function ExamenCard({
                         </h3>
                         <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
                             <p className="flex items-center gap-2">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-4 w-4 text-emerald-500"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                                    />
-                                </svg>
-                                <span className="font-medium">Asignatura:</span>{" "}
-                                <span className="truncate">
-                                    {asignatura?.nombre || "No especificada"}
-                                </span>
+                                <div className="grid grid-cols-[auto_auto_1fr] items-center gap-2">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-4 w-4 text-emerald-500"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                                        />
+                                    </svg>
+                                    <span className="hidden sm:inline font-medium">Asignatura:</span>{" "}
+                                    <span className="inline sm:hidden font-medium">Asig:</span>{" "}
+                                    <span className="truncate">
+                                        {asignatura?.nombre || "No especificada"}
+                                    </span>
+                                </div>
                             </p>
                             <p className="flex items-center gap-2">
                                 <svg
@@ -113,15 +207,19 @@ export default function ExamenCard({
                         onEditClick={onEditClick}
                         onDeleteClick={onDeleteClick}
                         examen={examen}
+                        tieneRelaciones={tieneRelaciones}
                     />
                 </div>
 
                 {examen.json_examen && (
-                    <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
-                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300">
+                    <div
+                        onClick={handleVerNotas}
+                        className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700 cursor-pointer"
+                    >
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 transition-transform duration-200 hover:scale-105">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="h-3.5 w-3.5 mr-1"
+                                className="h-4 w-4 mr-1"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
@@ -130,16 +228,16 @@ export default function ExamenCard({
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth={2}
-                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                                 />
                                 <path
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth={2}
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                                 />
                             </svg>
-                            Configuración personalizada
+                            Ver respuestas del examen
                         </span>
                     </div>
                 )}

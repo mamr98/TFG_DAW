@@ -53,19 +53,19 @@ class User extends Authenticatable implements MustVerifyEmail
     // Relacion con clases (alumno)
     public function relacion_clase_alumno()
     {
-        return $this->belongsToMany(Clase::class, 'clase_alumno');
+        return $this->belongsToMany(Clase::class, 'clase_alumno', 'alumno_id', 'clase_id');
     }
 
     // Relacion con profesor (profesor)
     public function relacion_clase_profesor()
     {
-        return $this->belongsToMany(Clase::class, 'clase_profesor');
+        return $this->belongsToMany(Clase::class, 'clase_profesor', 'profesor_id', 'clase_id');
     }
 
     // 1. Exámenes asignados como alumno (ya lo tenías)
     public function examenesAsignados()
     {
-        return $this->belongsToMany(Examen::class, 'examen_alumno')
+        return $this->belongsToMany(Examen::class, 'examen_alumno', 'examen_id', 'alumno_id')
                    ->withPivot(['fecha_subida', 'fichero_alumno', 'json_alumno', 'nota'])
                    ->withTimestamps();
     }

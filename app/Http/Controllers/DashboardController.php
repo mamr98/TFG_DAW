@@ -2,8 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
+use Inertia\Inertia;
+use App\Models\Clase;
+use App\Models\Examen;
+use App\Models\ExamenAlumno;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+
 
 class DashboardController extends Controller
 {
@@ -20,4 +29,127 @@ class DashboardController extends Controller
 
         return inertia('Dashboard', compact('stats'));
     }
+
+    public function dashboard()
+    {
+        $activos = User::where('estado', 1)->count();
+        $inactivos = User::where('estado', 0)->count();
+
+        $examenesPorProfesor = DB::table('examen')
+            ->join('users', 'examen.profesor_id', '=', 'users.id')
+            ->select('users.name as profesor', DB::raw('count(*) as total'))
+            ->groupBy('profesor')
+            ->orderByDesc('total')
+            ->limit(5)
+            ->get();
+
+        $examenesMes1 = DB::table('examen')
+            ->select(
+                DB::raw("DATE_FORMAT(fecha_subida, '%m') as mes"),
+                DB::raw('count(*) as total')
+            )
+            ->groupBy('mes')
+            ->get();
+
+        $examenesMes2 = DB::table('examen_alumno')
+            ->select(
+                DB::raw("DATE_FORMAT(fecha_subida, '%m') as mes"),
+                DB::raw('count(*) as total')
+            )
+            ->whereNotNull('fecha_subida')
+            ->groupBy('mes')
+            ->get();
+
+        // Combinar ambos conjuntos de datos
+        $mesesRaw = collect($examenesMes1)
+            ->merge($examenesMes2)
+            ->groupBy('mes')
+            ->map(function ($items) {
+                return [
+                    'mes' => $items[0]->mes,
+                    'total' => $items->sum('total'),
+                ];
+            });
+
+        // Nombres de los meses académicos
+        $meses = [
+            '09' => 'Septiembre',
+            '10' => 'Octubre',
+            '11' => 'Noviembre',
+            '12' => 'Diciembre',
+            '01' => 'Enero',
+            '02' => 'Febrero',
+            '03' => 'Marzo',
+            '04' => 'Abril',
+            '05' => 'Mayo',
+        ];
+
+        // Preparar datos en orden correcto
+        $dataMeses = collect($meses)->map(function ($nombre, $numero) use ($mesesRaw) {
+            $item = $mesesRaw->get($numero);
+            return [
+                'mes' => $nombre,
+                'total' => $item['total'] ?? 0,
+            ];
+        })->values();
+
+        return Inertia::render('Dashboard', [
+            'stats' => [
+                'usuarios' => [
+                    'activos' => $activos,
+                    'inactivos' => $inactivos,
+                    'total' => $activos + $inactivos,
+                ],
+                'examenes_por_profesor' => $examenesPorProfesor,
+                'examenes_por_mes' => $dataMeses,
+            ],
+        ]);
+    }
+
+    public function clasesAsignadas()
+    {
+        $profesor = Auth::user();
+
+        $clases = $profesor->relacion_clase_profesor()
+            ->select('clase.id', 'clase.nombre')
+            ->get();
+
+        return response()->json($clases);
+    }
+    public function getTotalExamenes()
+    {
+        $totalExamenes = Examen::count(); // Obtiene el total de registros en la tabla 'examenes'
+        return response()->json(['total' => $totalExamenes]);
+    }
+    public function getTotalExamenesPorProfesor()
+    {
+        $totalExamenes = Examen::where('profesor_id', Auth::user()->id)->count();
+        return response()->json(['total' => $totalExamenes]);
+    }
+    public function getTotalExamenesPorAlumno()
+    {
+        $totalExamenes = ExamenAlumno::where('alumno_id', Auth::user()->id)->count();
+        return response()->json(['total' => $totalExamenes]);
+    }
+    public function getTotalMediaAlumno()
+    {
+        $notaMedia = ExamenAlumno::where('alumno_id', Auth::user()->id)->avg('nota');
+
+        // Asegúrate de que $notaMedia no sea null antes de devolverlo
+        return response()->json(['media' => $notaMedia ?? 0]);
+    }
+    public function getClasesAlumno()
+    {
+        $user = Auth::user();
+
+        if ($user) {
+            $clases = $user->relacion_clase_alumno()->get();
+            $nombresClases = $clases->pluck('nombre'); // Extrae solo la columna 'nombre'
+
+            return response()->json($nombresClases);
+        }
+
+        return response()->json([]);
+    }
+
 }

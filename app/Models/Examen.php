@@ -51,7 +51,7 @@ class Examen extends Model
     // Alumnos que han realizado el examen
     public function alumnos()
     {
-        return $this->belongsToMany(User::class, 'examen_alumno')
+        return $this->belongsToMany(User::class, 'examen_alumno', 'examen_id', 'alumno_id')
                    ->withPivot(['fecha_subida', 'fichero_alumno', 'json_alumno', 'nota'])
                    ->withTimestamps();
     }

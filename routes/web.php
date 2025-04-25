@@ -2,16 +2,19 @@
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Aws\Textract\TextractClient;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ExamenController;
+use App\Http\Controllers\NotasController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TextractController;
+use App\Http\Controllers\Admin\UserContoller;
 use App\Http\Controllers\ComparacionController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Admin\UserContoller;
-use App\Http\Controllers\ExportController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -24,12 +27,9 @@ Route::get('/', function () {
 
 /* AUTHENTICATED LAYOUT */
 Route::get('/inicio', function () {return Inertia::render('Dashboard', ['toast' => request()->input('toast')]);})->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage');})->middleware(['auth', 'verified', "role:admin|alumno"])->name('subir-imagen');
-Route::get('/notas', function () {return Inertia::render('NotasPage');})->middleware(['auth', 'verified'])->name('notas');
+Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage');})->middleware(['auth', 'verified', "role:alumno"])->name('subir-imagen');
 Route::get('/gestionusuarios', function () {return Inertia::render('CreacionUsuarioPage');})->middleware(['auth', 'verified', "role:admin"])->name('gestionusuarios');
 Route::get('/panelprofesor', function(){return Inertia::render('Panel');})->middleware(['auth', 'verified', "role:admin|profesor"])->name('panelprofesor');
-// ruta para la vista de los cursos del profesor
-Route::get('/cursos', function(){return Inertia::render('Cursos');})->middleware(['auth', 'verified', "role:profesor"])->name('cursos');
 
 /* VERIFICACION EMAIL */
 Route::get('/email/verify', function () {return Inertia::render('Auth/VerifyEmail');})->middleware('auth')->name('verification.notice');
@@ -90,6 +90,8 @@ Route::middleware('auth', 'verified', "role:admin")->group(function () {
     Route::get('/asignaturas', [ExamenController::class, 'recogerAsignaturas'])->name('asignaturas');
     Route::get('/clases', [ExamenController::class, 'recogerClases'])->name('clases_profesor');
 
+    Route::get('/admin/dashboard', [UserController::class, 'Grafico'])->name('admin.dashboard');
+
 
 });
 
@@ -119,5 +121,17 @@ Route::middleware('auth', 'verified', "role:alumno")->group(function () {
 Route::fallback(function(){
     return Inertia::render('Errors/404');
 });
+
+Route::get('/notas', [NotasController::class, 'index'])->middleware(['auth', 'verified', "role:profesor|alumno"])->name('notas');
+
+
+Route::get('/inicio', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth'])->get('/clases-profesor', [DashboardController::class, 'clasesAsignadas']);
+Route::get('/examenes/total', [DashboardController::class, 'getTotalExamenes'])->middleware(['auth', 'verified'])->name('examenes.total');
+Route::get('/examenes/profesor/total', [DashboardController::class, 'getTotalExamenesPorProfesor'])->middleware(['auth', 'verified'])->name('examenesprofesor.total');
+Route::get('/examenes/alumno/total', [DashboardController::class, 'getTotalExamenesPorAlumno'])->middleware(['auth', 'verified'])->name('examenesalumno.total');
+Route::get('/examenes/alumno/media', [DashboardController::class, 'getTotalMediaAlumno'])->middleware(['auth', 'verified'])->name('examenesalumno.media');
+Route::get('/clase/alumno', [DashboardController::class, 'getClasesAlumno'])->middleware(['auth', 'verified'])->name('clase.alumno');
+
 
 require __DIR__.'/auth.php';

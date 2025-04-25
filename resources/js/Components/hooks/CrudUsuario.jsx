@@ -136,10 +136,10 @@ function CrudUsuario() {
             const { value: formValues } = await Swal.fire({
                 title: `Actualizar ${tipoUsuario}`,
                 html:
-                    `<input id="swal-nombre" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Nombre" value="${usuarioActual.name || ''}">` +
-                    `<input id="swal-email" type="email" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Email" value="${usuarioActual.email || ''}">` +
-                    `<input id="swal-password" type="password" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Contraseña (dejar en blanco para no cambiar)">` +
-                    `<select id="swal-estado" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white">
+                    `<input id="swal-nombre" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent" placeholder="Nombre" value="${usuarioActual.name || ''}">` +
+                    `<input id="swal-email" type="email" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent" placeholder="Email" value="${usuarioActual.email || ''}">` +
+                    `<input id="swal-password" type="password" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent" placeholder="Contraseña (dejar en blanco para no cambiar)">` +
+                    `<select id="swal-estado" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent appearance-none bg-white">
                         <option value="" disabled>Estado</option>
                         <option value="true" ${usuarioActual.estado ? 'selected' : ''}>Activo</option>
                         <option value="false" ${!usuarioActual.estado ? 'selected' : ''}>Inactivo</option>
@@ -152,9 +152,9 @@ function CrudUsuario() {
                 cancelButtonColor: '#dc2626', // red-600
                 customClass: {
                     container: 'font-sans',
-                    popup: 'rounded-xl shadow-xl border-0 max-w-md mx-auto w-full sm:w-11/12 md:w-2/3 lg:w-1/2',
+                    popup: 'bg-gray-50 dark:bg-gray-600 rounded-xl shadow-xl border-0 max-w-md mx-auto w-full sm:w-11/12 md:w-2/3 lg:w-1/2',
                     header: 'border-b pb-3',
-                    title: 'text-xl font-semibold text-gray-800',
+                    title: 'text-xl font-semibold text-black dark:text-white',
                     closeButton: 'focus:outline-none focus:ring-2 focus:ring-blue-500',
                     content: 'pt-4 px-6',
                     confirmButton: 'bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-white px-5 py-2.5 transition-all duration-200 ease-in-out transform hover:-translate-y-0.5',
@@ -256,38 +256,38 @@ function CrudUsuario() {
     };
 
     return (
-        <div className="flex flex-col gap-8 p-6 bg-[#003049] rounded-lg shadow-xl">
+        <div className="flex flex-col gap-8 p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
             {/* Sección de Botones CRUD */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-8 mt-8">
                 {/* Sección Alumnos */}
                 <div className="space-y-4 text-center">
-                    <h3 className="text-xl font-bold text-white">Alumnos</h3>
-                    <PrimaryButton onClick={() => { setBuscadorTipoUsuario("alumno"); setMostrarBuscador(true); }} className="text-center w-full px-6 py-3 text-base">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">Alumnos</h3>
+                    <PrimaryButton onClick={() => { setBuscadorTipoUsuario("alumno"); setMostrarBuscador(true); }} className="bg-gradient-to-r from-emerald-500 to-teal-600 text-center w-full px-6 py-3 text-base">
                         Buscar Alumnos
                     </PrimaryButton>
-                    <PrimaryButton onClick={() => crear("alumno")}className="text-center w-full px-6 py-3 text-base">
+                    <PrimaryButton onClick={() => crear("alumno")}className="bg-gradient-to-r from-emerald-500 to-teal-600 text-center w-full px-6 py-3 text-base">
                         Crear Alumno
                     </PrimaryButton>
                 </div>
 
                 {/* Sección Profesores */}
                 <div className="space-y-4 text-center">
-                    <h3 className="text-xl font-bold text-white">Profesores</h3>
-                    <PrimaryButton onClick={() => { setBuscadorTipoUsuario("profesor"); setMostrarBuscador(true); }} className="text-center w-full px-6 py-3 text-base">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">Profesores</h3>
+                    <PrimaryButton onClick={() => { setBuscadorTipoUsuario("profesor"); setMostrarBuscador(true); }} className="bg-gradient-to-r from-emerald-500 to-teal-600 text-center w-full px-6 py-3 text-base">
                         Buscar Profesores
                     </PrimaryButton>
-                    <PrimaryButton onClick={() => crear("profesor")} className="text-center w-full px-6 py-3 text-base">
+                    <PrimaryButton onClick={() => crear("profesor")} className="bg-gradient-to-r from-emerald-500 to-teal-600 text-center w-full px-6 py-3 text-base">
                         Crear Profesor
                     </PrimaryButton>
                 </div>
 
                 {/* Sección Administradores */}
                 <div className="space-y-4 text-center">
-                    <h3 className="text-xl font-bold text-white">Administradores</h3>
-                    <PrimaryButton onClick={() => { setBuscadorTipoUsuario("admin"); setMostrarBuscador(true); }} className="text-center w-full px-6 py-3 text-base">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">Administradores</h3>
+                    <PrimaryButton onClick={() => { setBuscadorTipoUsuario("admin"); setMostrarBuscador(true); }} className="bg-gradient-to-r from-emerald-500 to-teal-600 text-center w-full px-6 py-3 text-base">
                         Buscar Admins
                     </PrimaryButton>
-                    <PrimaryButton onClick={() => crear("admin")} className="text-center w-full px-6 py-3 text-base">
+                    <PrimaryButton onClick={() => crear("admin")} className="bg-gradient-to-r from-emerald-500 to-teal-600 text-center w-full px-6 py-3 text-base">
                         Crear Admin
                     </PrimaryButton>
                 </div>
@@ -307,7 +307,7 @@ function CrudUsuario() {
                         {resultados.length > 0 ? (
                             resultados.map(usuario => (
                                 <div key={usuario.id} className="bg-white rounded-xl shadow-lg overflow-hidden dark:bg-gray-700">
-                                    <div className="bg-blue-600 p-4">
+                                    <div className="bg-emerald-500 dark:bg-emerald-600 p-4">
                                         <h4 className="text-white text-lg font-semibold">
                                             {usuario.name}
                                         </h4>

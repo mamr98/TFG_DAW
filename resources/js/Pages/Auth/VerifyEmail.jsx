@@ -31,7 +31,7 @@ export default function VerifyEmail({ status }) {
             <form onSubmit={submit} className="space-y-4">
                 <div className="mt-4 flex items-center justify-between">
                     <PrimaryButton disabled={processing} className="bg-669bbc hover:bg-003049 text-white">
-                        {processing ? 'Reenviando...' : 'Reenviar correo de verificación'}
+                        {processing ? 'Reenviando...' : 'Reenviar correo'}
                     </PrimaryButton>
 
                     <Link

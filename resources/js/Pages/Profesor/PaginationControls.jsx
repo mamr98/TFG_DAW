@@ -118,7 +118,7 @@ export default function PaginationControls({
                                 onItemsPerPageChange(Number(e.target.value));
                                 onPageChange(1);
                             }}
-                            className="px-2 py-1 rounded-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                            className="pe-6 py-1 rounded-md bg-white dark:bg-emerald-600 border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                         >
                             <option value={6}>6</option>
                             <option value={12}>12</option>
