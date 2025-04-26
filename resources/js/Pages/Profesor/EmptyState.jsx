@@ -27,7 +27,7 @@ export default function EmptyState({ onCrearExamen }) {
                 <Can permissions={["permisoprofesor"]}>
                 <button
                     onClick={onCrearExamen}
-                    className="px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors flex items-center gap-2"
+                    className="px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors flex items-center gap-2 transition-transform duration-200 hover:scale-105"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
