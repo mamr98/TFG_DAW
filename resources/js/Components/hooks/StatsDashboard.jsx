@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Bar, Doughnut } from "react-chartjs-2";
+import { Link } from "@inertiajs/react";
 import Can from "./Can";
 import {
     Chart as ChartJS,
@@ -181,7 +182,38 @@ export default function StatsDashboard({ stats }) {
     );
 
     // Nueva sección para los cursos del profesor
+
+
     const clasesSection = (
+        <div className="relative border border-green-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-emerald-500 rounded-t-md" />
+            <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
+                Cursos Asignados
+            </h2>
+            <div>
+                {clases.length > 0 ? (
+                    <ul className="space-y-2">
+                        {clases.map((clase) => (
+                            <Link
+                                key={clase.id}
+                                to={`/alumnos/${clase.id}`}
+                                className="block bg-gradient-to-r from-emerald-500 to-teal-600 p-2 rounded-md font-bold text-white dark:text-gray-800 hover:brightness-150 transition duration-200"
+                            >
+                                <li>
+                                    {clase.nombre}
+                                </li>
+                            </Link>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No tienes clases asignadas.</p>
+                )}
+            </div>
+        </div>
+    );
+
+
+    /* const clasesSection = (
         <div className="relative border border-green-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-emerald-500 rounded-t-md" />
             <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
@@ -204,7 +236,7 @@ export default function StatsDashboard({ stats }) {
                 )}
             </div>
         </div>
-    );
+    ); */
 
     const [totalExamenes, setTotalExamenes] = useState(0); // Nuevo estado para el total de exámenes
 

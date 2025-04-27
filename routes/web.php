@@ -30,7 +30,7 @@ Route::get('/inicio', function () {return Inertia::render('Dashboard', ['toast' 
 Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage');})->middleware(['auth', 'verified', "role:alumno"])->name('subir-imagen');
 Route::get('/gestionusuarios', function () {return Inertia::render('CreacionUsuarioPage');})->middleware(['auth', 'verified', "role:admin"])->name('gestionusuarios');
 Route::get('/panelprofesor', function(){return Inertia::render('Panel');})->middleware(['auth', 'verified', "role:admin|profesor"])->name('panelprofesor');
-Route::get('/cursos', function(){return Inertia::render('Cursos');})->middleware(['auth', 'verified', "role:profesor"])->name('cursos');
+Route::get('/alumnos', function(){return Inertia::render('Alumnos');})->middleware(['auth', 'verified', "role:profesor"])->name('alumnos');
 
 /* VERIFICACION EMAIL */
 Route::get('/email/verify', function () {return Inertia::render('Auth/VerifyEmail');})->middleware('auth')->name('verification.notice');

@@ -59,7 +59,7 @@ class User extends Authenticatable implements MustVerifyEmail
     // Relacion con profesor (profesor)
     public function relacion_clase_profesor()
     {
-        return $this->belongsToMany(Clase::class, 'clase_profesor', 'profesor_id', 'clase_id');
+        return $this->belongsToMany(Clase::class, 'clase_profesor', 'profesor_id', 'clase_id');// Añadir alumno_id recoge la variable de la id del alumno
     }
 
     // 1. Exámenes asignados como alumno (ya lo tenías)

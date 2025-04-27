@@ -64,15 +64,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                     Notas
                                 </NavLink>
                                 </Can>
-                                <Can permissions={["permisoprofesor"]}>
-                                    <NavLink
-                                        href={route('cursos')} // enlace a la vista cursos
-                                        active={route().current('cursos')} // muestra la barrita en la pestaña que estes
-                                    >
-                                        {/* Profesor */}
-                                        Cursos
-                                    </NavLink>
-                                </Can>
                                 <Can permissions={["permisoadmin"]}>
                                     <NavLink
                                         href={route('gestionusuarios')}

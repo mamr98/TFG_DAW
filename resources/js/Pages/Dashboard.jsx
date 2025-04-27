@@ -39,8 +39,8 @@ export default function Dashboard({ stats, chartData }) {
                                     </Can>
                                     <Can permission="permisoprofesor">
                                         <p className="text-lg text-green-800">
-                                            Crud de exámenes y visualización
-                                            nota alumnado
+                                            Crud de exámenes, visualización
+                                            nota alumnado, listado de alumnos y exportación de resultados a Excel
                                         </p>
                                     </Can>
                                     <Can permission="sinpermiso">
