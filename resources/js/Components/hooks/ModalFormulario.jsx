@@ -75,8 +75,8 @@ export default function ModalFormulario({ onClose }) {
     };
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold mb-6 text-center">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-bold mb-6 text-center text-black dark:text-gray-200">
                 Nuevo Examen
             </h2>
 
@@ -84,16 +84,16 @@ export default function ModalFormulario({ onClose }) {
                 <div className="space-y-4">
                     {/* Campo Nombre */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                             Nombre del Examen *
                         </label>
                         <input
                             type="text"
                             value={data.nombre_examen}
                             onChange={(e) => setData("nombre_examen", e.target.value)}
-                            className={`w-full px-4 py-2 border rounded-md ${errors.nombre
+                            className={`w-full px-4 py-2 border dark:border-gray-600 rounded-md dark:bg-gray-900 dark:text-gray-200 ${errors.nombre
                                 ? "border-red-500"
-                                : "focus:ring-blue-500 focus:border-blue-500"
+                                : "focus:ring-emerald-500 focus:border-emerald-500"
                                 }`}
                             required
                         />
@@ -106,7 +106,7 @@ export default function ModalFormulario({ onClose }) {
 
                     {/* Campo Fecha Inicio */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                             Fecha y Hora de Inicio *
                         </label>
                         <input
@@ -115,9 +115,9 @@ export default function ModalFormulario({ onClose }) {
                             onChange={(e) =>
                                 setData("fecha_inicio", e.target.value)
                             }
-                            className={`w-full px-4 py-2 border rounded-md ${errors.fecha_inicio
+                            className={`w-full px-4 py-2 border dark:border-gray-600 rounded-md dark:bg-gray-900 dark:text-gray-200 ${errors.fecha_inicio
                                 ? "border-red-500"
-                                : "focus:ring-blue-500 focus:border-blue-500"
+                                : "focus:ring-emerald-500 focus:border-emerald-500"
                                 }`}
                             required
                         />
@@ -130,7 +130,7 @@ export default function ModalFormulario({ onClose }) {
 
                     {/* Campo Fecha Fin */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                             Fecha y Hora de Finalización *
                         </label>
                         <input
@@ -139,9 +139,9 @@ export default function ModalFormulario({ onClose }) {
                             onChange={(e) =>
                                 setData("fecha_fin", e.target.value)
                             }
-                            className={`w-full px-4 py-2 border rounded-md ${errors.fecha_fin
+                            className={`w-full px-4 py-2 border dark:border-gray-600 rounded-md dark:bg-gray-900 dark:text-gray-200 ${errors.fecha_fin
                                 ? "border-red-500"
-                                : "focus:ring-blue-500 focus:border-blue-500"
+                                : "focus:ring-emerald-500 focus:border-emerald-500"
                                 }`}
                             required
                         />
@@ -154,7 +154,7 @@ export default function ModalFormulario({ onClose }) {
 
                     {/* Select Asignatura */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                             Asignatura *
                         </label>
                         <select
@@ -162,9 +162,9 @@ export default function ModalFormulario({ onClose }) {
                             onChange={(e) =>
                                 setData("asignatura_id", e.target.value)
                             }
-                            className={`w-full px-4 py-2 border rounded-md ${errors.asignatura_id
+                            className={`w-full px-4 py-2 border dark:border-gray-600 rounded-md dark:bg-gray-900 dark:text-gray-200 ${errors.asignatura_id
                                 ? "border-red-500"
-                                : "focus:ring-blue-500 focus:border-blue-500"
+                                : "focus:ring-emerald-500 focus:border-emerald-500"
                                 }`}
                             required
                             disabled={loading.asignaturas}
@@ -192,7 +192,7 @@ export default function ModalFormulario({ onClose }) {
 
                     {/* Select Clase */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                             Clase *
                         </label>
                         <select
@@ -200,9 +200,9 @@ export default function ModalFormulario({ onClose }) {
                             onChange={(e) =>
                                 setData("clase_id", e.target.value)
                             }
-                            className={`w-full px-4 py-2 border rounded-md ${errors.clase_id
+                            className={`w-full px-4 py-2 border dark:border-gray-600 rounded-md dark:bg-gray-900 dark:text-gray-200 ${errors.clase_id
                                 ? "border-red-500"
-                                : "focus:ring-blue-500 focus:border-blue-500"
+                                : "focus:ring-emerald-500 focus:border-emerald-500"
                                 }`}
                             required
                             disabled={loading.clases}
@@ -227,13 +227,13 @@ export default function ModalFormulario({ onClose }) {
 
                     {/* Campo Archivo PDF */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                             Imagen PNG o JPEG *
                         </label>
                         <input
                             type="file"
                             onChange={handleFileChange}
-                            className={`w-full px-4 py-2 border rounded-md ${errors.fichero_profesor ? 'border-red-500' : ''}`}
+                            className={`w-full px-4 py-2 border dark:border-gray-600 rounded-md dark:text-gray-200 ${errors.fichero_profesor ? 'border-red-500' : ''}`}
                             accept=".jpg, .jpeg, .png"
                             required
                         />
@@ -241,14 +241,14 @@ export default function ModalFormulario({ onClose }) {
 
                         {/* Vista previa del PDF */}
                         {preview && (
-                            <div className="mt-4 border rounded-md p-2">
+                            <div className="mt-4 border dark:border-gray-600 rounded-md p-2">
                                 <embed
                                     src={preview}
                                     type="application/pdf"
                                     width="100%"
                                     height="300px"
                                 />
-                                <p className="text-sm text-gray-500 mt-2">Vista previa del fichero_profesor</p>
+                                <p className="text-sm text-gray-500 dark:text-gray-200 mt-2">Vista previa del fichero_profesor</p>
                             </div>
                         )}
                     </div>
@@ -259,14 +259,14 @@ export default function ModalFormulario({ onClose }) {
                     <button
                         type="button"
                         onClick={onClose}
-                        className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition"
+                        className="px-4 py-2 bg-gray-300 dark:bg-gray-200 text-gray-800 rounded-md hover:bg-gray-400 transition"
                         disabled={processing}
                     >
                         Cancelar
                     </button>
                     <button
                         type="submit"
-                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:opacity-50 flex items-center justify-center"
+                        className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition disabled:opacity-50 flex items-center justify-center"
                         disabled={processing || loading.asignaturas || loading.clases || isUploading}
                     >
                         {isUploading ? (

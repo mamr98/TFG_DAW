@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5);
+}
