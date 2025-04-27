@@ -33,7 +33,7 @@ export default function Navbar() {
     const is404Page = component === 'Errors/404';
 
     return (
-        <nav className="bg-gray-800 shadow-sm w-full z-10">
+        <nav className="bg-gray-800 shadow-sm w-full z-50 fixed top-0">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16">
                     <div className="flex items-center">

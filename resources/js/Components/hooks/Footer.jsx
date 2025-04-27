@@ -3,10 +3,10 @@ export default function Footer() {
     return (
         <>
             {/* Footer */}
-            <footer className="bg-gray-800 text-white py-4">
+            <footer className="bg-gray-800 text-white w-full py-4 z-50 fixed bottom-0">
                 <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
                     {/* Primera columna: Enlaces */}
-                    <div className="flex flex-col items-center md:items-start justify-center text-left md:pl-24">
+                    <div className="flex-col items-center hidden md:items-start justify-center text-left md:pl-24 sm:flex">
                         <a href="#" className="hover:text-gray-300">
                             Politica de privacidad
                         </a>
@@ -21,7 +21,7 @@ export default function Footer() {
                     </div>
 
                     {/* Tercera columna: Redes sociales */}
-                    <div className="flex items-center justify-center space-x-4 md:pl-28 social-icons">
+                    <div className="hidden items-center justify-center space-x-4 md:pl-12 social-icons pr-2 sm:flex">
                         <a
                             href="https://www.instagram.com/institutomedac/?hl=es"
                             target="_blank"

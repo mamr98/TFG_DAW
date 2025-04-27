@@ -65,7 +65,7 @@ export default function SubirImagenPage() {
                     <button
                         onClick={fetchExamenes}
                         disabled={isReloading}
-                        className="flex items-center gap-2 px-3 py-2 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed dark:bg-emerald-900 dark:text-emerald-200"
+                        className="flex items-center gap-2 px-3 py-2 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed transition-transform duration-200 hover:scale-105"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

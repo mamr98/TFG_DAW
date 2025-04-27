@@ -7,7 +7,7 @@ export default function GuestLayout({ children }) {
         window.location.origin +
         (window.location.pathname.includes("TFG_DAW") ? "/TFG_DAW/public" : "");
     return (
-        <div className="flex min-h-[70vh] flex-col items-center bg-gray-100 pt-8 pb-10 sm:min-h-[calc(100vh-126px)] sm:justify-center sm:pt-0 dark:bg-gray-900">
+        <div className="flex flex-col items-center bg-gray-100 pt-4 pb-10 min-h-screen justify-center md:pb-8 sm:pt-0 dark:bg-gray-900">
             <div>
                 <Link href={`${baseUrl}/`}>
                     <ApplicationLogo className="h-20 w-20 fill-current text-gray-500" />
