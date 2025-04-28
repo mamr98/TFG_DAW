@@ -20,10 +20,10 @@ function CrudUsuario() {
         const { value: formValues } = await Swal.fire({
             title: `Crear nuevo ${tipoUsuario}`,
             html:
-                `<input id="swal-nombre" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Nombre">` +
-                `<input id="swal-email" type="email" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Email">` +
-                `<input id="swal-password" type="password" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Contraseña">` +
-                `<select id="swal-estado" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white">
+                `<input id="swal-nombre" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent" placeholder="Nombre">` +
+                `<input id="swal-email" type="email" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent" placeholder="Email">` +
+                `<input id="swal-password" type="password" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent" placeholder="Contraseña">` +
+                `<select id="swal-estado" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent appearance-none bg-white">
                     <option value="" disabled selected>Estado</option>
                     <option value="true">Activo</option>
                     <option value="false">Inactivo</option>
@@ -36,9 +36,9 @@ function CrudUsuario() {
             cancelButtonColor: '#dc2626', // red-600
             customClass: {
                 container: 'font-sans',
-                popup: 'rounded-xl shadow-xl border-0 max-w-md mx-auto w-full sm:w-11/12 md:w-2/3 lg:w-1/2',
+                popup: 'bg-gray-50 dark:bg-gray-600 rounded-xl shadow-xl border-0 max-w-md mx-auto w-full sm:w-11/12 md:w-2/3 lg:w-1/2',
                 header: 'border-b pb-3',
-                title: 'text-xl font-semibold text-gray-800',
+                title: 'text-xl font-semibold text-black dark:text-white',
                 closeButton: 'focus:outline-none focus:ring-2 focus:ring-blue-500',
                 content: 'pt-4 px-6',
                 confirmButton: 'bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-white px-5 py-2.5 transition-all duration-200 ease-in-out transform hover:-translate-y-0.5',
