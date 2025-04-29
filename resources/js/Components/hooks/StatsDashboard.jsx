@@ -194,15 +194,14 @@ export default function StatsDashboard({ stats }) {
                 {clases.length > 0 ? (
                     <ul className="space-y-2">
                         {clases.map((clase) => (
-                            <Link
-                                key={clase.id}
-                                to={`/alumnos/${clase.id}`}
-                                className="block bg-gradient-to-r from-emerald-500 to-teal-600 p-2 rounded-md font-bold text-white dark:text-gray-800 hover:brightness-150 transition duration-200"
-                            >
-                                <li>
+                            <li key={clase.id}>
+                                <Link
+                                    href={route("alumnos.show", clase.id)}
+                                    className="block bg-gradient-to-r from-emerald-500 to-teal-600 p-2 rounded-md font-bold text-white dark:text-gray-800 hover:brightness-110 transition duration-200"
+                                >
                                     {clase.nombre}
-                                </li>
-                            </Link>
+                                </Link>
+                            </li>
                         ))}
                     </ul>
                 ) : (

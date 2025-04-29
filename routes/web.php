@@ -15,6 +15,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ComparacionController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\AlumnoController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -30,7 +31,7 @@ Route::get('/inicio', function () {return Inertia::render('Dashboard', ['toast' 
 Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage');})->middleware(['auth', 'verified', "role:alumno"])->name('subir-imagen');
 Route::get('/gestionusuarios', function () {return Inertia::render('CreacionUsuarioPage');})->middleware(['auth', 'verified', "role:admin"])->name('gestionusuarios');
 Route::get('/panelprofesor', function(){return Inertia::render('Panel');})->middleware(['auth', 'verified', "role:admin|profesor"])->name('panelprofesor');
-Route::get('/alumnos', function(){return Inertia::render('Alumnos');})->middleware(['auth', 'verified', "role:profesor"])->name('alumnos');
+
 
 /* VERIFICACION EMAIL */
 Route::get('/email/verify', function () {return Inertia::render('Auth/VerifyEmail');})->middleware('auth')->name('verification.notice');
@@ -105,6 +106,8 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
     Route::post('/profesor/examen', [ExamenController::class, 'store'])->name('profesor.examen.store');
     Route::put('/profesor/examen/{id}', [ExamenController::class, 'actualizarExamen'])->name('profesor.examen.update');
     Route::delete('/profesor/examen/{id}', [ExamenController::class, 'deleteExamen'])->name('profesor.examen.destroy');
+    Route::get('/alumnos/clase/{id}', [AlumnoController::class, 'index'])->name('alumnos.clase');
+
     //Route::get('/',[ExportController::class, 'index'])->name('indexExcel'); Esta ruta no hará falta ya que es para mostrar una vista
     //Route::get('/export',[ExportController::class, 'export'])->name('exportExcel'); Esta ruta es la que va a la funcion que exporta a Excel
 
