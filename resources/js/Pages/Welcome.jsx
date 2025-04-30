@@ -7,7 +7,7 @@ import inicio from "../../assets/images/inicio.png";
 import david from "../../assets/images/david.png";
 import pablo from "../../assets/images/pablo.png";
 import miguel from "../../assets/images/miguel.png";
-import Footer from "@/Components/hooks/Footer";
+import marcos from "../../assets/images/marcos.png";
 import { Icon } from "@progress/kendo-react-common";
 import { useEffect, useState } from "react";
 export default function Welcome({ auth }) {
@@ -257,7 +257,7 @@ export default function Welcome({ auth }) {
                         Creadores de la web
                     </p>
                     <div className="max-w-7xl mx-auto">
-                        <div className=" text-black grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div className=" text-black grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                             <div className="bg-[#34455d] p-8 rounded-lg shadow-md hover:transform hover:-translate-y-2 transition duration-300">
                                 <div className="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-6">
                                     <img
@@ -303,6 +303,22 @@ export default function Welcome({ auth }) {
                                 </h3>
                                 <p className="text-white text-center">
                                     FullStack Developer
+                                </p>
+                            </div>
+
+                            <div className="bg-[#34455d] p-8 rounded-lg shadow-md hover:transform hover:-translate-y-2 transition duration-300">
+                                <div className="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-6">
+                                    <img
+                                        src={marcos}
+                                        alt="Marcos García"
+                                        className="w-full h-full rounded-full object-cover"
+                                    />
+                                </div>
+                                <h3 className="text-emerald-50 text-2xl font-bold text-center">
+                                    Marcos García
+                                </h3>
+                                <p className="text-white text-center">
+                                    Mejoras en la web
                                 </p>
                             </div>
                         </div>
