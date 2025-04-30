@@ -106,7 +106,7 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
     Route::post('/profesor/examen', [ExamenController::class, 'store'])->name('profesor.examen.store');
     Route::put('/profesor/examen/{id}', [ExamenController::class, 'actualizarExamen'])->name('profesor.examen.update');
     Route::delete('/profesor/examen/{id}', [ExamenController::class, 'deleteExamen'])->name('profesor.examen.destroy');
-    Route::get('/alumnos/clase/{id}', [AlumnoController::class, 'index'])->name('alumnos.clase');
+    Route::get('/alumnos/clase/{claseId}', [AlumnoController::class, 'index'])->name('alumnos.clase');
 
     //Route::get('/',[ExportController::class, 'index'])->name('indexExcel'); Esta ruta no hará falta ya que es para mostrar una vista
     //Route::get('/export',[ExportController::class, 'export'])->name('exportExcel'); Esta ruta es la que va a la funcion que exporta a Excel

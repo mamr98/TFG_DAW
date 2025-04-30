@@ -183,7 +183,6 @@ export default function StatsDashboard({ stats }) {
 
     // Nueva sección para los cursos del profesor
 
-
     const clasesSection = (
         <div className="relative border border-green-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-emerald-500 rounded-t-md" />
@@ -196,7 +195,7 @@ export default function StatsDashboard({ stats }) {
                         {clases.map((clase) => (
                             <li key={clase.id}>
                                 <Link
-                                    href={route("alumnos.show", clase.id)}
+                                    href={route("alumnos.clase", clase.id)}
                                     className="block bg-gradient-to-r from-emerald-500 to-teal-600 p-2 rounded-md font-bold text-white dark:text-gray-800 hover:brightness-110 transition duration-200"
                                 >
                                     {clase.nombre}
@@ -210,9 +209,9 @@ export default function StatsDashboard({ stats }) {
             </div>
         </div>
     );
+ 
 
-
-    /* const clasesSection = (
+   /*  const clasesSection = (
         <div className="relative border border-green-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-emerald-500 rounded-t-md" />
             <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
@@ -235,7 +234,7 @@ export default function StatsDashboard({ stats }) {
                 )}
             </div>
         </div>
-    ); */
+    ); */ 
 
     const [totalExamenes, setTotalExamenes] = useState(0); // Nuevo estado para el total de exámenes
 
