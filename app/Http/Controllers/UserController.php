@@ -176,15 +176,6 @@ class UserController extends Controller
     }
 
 
-    // tengo que revisar esta funcion que filtra los usuarios que tienen el rol alumno para mostrarlos en la vista alumnos
-/*     public function mostrarAlumnos()
-{
-    // Obtener usuarios con el rol 'alumno'
-    $alumnos = User::role('alumno')->get(); // Filtra los usuarios que tienen el rol 'alumno'
-
-    return view('cursos', compact('alumnos'));
-} */ 
-
     public function buscarAdmin($nombre)
     {
         $administradores = User::where('name', 'LIKE', "%{$nombre}%")
