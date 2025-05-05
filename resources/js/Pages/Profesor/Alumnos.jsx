@@ -16,9 +16,8 @@ export default function SubirImagenPage() {
             return;
         }
 
-        const ruta = tipoUsuario === "admin" ? `admin` : `admin/${tipoUsuario}`;
-
         try {
+            // Obtener datos del alumno
             const resObtener = await fetch(`${tipoUsuario}/${id}`, {
                 method: "GET",
                 headers: {
@@ -28,110 +27,98 @@ export default function SubirImagenPage() {
                 credentials: "same-origin",
             });
 
-            if (!resObtener.ok)
-                throw new Error(`HTTP error! status: ${resObtener.status}`);
+            if (!resObtener.ok) throw new Error(`Error al obtener datos: ${resObtener.status}`);
+            const alumno = await resObtener.json();
 
-            const usuarioActual = await resObtener.json();
+            // Obtener todas las clases
+            const resClases = await fetch("/alumnos/clases", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": token,
+                },
+                credentials: "same-origin",
+            });
 
+            if (!resClases.ok) throw new Error(`Error al obtener clases: ${resClases.status}`);
+            const clases = await resClases.json();
+
+            // Generar opciones del select
+            const opcionesClases = clases
+                .map(clase => {
+                    const selected = alumno.relacion_clase_alumno?.some(c => c.id === clase.id) ? "selected" : "";
+                    return `<option value="${clase.id}" ${selected}>${clase.nombre}</option>`;
+                })
+                .join("");
+
+            // Mostrar el SweetAlert
             const { value: formValues } = await Swal.fire({
-                title: `Actualizar ${tipoUsuario}`,
-                html:
-                    `<input id="swal-nombre" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg" placeholder="Nombre" value="${
-                        usuarioActual.name || ""
-                    }">` +
-                    `<input id="swal-email" type="email" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg" placeholder="Email" value="${
-                        usuarioActual.email || ""
-                    }">` +
-                    `<input id="swal-password" type="password" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg" placeholder="Contraseña (dejar en blanco para no cambiar)">` +
-                    `<select id="swal-estado" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg bg-white">
-                        <option value="" disabled>Estado</option>
-                        <option value="true" ${
-                            usuarioActual.estado ? "selected" : ""
-                        }>Activo</option>
-                        <option value="false" ${
-                            !usuarioActual.estado ? "selected" : ""
-                        }>Inactivo</option>
-                    </select>`,
+                title: "Asignar nueva clase",
+                html: `
+                    <input id="swal-nombre" class="w-full px-4 py-2 mb-3 text-gray-500 bg-gray-100 border rounded-lg" placeholder="Nombre" value="${alumno.name}" readonly>
+                    <input id="swal-email" class="w-full px-4 py-2 mb-3 text-gray-500 bg-gray-100 border rounded-lg" placeholder="Email" value="${alumno.email}" readonly>
+                    <select id="swal-clase" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg bg-white">
+                        <option disabled selected value="">Selecciona una clase</option>
+                        ${opcionesClases}
+                    </select>
+                `,
                 focusConfirm: false,
                 showCancelButton: true,
-                confirmButtonText: "Actualizar",
+                confirmButtonText: "Asignar",
                 cancelButtonText: "Cancelar",
                 confirmButtonColor: "#2563eb",
                 cancelButtonColor: "#dc2626",
                 customClass: {
                     popup: "rounded-xl shadow-xl max-w-md w-full",
                     title: "text-xl font-semibold",
-                    confirmButton:
-                        "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg",
-                    cancelButton:
-                        "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg",
+                    confirmButton: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg",
+                    cancelButton: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg",
                 },
                 buttonsStyling: false,
                 preConfirm: () => {
-                    const nombre = document.getElementById("swal-nombre").value;
-                    const email = document.getElementById("swal-email").value;
-                    const password =
-                        document.getElementById("swal-password").value;
-                    const estado = document.getElementById("swal-estado").value;
+                    const claseId = document.getElementById("swal-clase").value;
 
-                    if (!nombre || !email || estado === "") {
-                        Swal.showValidationMessage(
-                            "Nombre, email y estado son obligatorios"
-                        );
+                    if (!claseId) {
+                        Swal.showValidationMessage("Debes seleccionar una clase");
                         return;
                     }
 
-                    return {
-                        nombre,
-                        email,
-                        password,
-                        estado: estado === "true",
-                    };
+                    return { claseId };
                 },
             });
 
             if (!formValues) return;
 
-            const bodyData = {
-                name: formValues.nombre,
-                email: formValues.email,
-                estado: formValues.estado,
-            };
-
-            if (formValues.password) {
-                bodyData.password = formValues.password;
-            }
-
-            const res = await fetch(`${ruta}/${id}`, {
+            // Enviar actualización
+            const resUpdate = await fetch(`/ruta/para/actualizar/clase`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     "X-CSRF-TOKEN": token,
                 },
                 credentials: "same-origin",
-                body: JSON.stringify(bodyData),
+                body: JSON.stringify({
+                    idAlumno: id,
+                    idClase: formValues.claseId,
+                }),
             });
 
-            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
-            const data = await res.json();
-            console.log(`${tipoUsuario} actualizado:`, data);
+            if (!resUpdate.ok) throw new Error(`Error al actualizar clase: ${resUpdate.status}`);
 
             Swal.fire({
                 icon: "success",
-                title: "Actualizado",
-                text: `${tipoUsuario} actualizado correctamente.`,
+                title: "Clase actualizada",
+                text: "La clase del alumno ha sido actualizada correctamente.",
                 confirmButtonColor: "#2563eb",
             });
+
         } catch (error) {
-            console.error(`Error al actualizar ${tipoUsuario}:`, error);
+            console.error("Error en la modificación:", error);
             Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: `Error al actualizar ${tipoUsuario}: ${
-                    error.message || error
-                }`,
-                confirmButtonColor: "#d33",
+                text: error.message || "Ha ocurrido un error",
+                confirmButtonColor: "#dc2626",
             });
         }
     };

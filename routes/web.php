@@ -109,14 +109,17 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
 
     Route::get('/alumnos/clase/{claseId}', [AlumnoController::class, 'index'])->name('alumnos.clase');
     
+    Route::put('/alumnos/clase', [AlumnoController::class, 'update'])->name('alumnos.crud');
 
+    Route::get('/alumnos/clases', [AlumnoController::class, 'obtenerClases']);
     //Route::get('/',[ExportController::class, 'index'])->name('indexExcel'); Esta ruta no hará falta ya que es para mostrar una vista
     //Route::get('/export',[ExportController::class, 'export'])->name('exportExcel'); Esta ruta es la que va a la funcion que exporta a Excel
 
 
 });
 
-Route::post('/alumnos/clase', [AlumnoController::class, 'update'])->name('alumnos.crud');
+
+
 Route::middleware('auth', 'verified', "role:alumno")->group(function () {
     Route::get('/examenesAlumno', [ExamenController::class, 'recogerExamenesAlumno'])->name('examenesAlumno');
     Route::post('/alumno/examen/{idExamen}', [ExamenController::class, 'crearExamenAlumno'])->name('examen.alumno');

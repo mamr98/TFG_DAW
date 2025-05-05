@@ -38,5 +38,10 @@ class AlumnoController extends Controller
         ->update(['clase_id' => $request->idClase]);
     }
 
+    public function obtenerClases()
+{
+    $clases = Clase::all(); // Obtiene todas las clases
+    return response()->json($clases); // Devuelve las clases en formato JSON
+}
 
 }
