@@ -31,12 +31,20 @@ class AlumnoController extends Controller
     ]);
     }
 
-     public function update(Request $request)
-    {
-        DB::table('clase_alumnos')
+    public function update(Request $request)
+{
+    $updated = DB::table('clase_alumno')
         ->where('alumno_id', $request->idAlumno)
-        ->update(['clase_id' => $request->idClase]);
+        ->where('clase_id', $request->idClaseAntiguo)
+        ->update(['clase_id' => $request->idClaseNueva]);
+
+    if ($updated) {
+        return response()->json(['message' => 'Clase actualizada correctamente'], 200);
+    } else {
+        return response()->json(['message' => 'No se encontró ningún registro para actualizar'], 404);
     }
+}
+    
 
     public function obtenerClases()
 {
