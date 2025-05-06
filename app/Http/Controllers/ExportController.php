@@ -14,7 +14,7 @@ class ExportController extends Controller
 
 
     public function export(){
-        return Excel::download(new ExamenAlumnoExport, 'ResultadosExamenes.xlsx');
+        return Excel::download(new ExamenAlumnoExport, 'ResultadosExamen.xlsx');
     }
 
 }

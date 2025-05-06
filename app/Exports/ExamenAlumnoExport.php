@@ -17,12 +17,12 @@ class ExamenAlumnoExport implements FromCollection //FromView
         return ExamenAlumno::all();
     } */
 
-    public function view(): View
+    /* public function view(): View
     {
         return view('(nombre de la vista)',[
             'variable del foreach' => ExamenAlumno::all()
         ]);
-    }
+    } */
 
     // recogeria de la base de datos el nombre del alumno y su nota pero no se si funciona tengo que mirarlo
     public function collection()

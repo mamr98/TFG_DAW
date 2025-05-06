@@ -9,119 +9,120 @@ export default function Alumnos() {
         .querySelector('meta[name="csrf-token"]')
         ?.getAttribute("content");
 
-    const modificar = async (tipoUsuario, id, alumno) => {
-        if (!token) {
-            console.error("Token CSRF no encontrado");
-            return;
+        const modificar = async (tipoUsuario, id, alumno) => {
+            if (!token) {
+                console.error("Token CSRF no encontrado");
+                return;
+            }
+        
+            try {
+                // Obtener todas las clases
+                const resClases = await fetch("/TFG_DAW/public/alumnos/clases", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": token,
+                    },
+                });
+        
+                if (!resClases.ok)
+                    throw new Error(`Error al obtener clases: ${resClases.status}`);
+                const clases = await resClases.json();
+        
+                const claseActual = alumno.relacion_clase_alumno?.[0]?.id || null;
+        
+                const opcionesClases = clases
+                    .map((clase) => {
+                        const selected = clase.id === claseActual ? "selected" : "";
+                        return `<option value="${clase.id}" ${selected}>${clase.nombre}</option>`;
+                    })
+                    .join("");
+        
+                const { value: formValues } = await Swal.fire({
+                    title: "Asignar nueva clase",
+                    html: `
+                        <input id="swal-nombre" class="w-full px-4 py-2 mb-3 text-gray-500 bg-gray-100 border rounded-lg" placeholder="Nombre" value="${alumno.name}" readonly>
+                        <input id="swal-email" class="w-full px-4 py-2 mb-3 text-gray-500 bg-gray-100 border rounded-lg" placeholder="Email" value="${alumno.email}" readonly>
+                        <select id="swal-clase" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg bg-white">
+                            <option disabled value="">Selecciona una clase</option>
+                            ${opcionesClases}
+                        </select>
+                    `,
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    confirmButtonText: "Asignar",
+                    cancelButtonText: "Cancelar",
+                    confirmButtonColor: "#2563eb",
+                    cancelButtonColor: "#dc2626",
+                    customClass: {
+                        popup: "rounded-xl shadow-xl max-w-md w-full",
+                        title: "text-xl font-semibold",
+                        confirmButton:
+                            "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg mr-2", // Añadido mr-2 para margen derecho
+                        cancelButton:
+                            "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg ml-2", // Añadido ml-2 para margen izquierdo
+                        actions: "flex justify-end gap-4" // Añadido para separar los botones
+                    },
+                    buttonsStyling: false,
+                    preConfirm: () => {
+                        const claseIdNueva =
+                            document.getElementById("swal-clase").value;
+        
+                        if (!claseIdNueva) {
+                            Swal.showValidationMessage(
+                                "Debes seleccionar una clase"
+                            );
+                            return;
+                        }
+        
+                        return {
+                            claseIdNueva,
+                            claseIdAntiguo: claseId,
+                        };
+                    },
+                });
+        
+                if (!formValues) return;
+        
+                // Enviar actualización
+                console.log("Clase antigua:", formValues.claseIdAntiguo);
+                console.log("Clase nueva:", formValues.claseIdNueva);
+        
+                const resUpdate = await fetch(`/TFG_DAW/public/alumnos/clase`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": token,
+                    },
+                    credentials: "same-origin",
+                    body: JSON.stringify({
+                        idAlumno: id,
+                        idClaseAntiguo: formValues.claseIdAntiguo,
+                        idClaseNueva: formValues.claseIdNueva,
+                    }),
+                });
+        
+                if (!resUpdate.ok)
+                    throw new Error(
+                        `Error al actualizar clase: ${resUpdate.status}`
+                    );
+        
+                Swal.fire({
+                    icon: "success",
+                    title: "Clase actualizada",
+                    text: "La clase del alumno ha sido actualizada correctamente.",
+                    confirmButtonColor: "#2563eb",
+                });
+            } catch (error) {
+                console.error("Error en la modificación:", error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: error.message || "Ha ocurrido un error",
+                    confirmButtonColor: "#dc2626",
+                });
+            }
         }
-
-        try {
-            // Obtener todas las clases
-            const resClases = await fetch("/TFG_DAW/public/alumnos/clases", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": token,
-                },
-            });
-
-            if (!resClases.ok)
-                throw new Error(`Error al obtener clases: ${resClases.status}`);
-            const clases = await resClases.json();
-
-            const claseActual = alumno.relacion_clase_alumno?.[0]?.id || null;
-
-            const opcionesClases = clases
-                .map((clase) => {
-                    const selected = clase.id === claseActual ? "selected" : "";
-                    return `<option value="${clase.id}" ${selected}>${clase.nombre}</option>`;
-                })
-                .join("");
-
-            const { value: formValues } = await Swal.fire({
-                title: "Asignar nueva clase",
-                html: `
-                    <input id="swal-nombre" class="w-full px-4 py-2 mb-3 text-gray-500 bg-gray-100 border rounded-lg" placeholder="Nombre" value="${alumno.name}" readonly>
-                    <input id="swal-email" class="w-full px-4 py-2 mb-3 text-gray-500 bg-gray-100 border rounded-lg" placeholder="Email" value="${alumno.email}" readonly>
-                    <select id="swal-clase" class="w-full px-4 py-2 mb-3 text-gray-700 border border-gray-300 rounded-lg bg-white">
-                        <option disabled value="">Selecciona una clase</option>
-                        ${opcionesClases}
-                    </select>
-                `,
-                focusConfirm: false,
-                showCancelButton: true,
-                confirmButtonText: "Asignar",
-                cancelButtonText: "Cancelar",
-                confirmButtonColor: "#2563eb",
-                cancelButtonColor: "#dc2626",
-                customClass: {
-                    popup: "rounded-xl shadow-xl max-w-md w-full",
-                    title: "text-xl font-semibold",
-                    confirmButton:
-                        "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg",
-                    cancelButton:
-                        "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg",
-                },
-                buttonsStyling: false,
-                preConfirm: () => {
-                    const claseIdNueva =
-                        document.getElementById("swal-clase").value;
-
-                    if (!claseIdNueva) {
-                        Swal.showValidationMessage(
-                            "Debes seleccionar una clase"
-                        );
-                        return;
-                    }
-
-                    return {
-                        claseIdNueva,
-                        claseIdAntiguo: claseId,
-                    };
-                },
-            });
-
-            if (!formValues) return;
-
-            // Enviar actualización
-            console.log("Clase antigua:", formValues.claseIdAntiguo);
-            console.log("Clase nueva:", formValues.claseIdNueva);
-
-            const resUpdate = await fetch(`/TFG_DAW/public/alumnos/clase`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": token,
-                },
-                credentials: "same-origin",
-                body: JSON.stringify({
-                    idAlumno: id,
-                    idClaseAntiguo: formValues.claseIdAntiguo,
-                    idClaseNueva: formValues.claseIdNueva,
-                }),
-            });
-
-            if (!resUpdate.ok)
-                throw new Error(
-                    `Error al actualizar clase: ${resUpdate.status}`
-                );
-
-            Swal.fire({
-                icon: "success",
-                title: "Clase actualizada",
-                text: "La clase del alumno ha sido actualizada correctamente.",
-                confirmButtonColor: "#2563eb",
-            });
-        } catch (error) {
-            console.error("Error en la modificación:", error);
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: error.message || "Ha ocurrido un error",
-                confirmButtonColor: "#dc2626",
-            });
-        }
-    };
 
     return (
         <AuthenticatedLayout

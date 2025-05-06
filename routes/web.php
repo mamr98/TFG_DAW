@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NotasController;
+use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\ExamenController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TextractController;
 use App\Http\Controllers\Admin\UserContoller;
@@ -15,7 +17,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ComparacionController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use App\Http\Controllers\AlumnoController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -113,7 +114,7 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
 
     Route::get('/alumnos/clases', [AlumnoController::class, 'obtenerClases']);
     //Route::get('/',[ExportController::class, 'index'])->name('indexExcel'); Esta ruta no hará falta ya que es para mostrar una vista
-    //Route::get('/export',[ExportController::class, 'export'])->name('exportExcel'); Esta ruta es la que va a la funcion que exporta a Excel
+    Route::get('/export',[ExportController::class, 'export'])->name('exportExcel'); //Esta ruta es la que va a la funcion que exporta a Excel
 
 
 });

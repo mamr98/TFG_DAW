@@ -174,8 +174,8 @@ export default function NotasPage({ notas }) {
             </thead>
             <tbody>
               ${alumnos
-          .map(
-            (alumno) => `
+        .map(
+          (alumno) => `
                     <tr>
                       <td>
                         <div class="alumno-name">
@@ -188,8 +188,8 @@ export default function NotasPage({ notas }) {
                       </td>
                     </tr>
                   `
-          )
-          .join("")}
+        )
+        .join("")}
             </tbody>
           </table>
         </div>  
@@ -214,25 +214,25 @@ export default function NotasPage({ notas }) {
         const popup = Swal.getPopup();
         const container = popup.querySelector('.notas-table-container');
         console.log('Contenedor .notas-table-container:', container);
-        
+
         // Ajuste para móviles pequeños
         if (window.innerWidth <= 640) {
           popup.style.width = '95%';
           popup.style.maxWidth = '100%';
-          
+
           // Centrado más preciso con timeout
           setTimeout(() => {
             const container = popup.querySelector('.notas-table-container');
             if (container) {
               // Fuerza el centrado después de la renderización
               container.scrollLeft = (container.scrollWidth - container.clientWidth) / 2;
-              
+
               // Añade listener para mantener el centrado al cambiar tamaño
               const resizeObserver = new ResizeObserver(() => {
                 container.scrollLeft = (container.scrollWidth - container.clientWidth) / 2;
               });
               resizeObserver.observe(container);
-              
+
               // Limpiar al cerrar
               popup.addEventListener('close', () => resizeObserver.disconnect());
             }
@@ -321,13 +321,21 @@ export default function NotasPage({ notas }) {
                         </svg>
                         {data.alumnos.length} examenes corregidos
                       </div>
-                      <button
-                        onClick={() => handleVerNotasAlumnos(examen, data.alumnos)}
-                        className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-sm px-4 py-2 rounded-md hover:shadow-lg transition-all duration-200"
-                      >
-                        <span className="hidden sm:inline">Ver Notas</span>
-                        <span className="inline sm:hidden">Notas</span>
-                      </button>
+                      <div className="flex flex-col space-y-2">
+                        <button
+                          onClick={() => handleVerNotasAlumnos(examen, data.alumnos)}
+                          className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-sm px-4 py-2 rounded-md hover:shadow-lg transition-all duration-200"
+                        >
+                          <span className="hidden sm:inline">Ver Notas</span>
+                          <span className="inline sm:hidden">Notas</span>
+                        </button>
+                        <button
+                          onClick={() => window.location.href = '/export'}
+                          className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-sm px-4 py-2 rounded-md hover:shadow-lg transition-all duration-200"
+                        >
+                          <span className="hidden sm:inline">Exportar Notas</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
