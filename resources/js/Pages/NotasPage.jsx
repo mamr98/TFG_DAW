@@ -45,6 +45,38 @@ export default function NotasPage({ notas }) {
     setExamenesPaginados(notasAgrupadasPagina);
   }, [notasAgrupadas, currentPage, itemsPerPage]);
 
+  /* 
+  * Función para exportar las notas a un archivo Excel
+  * @param {string} examen - El nombre del examen
+  * @param {Array} alumnos - La lista de alumnos y sus notas
+  * @description Esta función genera un archivo Excel con las notas de los alumnos para el examen especificado.
+  */
+  const handleExportNotas = (examen, alumnos) => {
+    //console.log("Exportando notas para el examen:", examen);
+    //console.log("Alumnos:", alumnos);
+
+    // Crea un excel con el tipo de dato que va a contener el archivo + la extensión y el idioma
+    const excelNotas = "data:text/xlsx;charset=utf-8," + [
+      ["Nombre", "Nota"],// encabezados del excel
+      ...alumnos.map((alumno) => [alumno.alumno, parseFloat(alumno.nota)]), // rellenamos el excel con los datos 
+    ]
+    // Salto de linea cuando pone el nombre y la nota de un alumno
+      .join("\n");
+
+    // Creamos un enlace para descargar el archivo
+    const encodedUri = encodeURI(excelNotas);
+    //Creamos un elemento <a> para descargar el archivo en HTML
+    const descargaExcel = document.createElement("a");
+    // Añadimos el atributo href con la URI codificada
+    descargaExcel.setAttribute("href", encodedUri);
+    // Añadimos el atributo download con el nombre del archivo
+    descargaExcel.setAttribute("download", `${examen}.xlsx`);
+    // Hacemos clic en el elemento <a> para iniciar la descarga
+    descargaExcel.click();
+    // Limpiamos el elemento <a> del DOM
+    descargaExcel.remove();
+  }
+
   const handleVerNotasAlumnos = (examen, alumnos) => {
     if (alumnos.length === 0) {
       Swal.fire({
@@ -60,6 +92,8 @@ export default function NotasPage({ notas }) {
       })
       return
     }
+
+    
 
     // Convertir el contenido a una cadena de texto
     const html = `
@@ -330,7 +364,7 @@ export default function NotasPage({ notas }) {
                           <span className="inline sm:hidden">Notas</span>
                         </button>
                         <button
-                          onClick={() => window.location.href = '/export'}
+                          onClick={() => handleExportNotas(examen, data.alumnos)}
                           className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-sm px-4 py-2 rounded-md hover:shadow-lg transition-all duration-200"
                         >
                           <span className="hidden sm:inline">Exportar Notas</span>
