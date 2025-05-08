@@ -114,7 +114,7 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
 
     Route::get('/alumnos/clases', [AlumnoController::class, 'obtenerClases']);
     //Route::get('/',[ExportController::class, 'index'])->name('indexExcel'); Esta ruta no hará falta ya que es para mostrar una vista
-    Route::get('/export',[ExportController::class, 'export'])->name('exportExcel'); //Esta ruta es la que va a la funcion que exporta a Excel
+    //Route::get('/export',[ExportController::class, 'export'])->name('exportExcel'); //Esta ruta es la que va a la funcion que exporta a Excel
 
 
 });

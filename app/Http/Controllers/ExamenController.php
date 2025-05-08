@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Examen;
 use App\Models\Asignatura;
+use App\Models\Clase; // Asegúrate de que este modelo esté correctamente importado
+use App\Notifications\ExamenDisponibleNotification; // Importar la notificación desde el namespace correcto
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification as LaravelNotification; // Alias para Notification Facade
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use App\Http\Controllers\Aws\TextractController;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log; // Importar Log facade para el manejo de errores
 
 class ExamenController extends Controller
 {
@@ -25,6 +29,8 @@ class ExamenController extends Controller
             'clase_id' => 'required|exists:clase,id',
             'fichero_profesor' => 'required|file|mimes:jpg,jpeg,png|max:10240', // Solo imágenes para el análisis
         ]);
+
+        $cloudinaryResponse = null; // Inicializar para el bloque catch
 
         try {
             // Asignar el ID del profesor autenticado
@@ -65,16 +71,41 @@ class ExamenController extends Controller
             // Crear el examen
             $examen = Examen::create($validated);
 
+            // --- INICIO: Lógica de Notificación ---
+            if ($examen) {
+                $clase = Clase::find($validated['clase_id']);
+
+                if ($clase) {
+                    // Asumiendo que tu modelo Clase tiene una relación llamada 'alumnos'
+                    // que devuelve los usuarios (alumnos) de esa clase.
+                    // Ejemplo de relación en App\Models\Clase.php:
+                    // public function alumnos() {
+                    //     return $this->belongsToMany(\App\Models\User::class, 'clase_alumno', 'clase_id', 'alumno_id');
+                    // }
+                    $alumnosDeLaClase = $clase->alumnos; // Carga la colección de alumnos
+
+                    if ($alumnosDeLaClase && $alumnosDeLaClase->count() > 0) {
+                        foreach ($alumnosDeLaClase as $alumno) {
+                            // Solo notificar si el alumno tiene un email configurado
+                            if ($alumno->email) {
+                                $alumno->notify(new ExamenDisponibleNotification($examen, $alumno));
+                            }
+                        }
+                    }
+                }
+            }
+            // --- FIN: Lógica de Notificación ---
+
             return redirect()->route('panelprofesor')
-                ->with('success', 'Examen creado y procesado correctamente')
+                ->with('success', 'Examen creado, procesado y notificaciones enviadas correctamente.')
                 ->with('examen_data', $examen->json_examen);
         } catch (\Exception $e) {
-            // Eliminar la imagen de Cloudinary si hubo error
-            if (isset($cloudinaryResponse)) {
+            // Eliminar la imagen de Cloudinary si hubo error y $cloudinaryResponse está seteado
+            if (isset($cloudinaryResponse) && $cloudinaryResponse->getPublicId()) {
                 try {
                     Cloudinary::destroy($cloudinaryResponse->getPublicId());
                 } catch (\Exception $cloudinaryError) {
-                    \Log::error('Error al eliminar imagen de Cloudinary: ' . $cloudinaryError->getMessage());
+                    Log::error('Error al eliminar imagen de Cloudinary: ' . $cloudinaryError->getMessage());
                 }
             }
 
@@ -125,27 +156,27 @@ class ExamenController extends Controller
     }
 
     public function recogerExamenesProfesor()
-{
-    $examenes = Examen::where('profesor_id', auth()->id())->get();
+    {
+        $examenes = Examen::where('profesor_id', auth()->id())->get();
 
-    $resultado = $examenes->map(function ($examen) {
-        $asignatura = Asignatura::find($examen->asignatura_id);
+        $resultado = $examenes->map(function ($examen) {
+            $asignatura = Asignatura::find($examen->asignatura_id);
 
-        // Contamos los registros en la tabla examen_alumno
-        $cantidadRelacionados = DB::table('examen_alumno')
-            ->where('examen_id', $examen->id)
-            ->count();
+            // Contamos los registros en la tabla examen_alumno
+            $cantidadRelacionados = DB::table('examen_alumno')
+                ->where('examen_id', $examen->id)
+                ->count();
 
-        return [
-            'examen' => $examen,
-            'asignatura' => $asignatura,
-            'respuestas_correctas' => $examen->json_examen['respuestas_correctas'] ?? null,
-            'tieneRelaciones' => $cantidadRelacionados > 0 // ¡Asegúrate de que esta línea esté aquí!
-        ];
-    });
+            return [
+                'examen' => $examen,
+                'asignatura' => $asignatura,
+                'respuestas_correctas' => $examen->json_examen['respuestas_correctas'] ?? null,
+                'tieneRelaciones' => $cantidadRelacionados > 0
+            ];
+        });
 
-    return response()->json($resultado); // ¡Y que estés retornando esto!
-}
+        return response()->json($resultado);
+    }
 
     public function crearExamenAlumno(Request $request, $idExamen)
     {
@@ -153,6 +184,8 @@ class ExamenController extends Controller
         $request->validate([
             'imagen' => 'required|image|mimes:jpeg,png,jpg|max:10240', // 10MB máximo
         ]);
+
+        $cloudinaryResponse = null; // Inicializar para el bloque catch
 
         try {
             $examenProfesor = Examen::findOrFail($idExamen);
@@ -181,15 +214,15 @@ class ExamenController extends Controller
 
             $analysisData = json_decode($analysis->getContent());
 
-            if (!$analysisData->success || empty($analysisData->extracted_data->respuestas_correctas)) {
-                throw new \Exception("No se pudieron identificar las respuestas correctas en el examen");
+            if (!$analysisData->success || empty($analysisData->extracted_data->estructura)) { // Verificamos estructura en lugar de respuestas_correctas para el alumno
+                throw new \Exception("No se pudieron identificar las respuestas en la imagen del alumno.");
             }
 
             $respuestasAlumno = [];
 
             if (!empty($analysisData->extracted_data->estructura)) {
                 foreach ($analysisData->extracted_data->estructura as $item) {
-                    if ($item->seleccionada) {
+                    if (isset($item->seleccionada) && $item->seleccionada) { // Asegurarse que 'seleccionada' existe
                         $respuestasAlumno[(string)$item->pregunta] = strtoupper(trim($item->opcion));
                     }
                 }
@@ -218,8 +251,8 @@ class ExamenController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            // Eliminar de Cloudinary si hubo error
-            if (isset($cloudinaryResponse)) {
+            // Eliminar de Cloudinary si hubo error y $cloudinaryResponse está seteado
+            if (isset($cloudinaryResponse) && $cloudinaryResponse->getPublicId()) {
                 try {
                     Cloudinary::destroy($cloudinaryResponse->getPublicId());
                 } catch (\Exception $cloudinaryError) {
@@ -236,6 +269,9 @@ class ExamenController extends Controller
 
     private function calcularNota(array $respuestasAlumno, array $respuestasCorrectas): float
     {
+        if (empty($respuestasCorrectas)) {
+            return 0.0; // Evitar división por cero si no hay respuestas correctas
+        }
         $totalPreguntas = count($respuestasCorrectas);
         $aciertos = 0;
         
@@ -293,7 +329,7 @@ class ExamenController extends Controller
         // Eliminar el examen
         $examen->delete();
 
-        return redirect()->back()->with('success', '');
+        return redirect()->back()->with('success', 'Examen eliminado correctamente.'); // Mensaje de éxito
     }
 
     public function getExamenData($id)

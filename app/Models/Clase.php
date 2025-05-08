@@ -18,7 +18,7 @@ class Clase extends Model
     // Alumnos de la clase
     public function alumnos()
     {
-        return $this->belongToMany(User::class, 'clase_alumno');
+        return $this->belongsToMany(User::class, 'clase_alumno', 'clase_id', 'alumno_id')->withTimestamps();
     }
     // Profesores de la clase
     public function profesores()

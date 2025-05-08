@@ -60,6 +60,8 @@ export default function NotasPage({ notas }) {
       ["Nombre", "Nota"],// encabezados del excel
       ...alumnos.map((alumno) => [alumno.alumno, parseFloat(alumno.nota)]), // rellenamos el excel con los datos 
     ]
+
+      //.map((row) => row.join(",")) // unimos los datos con una coma
     // Salto de linea cuando pone el nombre y la nota de un alumno
       .join("\n");
 
@@ -70,7 +72,7 @@ export default function NotasPage({ notas }) {
     // Añadimos el atributo href con la URI codificada
     descargaExcel.setAttribute("href", encodedUri);
     // Añadimos el atributo download con el nombre del archivo
-    descargaExcel.setAttribute("download", `${examen}.xlsx`);
+    descargaExcel.setAttribute("download", `${examen}.csv`);
     // Hacemos clic en el elemento <a> para iniciar la descarga
     descargaExcel.click();
     // Limpiamos el elemento <a> del DOM
