@@ -52,4 +52,30 @@ class AlumnoController extends Controller
     return response()->json($clases); // Devuelve las clases en formato JSON
 }
 
+public function asignarClase(Request $request)
+{
+    $alumnoId = $request->input('alumnoId');
+    $claseId = $request->input('claseId');
+
+    // Verifica si el alumno ya está asignado a la clase
+    $existeAsignacion = DB::table('clase_alumno')
+        ->where('alumno_id', $alumnoId)
+        ->where('clase_id', $claseId)
+        ->exists();
+
+    if ($existeAsignacion) {
+        return response()->json(['message' => 'El alumno ya está asignado a esta clase'], 409);
+    }
+
+    // Asigna el alumno a la clase
+    DB::table('clase_alumno')->insert([
+        'alumno_id' => $alumnoId,
+        'clase_id' => $claseId,
+    ]);
+
+    return response()->json(['message' => 'Clase asignada correctamente'], 200);
+}
+
+
+
 }

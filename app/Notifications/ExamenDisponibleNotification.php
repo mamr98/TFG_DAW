@@ -46,11 +46,11 @@ class ExamenDisponibleNotification extends Notification implements ShouldQueue /
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMailNotification(object $notifiable): MailMessage
     {
         // Asumiendo que tienes una ruta para ver el examen, por ejemplo 'alumno.examen.ver'
         // y que tu modelo Examen tiene un campo 'nombre_examen' y 'fecha_inicio'
-        $url = route('alumno.examen.ver', $this->examen->id); // Cambia 'alumno.examen.ver' por tu ruta real
+        $url = route('examenesAlumno', $this->examen->id); // Cambia 'alumno.examen.ver' por tu ruta real
 
         return (new MailMessage)
                     ->subject('Nuevo Examen Disponible: ' . $this->examen->nombre_examen)
