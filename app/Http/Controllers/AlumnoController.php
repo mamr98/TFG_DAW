@@ -76,6 +76,10 @@ public function asignarClase(Request $request)
     return response()->json(['message' => 'Clase asignada correctamente'], 200);
 }
 
+public function mostrarTodosAlumnos()
+    {
+    $alumnos = User::role('alumno')->get();
+    return response()->json($alumnos);
 
-
+    }
 }

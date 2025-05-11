@@ -113,10 +113,11 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
     Route::put('/alumnos/clase', [AlumnoController::class, 'update'])->name('alumnos.crud');
 
     Route::get('/alumnos/clases', [AlumnoController::class, 'obtenerClases']);
-    //Route::get('/',[ExportController::class, 'index'])->name('indexExcel'); Esta ruta no hará falta ya que es para mostrar una vista
-    //Route::get('/export',[ExportController::class, 'export'])->name('exportExcel'); //Esta ruta es la que va a la funcion que exporta a Excel
 
     Route::get('/alumnos/asignar', [AlumnoController::class, 'asignarClase'])->name('alumnos.asignar');
+
+    Route::get('/alumnos/mostrar', [AlumnoController::class, 'mostrarTodosAlumnos'])->name('alumnos.mostrar');
+
 
 });
 
