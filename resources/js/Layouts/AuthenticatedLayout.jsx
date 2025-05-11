@@ -194,12 +194,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                 Crear examen
                             </ResponsiveNavLink>
                         </Can>
+                        <Can permissions={["permisoprofesor", "sinpermiso"]}>
                         <ResponsiveNavLink
                             href={route('notas')}
                             active={route().current('notas')}
                         >
                             Notas
                         </ResponsiveNavLink>
+                        </Can>
                         <Can permissions={["permisoadmin"]}>
                             <ResponsiveNavLink
                                 href={route('gestionusuarios')}
@@ -222,14 +224,14 @@ export default function AuthenticatedLayout({ header, children }) {
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('profile.edit')}>
-                                Profile
+                                Perfil
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
                                 href={route('logout')}
                                 as="button"
                             >
-                                Log Out
+                                Cerrar sesión
                             </ResponsiveNavLink>
                         </div>
                     </div>
