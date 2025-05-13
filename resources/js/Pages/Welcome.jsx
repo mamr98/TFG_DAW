@@ -1,13 +1,13 @@
 import { Head, Link } from "@inertiajs/react";
 import ApplicationLogo from "@/Components/ApplicationLogo";
-import informes from "../../assets/images/informes.png";
-import tecnologia from "../../assets/images/examen_sincorregir.png";
-import correcion from "../../assets/images/correcion.png";
-import inicio from "../../assets/images/inicio.png";
-import david from "../../assets/images/david.png";
-import pablo from "../../assets/images/pablo.png";
-import miguel from "../../assets/images/miguel.png";
-import marcos from "../../assets/images/marcos.png";
+import informes from "../../assets/images/informes.webp";
+import tecnologia from "../../assets/images/examen_sincorregir.webp";
+import correcion from "../../assets/images/correcion.webp";
+import inicio from "../../assets/images/inicio.webp";
+import david from "../../assets/images/david.webp";
+import pablo from "../../assets/images/pablo.webp";
+import miguel from "../../assets/images/miguel.webp";
+import marcos from "../../assets/images/marcos.webp";
 import { Icon } from "@progress/kendo-react-common";
 import { useEffect, useState } from "react";
 export default function Welcome({ auth }) {
