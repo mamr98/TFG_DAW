@@ -11,7 +11,8 @@ export default function Alumnos() {
         ?.getAttribute("content");
     
         const basePath = `${window.location.origin}/public`;
-    const modificar = async (tipoUsuario, id, alumno) => {
+    
+        const modificar = async (tipoUsuario, id, alumno) => {
         if (!token) {
             console.error("Token CSRF no encontrado");
             return;
@@ -22,7 +23,7 @@ export default function Alumnos() {
             // Obtener todas las clases
             
             const basePath = `${window.location.origin}/public`;
-            const resClases = await fetch(`${basePath}/alumnos/clases`, {
+            const resClases = await fetch(`${basePath}/clases`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -131,6 +132,50 @@ export default function Alumnos() {
         }
     };
 
+
+const anyadirAlumno = async (alumnoId, alumno) => { 
+    console.log(alumno);
+     if (!token) {
+            console.error("Token CSRF no encontrado");
+            return;
+        }
+        try {
+            const res = await fetch(`${basePath}/alumnos/asignar`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": token,
+                },
+                credentials: "same-origin",
+                body: JSON.stringify({
+                    alumnoId: alumnoId,
+                    claseId: claseId,
+                }),
+            });
+
+            if (!res.ok) throw new Error(`Error al añadir alumno: ${res.status}`);
+
+            Swal.fire({
+                icon: "success",
+                title: "Éxito",
+                text: `El alumno ${alumno.name} ha sido asignado a la clase.`,
+                confirmButtonColor: "#2563eb",
+            });
+        } catch (error) {
+            console.error("Error al añadir alumno:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: error.message || "Ha ocurrido un error",
+                confirmButtonColor: "#dc2626",
+            });
+        }
+
+        setTimeout(() => window.location.reload(), 1000) // Recargar la página para ver los cambios
+}
+
+
+
 const handleAsignarAlumnos = async () => {
     if (!token) {
         Swal.fire("Error", "Falta el token de seguridad.", "error");
@@ -187,7 +232,7 @@ const handleAsignarAlumnos = async () => {
 
             btn.onclick = async () => {
                 Swal.close(); // Cerramos el modal
-                await modificar("alumno", alumno.id, alumno); // Ejecutamos la acción
+                await anyadirAlumno(alumno.id, alumno); // Ejecutamos la acción
             };
 
             fila.appendChild(info);

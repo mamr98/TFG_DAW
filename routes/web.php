@@ -114,7 +114,7 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
 
     Route::get('/alumnos/clases', [AlumnoController::class, 'obtenerClases']);
 
-    Route::get('/alumnos/asignar', [AlumnoController::class, 'asignarClase'])->name('alumnos.asignar');
+    Route::post('/alumnos/asignar', [AlumnoController::class, 'asignarClase'])->name('alumnos.asignar');
 
     Route::get('/alumnos/mostrar', [AlumnoController::class, 'mostrarTodosAlumnos'])->name('alumnos.mostrar');
 

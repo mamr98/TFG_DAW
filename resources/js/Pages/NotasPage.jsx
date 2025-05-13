@@ -56,7 +56,7 @@ export default function NotasPage({ notas }) {
     //console.log("Alumnos:", alumnos);
 
     // Crea un excel con el tipo de dato que va a contener el archivo + la extensión y el idioma
-    const excelNotas = "data:text/xlsx;charset=utf-8," + [
+    const excelNotas = "data:text/csv;charset=utf-8," + [
       ["Nombre", "Nota"],// encabezados del excel
       ...alumnos.map((alumno) => [alumno.alumno, parseFloat(alumno.nota)]), // rellenamos el excel con los datos 
     ]
