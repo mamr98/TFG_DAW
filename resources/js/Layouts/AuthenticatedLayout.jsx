@@ -64,6 +64,15 @@ export default function AuthenticatedLayout({ header, children }) {
                                     Notas
                                 </NavLink>
                                 </Can>
+                                <Can permissions={["permisoprofesor"]}>
+                                <NavLink
+                                    href={route('mostrarAsignaturas')}
+                                    active={route().current('mostrarAsignaturas')}
+                                >
+                                    
+                                    Asignaturas
+                                </NavLink>
+                                </Can>
                                 <Can permissions={["permisoadmin"]}>
                                     <NavLink
                                         href={route('gestionusuarios')}

@@ -13,6 +13,7 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TextractController;
 use App\Http\Controllers\Admin\UserContoller;
+use App\Http\Controllers\AsignaturasController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ComparacionController;
 use App\Http\Controllers\Auth\VerifyEmailController;
@@ -32,6 +33,7 @@ Route::get('/inicio', function () {return Inertia::render('Dashboard', ['toast' 
 Route::get('/subir-imagen', function () {return Inertia::render('SubirImagenPage');})->middleware(['auth', 'verified', "role:alumno"])->name('subir-imagen');
 Route::get('/gestionusuarios', function () {return Inertia::render('CreacionUsuarioPage');})->middleware(['auth', 'verified', "role:admin"])->name('gestionusuarios');
 Route::get('/panelprofesor', function(){return Inertia::render('Panel');})->middleware(['auth', 'verified', "role:admin|profesor"])->name('panelprofesor');
+
 
 
 /* VERIFICACION EMAIL */
@@ -102,6 +104,11 @@ Route::middleware('auth', 'verified', "role:admin")->group(function () {
 Route::middleware('auth', 'verified', "role:profesor")->group(function () {
     Route::get('/asignaturas', [ExamenController::class, 'recogerAsignaturas'])->name('asignaturas');
     Route::get('/clases', [ExamenController::class, 'recogerClases'])->name('clases');
+
+    Route::get('/asignaturas/mostrar', [AsignaturasController::class, 'index'])->name('mostrarAsignaturas');
+    Route::post('/asignaturas/crear', [AsignaturasController::class, 'create'])->name('asignaturas.create');
+    Route::put('/asignaturas/modificar', [AsignaturasController::class, 'update'])->name('asignaturas.update');
+    Route::delete('/asignaturas/eliminar', [AsignaturasController::class, 'destroy'])->name('asignaturas.destroy');
 
     Route::get('/examenesProfesor', [ExamenController::class, 'recogerExamenesProfesor'])->name('examenesProfesor');
     Route::post('/profesor/examen', [ExamenController::class, 'store'])->name('profesor.examen.store');
