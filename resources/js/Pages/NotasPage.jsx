@@ -370,6 +370,7 @@ export default function NotasPage({ notas }) {
                           className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-sm px-4 py-2 rounded-md hover:shadow-lg transition-all duration-200"
                         >
                           <span className="hidden sm:inline">Exportar Notas</span>
+                          <span className="inline sm:hidden">Exportar</span>
                         </button>
                       </div>
                     </div>

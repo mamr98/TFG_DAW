@@ -2,9 +2,10 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import Swal from "sweetalert2";
 import PrimaryButton from "@/Components/PrimaryButton";
-import React, { useState } from "react";
+import React, { useState} from "react";
 
 export default function Asignaturas({ asignaturas }) {
+    const [listaAsignaturas, setListaAsignaturas] = useState(asignaturas);
     const [isReloading, setIsReloading] = useState(false);
 
     const token = document
@@ -41,6 +42,7 @@ export default function Asignaturas({ asignaturas }) {
 
             if (response.ok) {
                 Swal.fire("Éxito", "Asignatura modificada correctamente", "success");
+                recargarAsignaturas(); // Actualizar después de modificar
             } else {
                 Swal.fire("Error", "No se pudo modificar la asignatura", "error");
             }
@@ -48,37 +50,34 @@ export default function Asignaturas({ asignaturas }) {
     };
 
     const eliminarAsignatura = async (idEliminar) => {
-    const { isConfirmed } = await Swal.fire({
-        title: "¿Estás seguro?",
-        text: "No podrás revertir esto",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Sí, eliminar",
-        cancelButtonText: "Cancelar",
-    });
-
-    if (isConfirmed) {
-        const response = await fetch(`${basePath}/asignaturas/eliminar`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": token,
-            },
-            body: JSON.stringify({
-                id: idEliminar,
-            }),
+        const { isConfirmed } = await Swal.fire({
+            title: "¿Estás seguro?",
+            text: "No podrás revertir esto",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar",
         });
 
-        if (response.ok) {
-            Swal.fire("Eliminado", "Asignatura eliminada correctamente", "success");
-        } else {
-            const errorData = await response.json();
-            Swal.fire("Error", errorData.error || "No se pudo eliminar la asignatura", "error");
+        if (isConfirmed) {
+            const response = await fetch(`${basePath}/asignaturas/eliminar`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-Token": token,
+                },
+                body: JSON.stringify({ id: idEliminar }),
+            });
+
+            if (response.ok) {
+                Swal.fire("Eliminado", "Asignatura eliminada correctamente", "success");
+                recargarAsignaturas(); // Actualizar después de eliminar
+            } else {
+                const errorData = await response.json();
+                Swal.fire("Error", errorData.error || "No se pudo eliminar la asignatura", "error");
+            }
         }
-    }
-};
-
-
+    };
 
     const handleCrearAsignatura = async () => {
         const { value: formValues } = await Swal.fire({
@@ -109,15 +108,66 @@ export default function Asignaturas({ asignaturas }) {
 
             if (response.ok) {
                 Swal.fire("Éxito", "Asignatura creada correctamente", "success");
+                recargarAsignaturas(); // Actualizar después de crear
             } else {
                 Swal.fire("Error", "No se pudo crear la asignatura", "error");
             }
         }
     };
 
-    const recargarAsignaturas = () => {
+    const recargarAsignaturas = async () => {
         setIsReloading(true);
-        window.location.reload(); // Reemplaza esto si usas Inertia o un fetch dinámico
+        try {
+            const response = await fetch(`${basePath}/asignaturas`);
+            if (response.ok) {
+                const data = await response.json();
+                setListaAsignaturas(data);
+            } else {
+                Swal.fire("Error", "No se pudieron obtener las asignaturas", "error");
+            }
+        } catch (error) {
+            Swal.fire("Error", "Hubo un problema de conexión", "error");
+        } finally {
+            setIsReloading(false);
+        }
+    };
+
+    const renderizarAsignaturas = () => {
+        if (listaAsignaturas.length === 0) {
+            return <p className="text-gray-400">No hay asignaturas disponibles.</p>;
+        }
+
+        return (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {listaAsignaturas.map((asignatura) => (
+                    <div
+                        key={asignatura.id}
+                        className="rounded-lg overflow-hidden shadow-md bg-gray-700 text-white"
+                    >
+                        <div className="dark:bg-emerald-600 p-3">
+                            <h2 className="text-lg font-semibold">
+                                Asignatura: <br /> {asignatura.nombre}
+                            </h2>
+                        </div>
+
+                        <div className="flex justify-center gap-4 px-4 py-3 bg-gray-600">
+                            <button
+                                onClick={() => modificar(asignatura)}
+                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded"
+                            >
+                                Editar
+                            </button>
+                            <button
+                                onClick={() => eliminarAsignatura(asignatura.id)}
+                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded"
+                            >
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
     };
 
     return (
@@ -132,7 +182,6 @@ export default function Asignaturas({ asignaturas }) {
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-
                     <div className="flex items-center gap-4 mb-6">
                         <PrimaryButton onClick={handleCrearAsignatura}>
                             Crear Asignatura
@@ -162,39 +211,7 @@ export default function Asignaturas({ asignaturas }) {
                     </div>
 
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 p-6">
-                        {asignaturas.length === 0 ? (
-                            <p className="text-gray-400">No hay asignaturas disponibles.</p>
-                        ) : (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                                {asignaturas.map((asignatura) => (
-                                    <div
-                                        key={asignatura.id}
-                                        className="rounded-lg overflow-hidden shadow-md bg-gray-700 text-white"
-                                    >
-                                        <div className="dark:bg-emerald-600 p-3">
-                                            <h2 className="text-lg font-semibold">
-                                                Asignatura: <br /> {asignatura.nombre}
-                                            </h2>
-                                        </div>
-
-                                        <div className="flex justify-center gap-4 px-4 py-3 bg-gray-600">
-                                            <button
-                                                onClick={() => modificar(asignatura)}
-                                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded"
-                                            >
-                                                Editar
-                                            </button>
-                                            <button
-                                                onClick={() => eliminarAsignatura(asignatura.id)}
-                                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded"
-                                            >
-                                                Eliminar
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                        {renderizarAsignaturas()}
                     </div>
                 </div>
             </div>

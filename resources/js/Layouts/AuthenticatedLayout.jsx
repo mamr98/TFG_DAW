@@ -209,6 +209,14 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Notas
                         </ResponsiveNavLink>
+                        <Can permissions={["permisoprofesor"]}>
+                            <ResponsiveNavLink
+                                href={route('mostrarAsignaturas')}
+                                active={route().current('mostrarAsignaturas')}
+                            >
+                                Asignaturas
+                            </ResponsiveNavLink>
+                        </Can>
                         <Can permissions={["permisoadmin"]}>
                             <ResponsiveNavLink
                                 href={route('gestionusuarios')}
