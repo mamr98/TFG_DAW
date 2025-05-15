@@ -4,12 +4,12 @@ namespace App\Notifications;
 
 use App\Models\Examen; // Asegúrate de que la ruta a tu modelo Examen sea correcta
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+// use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Models\User; // Asegúrate de que la ruta a tu modelo User sea correcta
 
-class ExamenDisponibleNotification extends Notification implements ShouldQueue // Opcional: para enviar correos en cola
+class ExamenDisponibleNotification extends Notification // implements ShouldQueue // Opcional: para enviar correos en cola
 {
     use Queueable;
 
@@ -46,7 +46,7 @@ class ExamenDisponibleNotification extends Notification implements ShouldQueue /
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMailNotification(object $notifiable): MailMessage
+    public function toMail(object $notifiable): MailMessage
     {
         // Asumiendo que tienes una ruta para ver el examen, por ejemplo 'alumno.examen.ver'
         // y que tu modelo Examen tiene un campo 'nombre_examen' y 'fecha_inicio'
