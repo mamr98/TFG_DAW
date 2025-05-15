@@ -2,7 +2,7 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, usePage, router } from '@inertiajs/react';
 import { useState } from 'react';
 import Can from "../Components/hooks/Can";
 
@@ -113,6 +113,16 @@ export default function AuthenticatedLayout({ header, children }) {
                                             href={route('logout')}
                                             method="post"
                                             as="button"
+                                            onClick={(event) => {
+                                                event.preventDefault(); // Añade esta línea
+                                                console.log('Cerrar sesión clickeado (PC)');
+                                                router.post(route('logout'), {}, {
+                                                    onSuccess: () => {
+                                                        console.log('Petición de logout exitosa (PC)');
+                                                        window.location.reload();
+                                                    },
+                                                });
+                                            }}
                                         >
                                             Cerrar sesión
                                         </Dropdown.Link>
@@ -230,6 +240,16 @@ export default function AuthenticatedLayout({ header, children }) {
                                 method="post"
                                 href={route('logout')}
                                 as="button"
+                                onClick={(event) => {
+                                    event.preventDefault(); // Añade esta línea
+                                    console.log('Cerrar sesión clickeado (Móvil)');
+                                    router.post(route('logout'), {}, {
+                                        onSuccess: () => {
+                                            console.log('Petición de logout exitosa (Móvil)');
+                                            window.location.reload();
+                                        },
+                                    });
+                                }}
                             >
                                 Cerrar sesión
                             </ResponsiveNavLink>
