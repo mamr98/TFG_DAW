@@ -116,6 +116,9 @@ Route::middleware('auth', 'verified', "role:profesor")->group(function () {
     Route::delete('/profesor/examen/{id}', [ExamenController::class, 'deleteExamen'])->name('profesor.examen.destroy');
 
     Route::get('/alumnos/clase/{claseId}', [AlumnoController::class, 'index'])->name('alumnos.clase');
+    Route::get('/api/alumnos/clase/{claseId}', [AlumnoController::class, 'getAlumnosPorClase']);
+    Route::post('/alumnos/quitar', [AlumnoController::class, 'quitarDeClase']);
+
     
     Route::put('/alumnos/clase', [AlumnoController::class, 'update'])->name('alumnos.crud');
 

@@ -82,4 +82,31 @@ public function mostrarTodosAlumnos()
     return response()->json($alumnos);
 
     }
+
+    public function getAlumnosPorClase($claseId)
+{
+    $alumnos = User::role('alumno')
+        ->whereHas('relacion_clase_alumno', function ($query) use ($claseId) {
+            $query->where('id', $claseId);
+        })->get();
+
+    return response()->json($alumnos);
+}
+public function quitarDeClase(Request $request)
+{
+    $alumnoId = $request->input('alumnoId');
+    $claseId = $request->input('claseId');
+
+    $deleted = DB::table('clase_alumno')
+        ->where('alumno_id', $alumnoId)
+        ->where('clase_id', $claseId)
+        ->delete();
+
+    if ($deleted) {
+        return response()->json(['message' => 'Alumno quitado de la clase correctamente'], 200);
+    } else {
+        return response()->json(['message' => 'No se encontró la relación para eliminar'], 404);
+    }
+}
+
 }
