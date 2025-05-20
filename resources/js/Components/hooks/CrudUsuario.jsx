@@ -311,7 +311,7 @@ function CrudUsuario() {
                                         <h4 className="text-white text-lg font-semibold">
                                             {usuario.name}
                                         </h4>
-                                        <p className="text-blue-100 text-sm">ID: {usuario.id}</p>
+                                        {/* <p className="text-blue-100 text-sm">ID: {usuario.id}</p> */}
                                     </div>
                                     <div className="p-4 space-y-2">
                                         <p><span className="font-medium">Email:</span> {usuario.email}</p>
