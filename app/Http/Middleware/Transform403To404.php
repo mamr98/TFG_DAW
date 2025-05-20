@@ -17,11 +17,9 @@ class Transform403To404
             if ($response->status() === 403) {
                 // Usa Inertia::location para forzar el envío de props
                 return Inertia::location(route('dashboard', [
-                    'toast' => [
-                        'type' => 'error',
-                        'message' => 'No tienes permisos para acceder',
-                        'duration' => 5000
-                    ]
+                'toast_type' => 'error',
+                'toast_message' => 'No tienes permisos para acceder',
+                'toast_duration' => 5000
                 ]));
             }
 

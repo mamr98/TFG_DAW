@@ -117,7 +117,7 @@ export default function ExamenCard({
                             {examen.nombre_examen}
                         </h3>
                         <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                            <p className="flex items-center gap-2">
+                            <div className="flex items-center gap-2">
                                 <div className="grid grid-cols-[auto_auto_1fr] items-center gap-2">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +139,7 @@ export default function ExamenCard({
                                         {asignatura?.nombre || "No especificada"}
                                     </span>
                                 </div>
-                            </p>
+                            </div>
                             <p className="flex items-center gap-2">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
