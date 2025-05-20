@@ -56,7 +56,7 @@ RUN chown -R www-data:www-data /var/www/html/storage \
     && chown -R www-data:www-data /var/www/html/bootstrap/cache
 
 # Expone el puerto por el que se ejecutará la aplicación (PHP-FPM, no php artisan serve directamente).
-EXPOSE 9000
+EXPOSE 8000
 
 # Comando para iniciar PHP-FPM.
 # Para producción, necesitarás un servidor web como Nginx o Apache que se comunique con PHP-FPM.
