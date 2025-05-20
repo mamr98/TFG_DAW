@@ -219,7 +219,7 @@ export default function StatsDashboard({ stats }) {
                         ))}
                     </ul>
                 ) : (
-                    <p>No tienes clases asignadas.</p>
+                    <p>{loadingDots}</p>
                 )}
             </div>
         </div>
