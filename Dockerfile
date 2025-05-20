@@ -1,38 +1,65 @@
+# Usa una imagen base de PHP-FPM para PHP 8.2 (Debian Bookworm)
 FROM php:8.2-fpm
 
-# Instalar dependencias del sistema
-RUN apt-get update && apt-get install -y \
+# Instala dependencias del sistema necesarias para PHP, Git, Composer, Node.js y NPM.
+# El --no-install-recommends reduce el tamaño de la imagen.
+RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
     libzip-dev \
     libonig-dev \
     libxml2-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libwebp-dev \
     zip \
     unzip \
     nodejs \
-    npm
+    npm \
+    # Limpia el cache de apt para reducir el tamaño de la imagen
+    && rm -rf /var/lib/apt/lists/*
 
-# Instalar extensiones PHP necesarias
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath zip
+# Instala y habilita las extensiones PHP necesarias.
+# Agrego 'gd' (para manipulación de imágenes) e 'intl' (para internacionalización)
+# que son muy comunes en proyectos Laravel.
+RUN docker-php-ext-install -j$(nproc) \
+    pdo_mysql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    zip \
+    gd \
+    intl
 
-# Instalar Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Instala Composer globalmente en el contenedor.
+# Usamos un 'COPY --from' para mayor eficiencia y cacheo.
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-# Configurar el directorio de trabajo
-WORKDIR /var/www
+# Configura el directorio de trabajo para la aplicación.
+WORKDIR /var/www/html
 
-# Copiar archivos del proyecto
+# Copia los archivos del proyecto al contenedor.
+# Asegúrate de que .dockerignore excluya node_modules, vendor, .git, etc.
 COPY . .
 
-# Instalar dependencias
-RUN composer install --no-dev --optimize-autoloader
+# Instala las dependencias de PHP usando Composer.
+# Agrego --verbose temporalmente para depuración, puedes quitarlo después.
+RUN composer install --no-dev --optimize-autoloader --verbose
+
+# Instala las dependencias de Node.js y construye los assets de frontend.
 RUN npm install && npm run build
 
-# Permisos
-RUN chown -R www-data:www-data /var/www/storage
+# Establece los permisos correctos para la carpeta 'storage' de Laravel.
+RUN chown -R www-data:www-data /var/www/html/storage \
+    && chown -R www-data:www-data /var/www/html/bootstrap/cache
 
-# Puerto expuesto
-EXPOSE 8000
+# Expone el puerto por el que se ejecutará la aplicación (PHP-FPM, no php artisan serve directamente).
+EXPOSE 9000
 
-# Comando de inicio
-CMD php artisan serve --host=0.0.0.0 --port=8000
+# Comando para iniciar PHP-FPM.
+# Para producción, necesitarás un servidor web como Nginx o Apache que se comunique con PHP-FPM.
+# En Render, si usas una plantilla de Laravel, ellos gestionan Nginx.
+# Si solo lanzas este contenedor, Render puede usar un proxy para el puerto 9000.
+CMD ["php-fpm"]
