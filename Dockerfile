@@ -2,7 +2,7 @@
 FROM php:8.2-fpm
 
 # Instala dependencias del sistema necesarias para PHP, Git, Composer, Node.js y NPM.
-# **Añadimos Nginx y Supervisor**
+# Añadimos Nginx y Supervisor
 RUN apt-get update && apt-get install -y --no-install-recommends \
     nginx \
     supervisor \
@@ -55,10 +55,8 @@ RUN chown -R www-data:www-data /var/www/html/storage \
     && chmod -R 775 /var/www/html/storage \
     && chmod -R 775 /var/www/html/bootstrap/cache
 
-# **Copia la configuración de Nginx**
-COPY nginx/default.conf /etc/nginx/sites-available/default
-RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-RUN rm /etc/nginx/sites-enabled/default # Asegúrate de que no haya un default preexistente
+# **COPIA LA CONFIGURACIÓN DE NGINX AL DIRECTORIO CONF.D**
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
 # **Copia la configuración de Supervisor**
 RUN mkdir -p /etc/supervisor/conf.d/
@@ -68,9 +66,8 @@ COPY supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# **Expone el puerto que Nginx usará por defecto si no se especifica PORT (80)**
-# Este puerto será dinámicamente reemplazado por el script de entrada.
+# Expone el puerto 80 (el script de entrada lo ajustará dinámicamente)
 EXPOSE 80
 
-# **Comando de inicio: usa el script de entrada**
+# Comando de inicio: usa el script de entrada
 ENTRYPOINT ["docker-entrypoint.sh"]
