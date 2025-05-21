@@ -24,7 +24,7 @@ class AlumnoController extends Controller
             $query->where('id', $claseId);
         })->get();
 
-    return Inertia::render('Alumnos', [
+    return Inertia::render('Profesor/Alumnos', [
         'alumnos' => $alumnos,
         'claseId' => $claseId,
         'claseNombre' => $clase->nombre,
