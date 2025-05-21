@@ -59,8 +59,7 @@ RUN chown -R www-data:www-data /var/www/html/storage \
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
 # **Copia la configuración de Supervisor**
-RUN mkdir -p /etc/supervisor/conf.d/
-COPY supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+COPY supervisor/supervisord.conf /etc/supervisord.conf
 
 # **Copia y haz ejecutable el script de entrada**
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
