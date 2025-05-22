@@ -131,34 +131,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                             Perfil
                                         </Dropdown.Link>
                                         <Dropdown.Link
-                                            href={route("logout")} // Apunta a la ruta de logout de Laravel
-                                            method="post" // Usa el método POST, necesario para logout seguro
+                                            href={route("logout")} 
+                                            method="post" 
                                             as="button"
-                                            onClick={(event) => {
-                                                event.preventDefault(); // Detiene la navegación por defecto del enlace
-                                                console.log(
-                                                    "Cerrar sesión clickeado (PC)"
-                                                );
-                                                router.post(
-                                                    route("logout"),
-                                                    {},
-                                                    {
-                                                        onSuccess: () => {
-                                                            console.log(
-                                                                "Petición de logout exitosa (PC)"
-                                                            );
-                                                            window.location.reload();
-                                                        },
-                                                        onError: (errors) => {
-                                                            console.error(
-                                                                "Error al cerrar sesión:",
-                                                                errors
-                                                            );
-                                                            // Aquí podrías mostrar un mensaje de error al usuario
-                                                        },
-                                                    }
-                                                );
-                                            }}
                                         >
                                             Cerrar sesión
                                         </Dropdown.Link>
@@ -284,24 +259,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                 method="post"
                                 href={route("logout")}
                                 as="button"
-                                onClick={(event) => {
-                                    event.preventDefault(); // Añade esta línea
-                                    console.log(
-                                        "Cerrar sesión clickeado (Móvil)"
-                                    );
-                                    router.post(
-                                        route("logout"),
-                                        {},
-                                        {
-                                            onSuccess: () => {
-                                                console.log(
-                                                    "Petición de logout exitosa (Móvil)"
-                                                );
-                                                window.location.reload();
-                                            },
-                                        }
-                                    );
-                                }}
                             >
                                 Cerrar sesión
                             </ResponsiveNavLink>
