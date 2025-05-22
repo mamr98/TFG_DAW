@@ -9,6 +9,12 @@ export default function Asignaturas({ asignaturas }) {
     const [listaAsignaturas, setListaAsignaturas] = useState(asignaturas);
     const [isReloading, setIsReloading] = useState(false);
 
+    const nombreExiste = (nombre, idActual = null) => {
+        return listaAsignaturas.some(
+            (a) => a.nombre.trim().toLowerCase() === nombre.trim().toLowerCase() && a.id !== idActual
+        );
+    };
+
     const basePath = window.location.origin +
         (window.location.pathname.includes("TFG_DAW") ? "/TFG_DAW/public" : "");
 
@@ -28,6 +34,10 @@ export default function Asignaturas({ asignaturas }) {
                 }
                 if (nombre.length > 45) { // Agrega validación de longitud si es necesario
                     Swal.showValidationMessage("El nombre no puede superar los 45 caracteres");
+                    return false;
+                }
+                if (nombreExiste(nombre, asignatura.id)) {
+                    Swal.showValidationMessage("Ya existe otra asignatura con ese nombre");
                     return false;
                 }
                 return {
@@ -104,6 +114,10 @@ export default function Asignaturas({ asignaturas }) {
                 }
                 if (nombre.length > 45) {
                     Swal.showValidationMessage("El nombre no puede superar los 45 caracteres");
+                    return false;
+                }
+                if (nombreExiste(nombre)) {
+                    Swal.showValidationMessage("Ya existe una asignatura con ese nombre");
                     return false;
                 }
                 return { nombre };
