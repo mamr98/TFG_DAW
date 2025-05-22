@@ -175,13 +175,13 @@ export default function Asignaturas({ asignaturas }) {
                         key={asignatura.id}
                         className="rounded-lg overflow-hidden shadow-md bg-gray-700 text-white"
                     >
-                        <div className="dark:bg-emerald-600 p-3">
+                        <div className="bg-gradient-to-r to-teal-500 from-emerald-400 p-3">
                             <h2 className="text-lg font-semibold">
                                 Asignatura: <br /> {asignatura.nombre}
                             </h2>
                         </div>
 
-                        <div className="flex justify-center gap-4 px-4 py-3 bg-gray-600">
+                        <div className="flex justify-center gap-4 px-4 py-3 bg-gray-50 dark:bg-gray-600">
                             <button
                                 onClick={() => modificar(asignatura)}
                                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded"

@@ -329,9 +329,9 @@ export default function Alumnos() {
                             {listaAlumnos.map((alumno) => (
                                 <div
                                     key={alumno.id}
-                                    className="rounded-lg overflow-hidden shadow-md bg-gray-700 text-white"
+                                    className="rounded-lg bg-white overflow-hidden shadow-md dark:bg-gray-700 dark:text-white text-black"
                                 >
-                                    <div className="dark:bg-emerald-600 p-3">
+                                    <div className="bg-gradient-to-r to-teal-500 from-emerald-400  p-3">
                                         <h2 className="text-lg font-semibold">
                                             {alumno.name}
                                         </h2>
@@ -348,7 +348,7 @@ export default function Alumnos() {
                                             </span>
                                         </p>
                                     </div>
-                                    <div className="flex justify-center gap-4 px-4 py-3 bg-gray-600">
+                                    <div className="flex justify-center bg-gray-50 gap-4 px-4 py-3 dark:bg-gray-600">
                                         <button
                                             onClick={() =>
                                                 modificar("alumno", alumno.id, alumno)
