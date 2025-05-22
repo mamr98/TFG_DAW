@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default function EditExamenForm({
     examen,
@@ -46,35 +47,19 @@ export default function EditExamenForm({
         setErrors({});
 
         try {
-            const response = await fetch(`profesor/examen/${examen.id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "X-CSRF-TOKEN": document
-                        .querySelector('meta[name="csrf-token"]')
-                        ?.getAttribute("content"),
-                },
-                body: JSON.stringify({
+            const response = await axios.put(
+                `profesor/examen/${examen.id}`,
+                {
                     nombre_examen: formData.nombre_examen,
                     fecha_inicio: formData.fecha_inicio,
                     fecha_fin: formData.fecha_fin,
                     asignatura_id: formData.asignatura_id,
                     clase_id: formData.clase_id,
-                }),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                if (errorData.errors) {
-                    setErrors(errorData.errors);
                 }
-                throw new Error("Error en la actualización");
-            }
+            );
 
-            const result = await response.json();
             if (typeof onSuccess === "function") {
-                onSuccess(result.data);
+            onSuccess(response.data.data);
             }
 
             Swal.fire({

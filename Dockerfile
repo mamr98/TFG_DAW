@@ -2,8 +2,10 @@
 FROM php:8.2-fpm
 
 # Instala dependencias del sistema necesarias para PHP, Git, Composer, Node.js y NPM.
-# El --no-install-recommends reduce el tamaño de la imagen.
+# Añadimos Nginx y Supervisor
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    nginx \
+    supervisor \
     git \
     curl \
     libzip-dev \
@@ -21,8 +23,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Instala y habilita las extensiones PHP necesarias.
-# Agrego 'gd' (para manipulación de imágenes) e 'intl' (para internacionalización)
-# que son muy comunes en proyectos Laravel.
 RUN docker-php-ext-install -j$(nproc) \
     pdo_mysql \
     mbstring \
@@ -31,35 +31,42 @@ RUN docker-php-ext-install -j$(nproc) \
     bcmath \
     zip \
     gd \
-    intl
+    intl \
+    opcache # Opcode cache para mejor rendimiento
 
 # Instala Composer globalmente en el contenedor.
-# Usamos un 'COPY --from' para mayor eficiencia y cacheo.
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # Configura el directorio de trabajo para la aplicación.
 WORKDIR /var/www/html
 
 # Copia los archivos del proyecto al contenedor.
-# Asegúrate de que .dockerignore excluya node_modules, vendor, .git, etc.
 COPY . .
 
 # Instala las dependencias de PHP usando Composer.
-# Agrego --verbose temporalmente para depuración, puedes quitarlo después.
-RUN composer install --no-dev --optimize-autoloader --verbose
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Instala las dependencias de Node.js y construye los assets de frontend.
 RUN npm install && npm run build
 
-# Establece los permisos correctos para la carpeta 'storage' de Laravel.
+# Establece los permisos correctos para las carpetas de Laravel.
 RUN chown -R www-data:www-data /var/www/html/storage \
-    && chown -R www-data:www-data /var/www/html/bootstrap/cache
+    && chown -R www-data:www-data /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache
 
-# Expone el puerto por el que se ejecutará la aplicación (PHP-FPM, no php artisan serve directamente).
-EXPOSE 9000
+# **COPIA LA CONFIGURACIÓN DE NGINX AL DIRECTORIO CONF.D**
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
-# Comando para iniciar PHP-FPM.
-# Para producción, necesitarás un servidor web como Nginx o Apache que se comunique con PHP-FPM.
-# En Render, si usas una plantilla de Laravel, ellos gestionan Nginx.
-# Si solo lanzas este contenedor, Render puede usar un proxy para el puerto 9000.
-CMD ["php-fpm"]
+# **Copia la configuración de Supervisor**
+COPY supervisor/supervisord.conf /etc/supervisord.conf
+
+# **Copia y haz ejecutable el script de entrada**
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Expone el puerto 80 (el script de entrada lo ajustará dinámicamente)
+EXPOSE 80
+
+# Comando de inicio: usa el script de entrada
+ENTRYPOINT ["docker-entrypoint.sh"]

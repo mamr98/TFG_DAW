@@ -1,9 +1,9 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage, router } from '@inertiajs/react';
-import { useState } from 'react';
+import ApplicationLogo from "@/Components/ApplicationLogo";
+import Dropdown from "@/Components/Dropdown";
+import NavLink from "@/Components/NavLink";
+import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
+import { Link, usePage, router } from "@inertiajs/react";
+import { useState } from "react";
 import Can from "../Components/hooks/Can";
 
 export default function AuthenticatedLayout({ header, children }) {
@@ -15,7 +15,9 @@ export default function AuthenticatedLayout({ header, children }) {
     //Comprobar si esta en desarrollo o en local
     const baseUrl =
         window.location.origin +
-        (window.location.pathname.includes("TFG_DAW") ? "/TFG_DAW/public/inicio" : "/inicio");
+        (window.location.pathname.includes("TFG_DAW")
+            ? "/TFG_DAW/public/inicio"
+            : "/inicio");
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -31,16 +33,16 @@ export default function AuthenticatedLayout({ header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
+                                    href={route("dashboard")}
+                                    active={route().current("dashboard")}
                                 >
                                     {/* Todos */}
                                     Inicio
                                 </NavLink>
                                 <Can permissions={["sinpermiso"]}>
                                     <NavLink
-                                        href={route('subir-imagen')}
-                                        active={route().current('subir-imagen')}
+                                        href={route("subir-imagen")}
+                                        active={route().current("subir-imagen")}
                                     >
                                         {/* Admin y alumnos */}
                                         Subir Examen
@@ -48,35 +50,45 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </Can>
                                 <Can permissions={["permisoprofesor"]}>
                                     <NavLink
-                                        href={route('panelprofesor')}
-                                        active={route().current('panelprofesor')}
+                                        href={route("panelprofesor")}
+                                        active={route().current(
+                                            "panelprofesor"
+                                        )}
                                     >
                                         {/* Admin y profesor */}
                                         Crear examen
                                     </NavLink>
                                 </Can>
-                                <Can permissions={["permisoprofesor", "sinpermiso"]}>
-                                <NavLink
-                                    href={route('notas')}
-                                    active={route().current('notas')}
+                                <Can
+                                    permissions={[
+                                        "permisoprofesor",
+                                        "sinpermiso",
+                                    ]}
                                 >
-                                    {/* Todos y dentro un can para alternar la información*/}
-                                    Notas
-                                </NavLink>
+                                    <NavLink
+                                        href={route("notas")}
+                                        active={route().current("notas")}
+                                    >
+                                        {/* Todos y dentro un can para alternar la información*/}
+                                        Notas
+                                    </NavLink>
                                 </Can>
                                 <Can permissions={["permisoprofesor"]}>
-                                <NavLink
-                                    href={route('mostrarAsignaturas')}
-                                    active={route().current('mostrarAsignaturas')}
-                                >
-                                    
-                                    Asignaturas
-                                </NavLink>
+                                    <NavLink
+                                        href={route("mostrarAsignaturas")}
+                                        active={route().current(
+                                            "mostrarAsignaturas"
+                                        )}
+                                    >
+                                        Asignaturas
+                                    </NavLink>
                                 </Can>
                                 <Can permissions={["permisoadmin"]}>
                                     <NavLink
-                                        href={route('gestionusuarios')}
-                                        active={route().current('gestionusuarios')}
+                                        href={route("gestionusuarios")}
+                                        active={route().current(
+                                            "gestionusuarios"
+                                        )}
                                     >
                                         {/* Admin y profesor y un can para alternar la información  */}
                                         Gestión Usuarios
@@ -114,24 +126,14 @@ export default function AuthenticatedLayout({ header, children }) {
 
                                     <Dropdown.Content>
                                         <Dropdown.Link
-                                            href={route('profile.edit')}
+                                            href={route("profile.edit")}
                                         >
                                             Perfil
                                         </Dropdown.Link>
                                         <Dropdown.Link
-                                            href={route('logout')}
-                                            method="post"
+                                            href={route("logout")} 
+                                            method="post" 
                                             as="button"
-                                            onClick={(event) => {
-                                                event.preventDefault(); // Añade esta línea
-                                                console.log('Cerrar sesión clickeado (PC)');
-                                                router.post(route('logout'), {}, {
-                                                    onSuccess: () => {
-                                                        console.log('Petición de logout exitosa (PC)');
-                                                        window.location.reload();
-                                                    },
-                                                });
-                                            }}
                                         >
                                             Cerrar sesión
                                         </Dropdown.Link>
@@ -144,7 +146,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(
-                                        (previousState) => !previousState,
+                                        (previousState) => !previousState
                                     )
                                 }
                                 className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none dark:text-gray-500 dark:hover:bg-gray-900 dark:hover:text-gray-400 dark:focus:bg-gray-900 dark:focus:text-gray-400"
@@ -158,8 +160,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <path
                                         className={
                                             !showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
+                                                ? "inline-flex"
+                                                : "hidden"
                                         }
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
@@ -169,8 +171,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <path
                                         className={
                                             showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
+                                                ? "inline-flex"
+                                                : "hidden"
                                         }
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
@@ -186,53 +188,53 @@ export default function AuthenticatedLayout({ header, children }) {
                 {/* Esto es el navbar para moviles */}
                 <div
                     className={
-                        (showingNavigationDropdown ? 'block' : 'hidden') +
-                        ' sm:hidden'
+                        (showingNavigationDropdown ? "block" : "hidden") +
+                        " sm:hidden"
                     }
                 >
                     <div className="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            href={route('dashboard')}
-                            active={route().current('dashboard')}
+                            href={route("dashboard")}
+                            active={route().current("dashboard")}
                         >
                             Inicio
                         </ResponsiveNavLink>
                         <Can permissions={["sinpermiso"]}>
                             <ResponsiveNavLink
-                                href={route('subir-imagen')}
-                                active={route().current('subir-imagen')}
+                                href={route("subir-imagen")}
+                                active={route().current("subir-imagen")}
                             >
                                 Subir Imagen
                             </ResponsiveNavLink>
                         </Can>
                         <Can permissions={["permisoprofesor"]}>
                             <ResponsiveNavLink
-                                href={route('panelprofesor')}
-                                active={route().current('panelprofesor')}
+                                href={route("panelprofesor")}
+                                active={route().current("panelprofesor")}
                             >
                                 Crear examen
                             </ResponsiveNavLink>
                         </Can>
                         <Can permissions={["permisoprofesor", "sinpermiso"]}>
-                        <ResponsiveNavLink
-                            href={route('notas')}
-                            active={route().current('notas')}
-                        >
-                            Notas
-                        </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                href={route("notas")}
+                                active={route().current("notas")}
+                            >
+                                Notas
+                            </ResponsiveNavLink>
                         </Can>
                         <Can permissions={["permisoprofesor"]}>
                             <ResponsiveNavLink
-                                href={route('mostrarAsignaturas')}
-                                active={route().current('mostrarAsignaturas')}
+                                href={route("mostrarAsignaturas")}
+                                active={route().current("mostrarAsignaturas")}
                             >
                                 Asignaturas
                             </ResponsiveNavLink>
                         </Can>
                         <Can permissions={["permisoadmin"]}>
                             <ResponsiveNavLink
-                                href={route('gestionusuarios')}
-                                active={route().current('gestionusuarios')}
+                                href={route("gestionusuarios")}
+                                active={route().current("gestionusuarios")}
                             >
                                 Gestión Usuarios
                             </ResponsiveNavLink>
@@ -250,23 +252,13 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
+                            <ResponsiveNavLink href={route("profile.edit")}>
                                 Perfil
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
-                                href={route('logout')}
+                                href={route("logout")}
                                 as="button"
-                                onClick={(event) => {
-                                    event.preventDefault(); // Añade esta línea
-                                    console.log('Cerrar sesión clickeado (Móvil)');
-                                    router.post(route('logout'), {}, {
-                                        onSuccess: () => {
-                                            console.log('Petición de logout exitosa (Móvil)');
-                                            window.location.reload();
-                                        },
-                                    });
-                                }}
                             >
                                 Cerrar sesión
                             </ResponsiveNavLink>

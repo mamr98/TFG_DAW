@@ -17,7 +17,7 @@ class AsignaturasController extends Controller
 
         $asignaturas = Asignatura::all();
 
-        return Inertia::render('Asignaturas', [
+        return Inertia::render('Profesor/Asignaturas', [
             'asignaturas' => $asignaturas
         ]);
     }

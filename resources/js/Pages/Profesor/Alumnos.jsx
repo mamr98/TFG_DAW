@@ -3,31 +3,18 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 import Swal from "sweetalert2";
 import PrimaryButton from "@/Components/PrimaryButton";
+import axios from "axios";
 
 export default function Alumnos() {
     const { alumnos, claseId, claseNombre } = usePage().props;
     const [listaAlumnos, setListaAlumnos] = useState(alumnos);
     const [isReloading, setIsReloading] = useState(false);
-    const token = document
-        .querySelector('meta[name="csrf-token"]')
-        ?.getAttribute("content");
     const basePath = window.location.origin +
         (window.location.pathname.includes("TFG_DAW") ? "/TFG_DAW/public" : "");
 
     const modificar = async (tipoUsuario, id, alumno) => {
-        if (!token) {
-            console.error("Token CSRF no encontrado");
-            return;
-        }
-
         try {
-            const resClases = await fetch(`${basePath}/clases`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": token,
-                },
-            });
+            const resClases = await fetch(`${basePath}/clases`);
 
             if (!resClases.ok)
                 throw new Error(`Error al obtener clases: ${resClases.status}`);
@@ -87,24 +74,14 @@ export default function Alumnos() {
 
             if (!formValues) return;
 
-            const resUpdate = await fetch(`${basePath}/alumnos/clase`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": token,
-                },
-                credentials: "same-origin",
-                body: JSON.stringify({
+            const resUpdate = await axios.put(
+                `${basePath}/alumnos/clase`,
+                {
                     idAlumno: id,
                     idClaseAntiguo: formValues.claseIdAntiguo,
                     idClaseNueva: formValues.claseIdNueva,
-                }),
-            });
-
-            if (!resUpdate.ok)
-                throw new Error(
-                    `Error al actualizar clase: ${resUpdate.status}`
-                );
+                }
+            );
 
             Swal.fire({
                 icon: "success",
@@ -114,10 +91,13 @@ export default function Alumnos() {
             });
         } catch (error) {
             console.error("Error en la modificación:", error);
+            const errorMessage = error.response?.data?.message || error.message || "Ha ocurrido un error";
+            const validationErrors = error.response?.data?.errors;
+
             Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: error.message || "Ha ocurrido un error",
+                text: validationErrors ? Object.values(validationErrors).flat().join('\n') : errorMessage,
                 confirmButtonColor: "#dc2626",
             });
         }
@@ -126,24 +106,12 @@ export default function Alumnos() {
     };
 
     const anyadirAlumno = async (alumnoId, alumno) => {
-        if (!token) {
-            console.error("Token CSRF no encontrado");
-            return;
-        }
 
         try {
-            const res = await fetch(`${basePath}/alumnos/asignar`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": token,
-                },
-                credentials: "same-origin",
-                body: JSON.stringify({ alumnoId, claseId }),
-            });
-
-            if (!res.ok)
-                throw new Error(`Error al añadir alumno: ${res.status}`);
+            const res = await axios.post(
+                `${basePath}/alumnos/asignar`,
+                { alumnoId, claseId }
+            );
 
             Swal.fire({
                 icon: "success",
@@ -153,10 +121,12 @@ export default function Alumnos() {
             });
         } catch (error) {
             console.error("Error al añadir alumno:", error);
+            const errorMessage = error.response?.data?.message || error.message || "Ha ocurrido un error";
+            const validationErrors = error.response?.data?.errors;
             Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: error.message || "Ha ocurrido un error",
+                text: validationErrors ? Object.values(validationErrors).flat().join('\n') : errorMessage,
                 confirmButtonColor: "#dc2626",
             });
         }
@@ -165,21 +135,9 @@ export default function Alumnos() {
     };
 
     const handleAsignarAlumnos = async () => {
-        if (!token) {
-            Swal.fire("Error", "Falta el token de seguridad.", "error");
-            return;
-        }
 
         try {
-            console.log(basePath)
-            const response = await fetch(`${basePath}/alumnos/mostrar`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": token,
-                    Accept: "application/json",
-                },
-            });
+            const response = await fetch(`${basePath}/alumnos/mostrar`);
 
             if (!response.ok) throw new Error("Error al cargar alumnos.");
 
@@ -208,7 +166,7 @@ export default function Alumnos() {
                 fila.style.paddingBottom = "6px";
 
                 const info = document.createElement("div");
-                info.innerHTML = `<strong>${alumno.name}</strong><br>`;
+                info.innerHTML = `<strong>${alumno.email}</strong><br>`;
 
                 const btn = document.createElement("button");
                 btn.textContent = "Asignar";
@@ -283,17 +241,10 @@ export default function Alumnos() {
         if (!confirmacion.isConfirmed) return;
 
         try {
-            const res = await fetch(`${basePath}/alumnos/quitar`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": token,
-                },
-                credentials: "same-origin",
-                body: JSON.stringify({ alumnoId: idAlumno, claseId }),
-            });
-
-            if (!res.ok) throw new Error("Error al quitar alumno");
+            await axios.post(
+                `${basePath}/alumnos/quitar`,
+                { alumnoId: idAlumno, claseId }
+            );
 
             Swal.fire({
                 icon: "success",
@@ -305,10 +256,12 @@ export default function Alumnos() {
             recargarAlumnos();
         } catch (error) {
             console.error("Error al eliminar alumno:", error);
+            const errorMessage = error.response?.data?.message || error.message || "Ocurrió un error al quitar al alumno";
+            const validationErrors = error.response?.data?.errors;
             Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: error.message || "Ocurrió un error al quitar al alumno",
+                text: validationErrors ? Object.values(validationErrors).flat().join('\n') : errorMessage,
                 confirmButtonColor: "#dc2626",
             });
         }

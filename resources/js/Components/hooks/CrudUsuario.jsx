@@ -2,20 +2,15 @@ import React, { useState } from "react";
 import PrimaryButton from "../PrimaryButton";
 import Swal from 'sweetalert2';
 import Buscador from "./Buscador";
+import axios from "axios";
 
 function CrudUsuario() {
-    const tokenMeta = document.querySelector('meta[name="csrf-token"]');
-    const token = tokenMeta ? tokenMeta.getAttribute('content') : '';
     const [buscadorTipoUsuario, setBuscadorTipoUsuario] = useState(null);
     const [mostrarBuscador, setMostrarBuscador] = useState(false);
     const [nombreBusqueda, setNombreBusqueda] = useState("");
     const [resultados, setResultados] = useState([]);
-    console.log(token)
+
     const crear = async (tipoUsuario) => {
-        if (!token) {
-            console.error("Token CSRF no encontrado");
-            return;
-        }
 
         const { value: formValues } = await Swal.fire({
             title: `Crear nuevo ${tipoUsuario}`,
@@ -73,25 +68,15 @@ function CrudUsuario() {
         const ruta = tipoUsuario === "admin" ? "admin" : `admin/${tipoUsuario}`;
 
         try {
-            const res = await fetch(`${ruta}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": token,
-                },
-                credentials: "same-origin",
-                body: JSON.stringify({
-                    name: formValues.nombre,
-                    email: formValues.email,
-                    password: formValues.password,
-                    email_verified_at: "2025-04-05 07:23:57",
-                    estado: formValues.estado,
-                }),
+                const res = await axios.post(`${ruta}`, {
+                name: formValues.nombre,
+                email: formValues.email,
+                password: formValues.password,
+                email_verified_at: "2025-04-05 07:23:57",
+                estado: formValues.estado,
             });
 
-            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
-            const data = await res.json();
+            const data = res.data;
             console.log(`${tipoUsuario} creado:`, data);
 
             Swal.fire({
@@ -112,22 +97,11 @@ function CrudUsuario() {
     };
 
     const modificar = async (tipoUsuario, id) => {
-        if (!token) {
-            console.error("Token CSRF no encontrado");
-            return;
-        }
 
         const ruta = tipoUsuario === "admin" ? `admin` : `admin/${tipoUsuario}`;
 
         try {
-            const resObtener = await fetch(tipoUsuario+'/'+id, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": token,
-                },
-                credentials: "same-origin",
-            });
+            const resObtener = await fetch(tipoUsuario+'/'+id);
 
             if (!resObtener.ok) throw new Error(`HTTP error! status: ${resObtener.status}`);
 
@@ -195,19 +169,9 @@ function CrudUsuario() {
                 bodyData.password = formValues.password;
             }
 
-            const res = await fetch(`${ruta}/${id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": token,
-                },
-                credentials: "same-origin",
-                body: JSON.stringify(bodyData),
-            });
+            const res = await axios.put(`${ruta}/${id}`, bodyData);
 
-            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
-            const data = await res.json();
+            const data = res.data;
             console.log(`${tipoUsuario} actualizado:`, data);
 
             Swal.fire({
@@ -229,26 +193,13 @@ function CrudUsuario() {
     };
 
     const estado = async (tipoUsuario, id) => {
-        if (!token) {
-            console.error("Token CSRF no encontrado");
-            return;
-        }
 
         const ruta = tipoUsuario === "admin" ? `admin/estado` : `admin/${tipoUsuario}/estado`;
 
         try {
-            const res = await fetch(`${ruta}/${id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": token,
-                },
-                credentials: "same-origin",
-            });
+            const res = await axios.put(`${ruta}/${id}`, {});
 
-            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
-            const data = await res.json();
+            const data = res.data;
             console.log(`${tipoUsuario} borrado:`, data);
         } catch (error) {
             console.error(`Error al borrar ${tipoUsuario}:`, error);

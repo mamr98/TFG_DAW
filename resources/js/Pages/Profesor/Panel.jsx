@@ -103,7 +103,7 @@ export default function PanelProfesor() {
                     router.delete(`profesor/examen/${examenId}`, {
                         onSuccess: () => {
                             setExamenes(prev => prev.filter(item => item.id !== examenId));
-                            toast.success("Examen eliminado correctamente");
+                            
                         },
                         onError: (errors) => {
                             toast.error(errors.message || "Error al eliminar");
