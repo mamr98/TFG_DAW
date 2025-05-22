@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PrimaryButton from "../PrimaryButton";
 import { toast } from "react-toastify";
+import axios from 'axios';
 
 function SubirImagen({ examenId, onUploadSuccess, isOpen  }) {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -42,20 +43,12 @@ function SubirImagen({ examenId, onUploadSuccess, isOpen  }) {
             formData.append("imagen", fileInput.files[0]);
             formData.append("examen_id", examenId);
     
-            const response = await fetch(`alumno/examen/${examenId}`, {
-                method: "POST",
-                body: formData, // ¡Descomenta esta línea!
-                headers: {
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-                    "Accept": "application/json" // Añade esto para esperar JSON
-                },
-            });
+            const response = await axios.post(
+                `alumno/examen/${examenId}`,
+                formData
+            );
     
-            const data = await response.json();
-    
-            if (!response.ok) {
-                throw new Error(data.message || "Error en la subida");
-            }
+            const data = response.data;
     
             toast.success(data.message || "Examen subido correctamente");
             setSelectedImage(null);

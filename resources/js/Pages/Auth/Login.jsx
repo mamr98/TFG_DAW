@@ -20,9 +20,6 @@ export default function Login({ status, canResetPassword }) {
 
         post(route('login'), {
             onFinish: () => reset('password'),
-            onSuccess: () => {
-                window.location.reload(); 
-            },
         });
     };
 

@@ -3,14 +3,11 @@ import { Head } from "@inertiajs/react";
 import Swal from "sweetalert2";
 import PrimaryButton from "@/Components/PrimaryButton";
 import React, { useState} from "react";
+import axios from "axios";
 
 export default function Asignaturas({ asignaturas }) {
     const [listaAsignaturas, setListaAsignaturas] = useState(asignaturas);
     const [isReloading, setIsReloading] = useState(false);
-
-    const token = document
-        .querySelector('meta[name="csrf-token"]')
-        ?.getAttribute("content");
 
     const basePath = window.location.origin +
         (window.location.pathname.includes("TFG_DAW") ? "/TFG_DAW/public" : "");
@@ -24,29 +21,42 @@ export default function Asignaturas({ asignaturas }) {
             `,
             focusConfirm: false,
             preConfirm: () => {
+                const nombre = document.getElementById("nombre").value;
+                if (!nombre) {
+                    Swal.showValidationMessage("El nombre no puede estar vacío");
+                    return false;
+                }
+                if (nombre.length > 45) { // Agrega validación de longitud si es necesario
+                    Swal.showValidationMessage("El nombre no puede superar los 45 caracteres");
+                    return false;
+                }
                 return {
-                    nombre: document.getElementById("nombre").value,
+                    nombre: nombre,
                     id: document.getElementById("id").value,
                 };
             },
         });
 
-        if (formValues) {
-            const response = await fetch(`${basePath}/asignaturas/modificar`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-Token": token,
-                },
-                body: JSON.stringify(formValues),
-            });
+        if (!formValues) return; // Salir si el usuario cancela o la preConfirmación falla
 
-            if (response.ok) {
-                Swal.fire("Éxito", "Asignatura modificada correctamente", "success");
-                recargarAsignaturas(); // Actualizar después de modificar
-            } else {
-                Swal.fire("Error", "No se pudo modificar la asignatura", "error");
-            }
+        try {
+            // Axios envía 'formValues' como JSON y maneja CSRF automáticamente
+            await axios.put(`${basePath}/asignaturas/modificar`, formValues);
+
+            Swal.fire("Éxito", "Asignatura modificada correctamente", "success");
+            recargarAsignaturas(); // Actualizar después de modificar
+        } catch (error) {
+            console.error("Error al modificar asignatura:", error);
+            // Capturar errores de validación de Laravel (código 422) o errores generales
+            const errorMessage = error.response?.data?.message || "No se pudo modificar la asignatura";
+            const validationErrors = error.response?.data?.errors;
+
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: validationErrors ? Object.values(validationErrors).flat().join('\n') : errorMessage,
+                confirmButtonColor: "#dc2626",
+            });
         }
     };
 
@@ -58,25 +68,24 @@ export default function Asignaturas({ asignaturas }) {
             showCancelButton: true,
             confirmButtonText: "Sí, eliminar",
             cancelButtonText: "Cancelar",
+            confirmButtonColor: "#d33", // Añadido para mejor UX
+            cancelButtonColor: "#3085d6",
         });
 
-        if (isConfirmed) {
-            const response = await fetch(`${basePath}/asignaturas/eliminar`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-Token": token,
-                },
-                body: JSON.stringify({ id: idEliminar }),
+        if (!isConfirmed) return; // Si no confirma, salir
+
+        try {
+            // Axios automáticamente lanza un error si el estado no es 2xx
+            await axios.delete(`${basePath}/asignaturas/eliminar`, {
+                data: { id: idEliminar } // Datos para la petición DELETE
             });
 
-            if (response.ok) {
-                Swal.fire("Eliminado", "Asignatura eliminada correctamente", "success");
-                recargarAsignaturas(); // Actualizar después de eliminar
-            } else {
-                const errorData = await response.json();
-                Swal.fire("Error", errorData.error || "No se pudo eliminar la asignatura", "error");
-            }
+            Swal.fire("Eliminado", "Asignatura eliminada correctamente", "success");
+            recargarAsignaturas(); // Actualizar después de eliminar
+        } catch (error) {
+            console.error("Error al eliminar asignatura:", error);
+            const errorMessage = error.response?.data?.message || "No se pudo eliminar la asignatura";
+            Swal.fire("Error", errorMessage, "error");
         }
     };
 
@@ -89,6 +98,10 @@ export default function Asignaturas({ asignaturas }) {
             focusConfirm: false,
             preConfirm: () => {
                 const nombre = document.getElementById("nombre").value;
+                if (!nombre) {
+                    Swal.showValidationMessage("El nombre no puede estar vacío");
+                    return false;
+                }
                 if (nombre.length > 45) {
                     Swal.showValidationMessage("El nombre no puede superar los 45 caracteres");
                     return false;
@@ -97,22 +110,25 @@ export default function Asignaturas({ asignaturas }) {
             },
         });
 
-        if (formValues) {
-            const response = await fetch(`${basePath}/asignaturas/crear`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-Token": token,
-                },
-                body: JSON.stringify(formValues),
-            });
+        if (!formValues) return; // Salir si el usuario cancela o la preConfirmación falla
 
-            if (response.ok) {
-                Swal.fire("Éxito", "Asignatura creada correctamente", "success");
-                recargarAsignaturas(); // Actualizar después de crear
-            } else {
-                Swal.fire("Error", "No se pudo crear la asignatura", "error");
-            }
+        try {
+            // Axios automáticamente maneja Content-Type y CSRF
+            await axios.post(`${basePath}/asignaturas/crear`, formValues);
+
+            Swal.fire("Éxito", "Asignatura creada correctamente", "success");
+            recargarAsignaturas(); // Actualizar después de crear
+        } catch (error) {
+            console.error("Error al crear asignatura:", error);
+            const errorMessage = error.response?.data?.message || "No se pudo crear la asignatura";
+            const validationErrors = error.response?.data?.errors;
+
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: validationErrors ? Object.values(validationErrors).flat().join('\n') : errorMessage,
+                confirmButtonColor: "#dc2626",
+            });
         }
     };
 
