@@ -12,7 +12,8 @@ export default function Asignaturas({ asignaturas }) {
         .querySelector('meta[name="csrf-token"]')
         ?.getAttribute("content");
 
-    const basePath = `${window.location.origin}/public`;
+    const basePath = window.location.origin +
+        (window.location.pathname.includes("TFG_DAW") ? "/TFG_DAW/public" : "");
 
     const modificar = async (asignatura) => {
         const { value: formValues } = await Swal.fire({

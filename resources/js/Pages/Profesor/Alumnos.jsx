@@ -11,7 +11,8 @@ export default function Alumnos() {
     const token = document
         .querySelector('meta[name="csrf-token"]')
         ?.getAttribute("content");
-    const basePath = `${window.location.origin}/public`;
+    const basePath = window.location.origin +
+        (window.location.pathname.includes("TFG_DAW") ? "/TFG_DAW/public" : "");
 
     const modificar = async (tipoUsuario, id, alumno) => {
         if (!token) {
@@ -170,6 +171,7 @@ export default function Alumnos() {
         }
 
         try {
+            console.log(basePath)
             const response = await fetch(`${basePath}/alumnos/mostrar`, {
                 method: "GET",
                 headers: {
