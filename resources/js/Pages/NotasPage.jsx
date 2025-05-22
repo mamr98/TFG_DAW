@@ -4,12 +4,15 @@ import Swal from "sweetalert2"
 import Can from "../Components/hooks/Can";
 import { useState, useEffect } from "react";
 import PaginationControls from "./Profesor/PaginationControls";
+import CelebrationConfetti from "@/Components/hooks/Confetti";
 
 export default function NotasPage({ notas }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(6);
   const [notasAgrupadas, setNotasAgrupadas] = useState({});
   const [examenesPaginados, setExamenesPaginados] = useState([]);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [confettiTimeout, setConfettiTimeout] = useState(null);
 
   useEffect(() => {
     // Agrupar las notas por examen
@@ -95,7 +98,18 @@ export default function NotasPage({ notas }) {
       return
     }
 
-    
+    // Verificar si hay algún 10 para activar el confetti
+    const hasDiez = alumnos.some(alumno => alumno.nota === "10.00");
+    console.log("¿Hay algún 10?", hasDiez);
+    if (hasDiez) {
+      console.log("¡Se encontró un 10! Activando confetti.");
+      setShowConfetti(true);
+      const timeoutId = setTimeout(() => {
+        setShowConfetti(false);
+        setConfettiTimeout(null); // Limpia el ID del timeout
+      }, 6000);
+      setConfettiTimeout(timeoutId); // Guarda el ID del timeout
+    }
 
     // Convertir el contenido a una cadena de texto
     const html = `
@@ -277,9 +291,19 @@ export default function NotasPage({ notas }) {
       },
       willClose: () => {
         // Limpiar cualquier event listener pendiente
+        setShowConfetti(false);
       }
     })
   }
+
+  useEffect(() => {
+    return () => {
+      // Función de limpieza que se ejecuta al desmontar el componente
+      if (confettiTimeout) {
+        clearTimeout(confettiTimeout); // Cancela el timeout si existe
+      }
+    };
+  }, [confettiTimeout]);
 
   return (
     <AuthenticatedLayout
@@ -288,6 +312,25 @@ export default function NotasPage({ notas }) {
       <Head title="Notas" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Can permission={"sinpermiso"}>
+          {showConfetti && (
+            <>
+              {/* Cañón izquierdo */}
+              <CelebrationConfetti
+                isRaining={showConfetti}
+                origin={{ x: 0.1, y: 0.95 }}
+                angle={45}
+              />
+              
+              {/* Cañón derecho */}
+              <CelebrationConfetti
+                isRaining={showConfetti}
+                origin={{ x: 0.9, y: 0.95 }}
+                angle={135}
+              />
+            </>
+          )}
+        </Can>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Exámenes corregidos</h1>
         <Can permissions={["permisoprofesor"]}>
           {Object.keys(examenesPaginados).length > 0 ? (

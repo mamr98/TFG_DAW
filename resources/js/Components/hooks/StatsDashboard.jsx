@@ -26,6 +26,8 @@ ChartJS.register(
 
 export default function StatsDashboard({ stats }) {
     const [clases, setClases] = useState([]);
+    const [loadingDots, setLoadingDots] = useState('');
+    const [dotCounter, setDotCounter] = useState(0);
 
     useEffect(() => {
         axios
@@ -181,13 +183,26 @@ export default function StatsDashboard({ stats }) {
         </div>
     );
 
+    useEffect(() => {
+        if (clases.length === 0) {
+          const intervalId = setInterval(() => {
+            setDotCounter((prevCounter) => (prevCounter + 1) % 6);
+            setLoadingDots('Cargando clases asignadas' + '.'.repeat((dotCounter % 3) + 1));
+          }, 500); // Ajusta la velocidad del efecto cambiando este valor
+    
+          return () => clearInterval(intervalId); // Limpiar el intervalo al desmontar el componente
+        } else {
+          setLoadingDots(''); // Resetear los puntos si ya hay clases
+        }
+      }, [clases.length, dotCounter]);
+
     // Nueva sección para los cursos del profesor
 
     const clasesSection = (
         <div className="relative border border-green-300 rounded-md p-6 text-center bg-white dark:bg-gray-900">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-lime-400 to-emerald-500 rounded-t-md" />
             <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-2">
-                Cursos Asignados
+                Tus Cursos Asignados
             </h2>
             <div>
                 {clases.length > 0 ? (
@@ -230,7 +245,7 @@ export default function StatsDashboard({ stats }) {
                         ))}
                     </ul>
                 ) : (
-                    <p>No tienes clases asignadas.</p>
+                    <p>{loadingDots}</p>
                 )}
             </div>
         </div>
@@ -424,7 +439,7 @@ export default function StatsDashboard({ stats }) {
                         ))}
                     </ul>
                 ) : (
-                    <p>No estás asignado a ningún curso.</p>
+                    <p>{loadingDots}</p>
                 )}
             </div>
         </div>
