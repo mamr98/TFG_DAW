@@ -32,6 +32,7 @@ class AsignaturasController extends Controller
         'nombre' => 'required|string|max:45',
     ], [
         'nombre.max' => 'El nombre es demasiado largo para la asignatura',
+        'nombre.unique' => 'Ya existe una asignatura con ese nombre',
     ]);
 
     $asignatura = new Asignatura();

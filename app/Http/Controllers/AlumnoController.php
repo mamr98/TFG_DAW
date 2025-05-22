@@ -33,6 +33,19 @@ class AlumnoController extends Controller
 
     public function update(Request $request)
 {
+    // Verifica si el alumno ya está en la clase nueva
+    $yaAsignado = DB::table('clase_alumno')
+        ->where('alumno_id', $request->idAlumno)
+        ->where('clase_id', $request->idClaseNueva)
+        ->exists();
+
+    if ($yaAsignado) {
+        return response()->json([
+            'message' => 'El alumno ya está asignado a esta clase'
+        ], 409);
+    }
+
+    // Procede a actualizar si no está asignado
     $updated = DB::table('clase_alumno')
         ->where('alumno_id', $request->idAlumno)
         ->where('clase_id', $request->idClaseAntiguo)
